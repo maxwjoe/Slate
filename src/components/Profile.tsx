@@ -3,14 +3,30 @@ import Dropdown from './Dropdown';
 import {BiLogOut} from 'react-icons/bi'
 import {IDropDownPackage} from '../interfaces/IDropDownPackage'
 import {IoMdSettings} from 'react-icons/io'
+import {useNavigate} from 'react-router-dom'
 
 function Profile() {
 
     const [open, setOpen] = useState<boolean>(false);
 
+    const navigate = useNavigate();
+
+
+    // ---  Drop Down Functions ---
+    const logoutDropFunction = () => {
+        setOpen(false);
+        navigate('/login')
+    }
+
+    const profileDropFunction = () => {
+        setOpen(false);
+        console.log("Profile")
+    }
+
+    //Functionality to pass to drop down menu
     const dropDownItems : IDropDownPackage[] = [
-        {Icon : IoMdSettings, ActionTitle : "Profile", ActionFunction : () => console.log("Profile")},
-        {Icon : BiLogOut, ActionTitle : "Logout", ActionFunction : () => console.log("Logout")},
+        {Icon : IoMdSettings, ActionTitle : "Profile", ActionFunction : profileDropFunction},
+        {Icon : BiLogOut, ActionTitle : "Logout", ActionFunction : logoutDropFunction},
     ]
 
   return (
