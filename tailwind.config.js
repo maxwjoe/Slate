@@ -10,6 +10,7 @@ module.exports = {
       'slate-super-dark' : "#0F0F0F",
       'slate-black' : '#000000',
       'text-main' : "#dee0e4",
+      'text-danger' : '#FD5D5D',
       'text-secondary' : "#999ba2",
       'text-tertiary' : "#999ba2",
     },
