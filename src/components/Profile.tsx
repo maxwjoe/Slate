@@ -4,17 +4,22 @@ import {BiLogOut} from 'react-icons/bi'
 import {IDropDownPackage} from '../interfaces/IDropDownPackage'
 import {IoMdSettings} from 'react-icons/io'
 import {useNavigate} from 'react-router-dom'
+import {useAppSelector, useAppDispatch} from '../redux/hooks'
+import {logout, reset} from '../redux/slices/authSlice'
 
 function Profile() {
 
     const [open, setOpen] = useState<boolean>(false);
 
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
 
     // ---  Drop Down Functions ---
     const logoutDropFunction = () => {
         setOpen(false);
+        dispatch(logout());
+        dispatch(reset());
         navigate('/login')
     }
 

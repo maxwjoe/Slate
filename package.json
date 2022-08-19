@@ -1,6 +1,7 @@
 {
   "name": "slate",
   "version": "0.1.0",
+  "proxy" : "http://localhost:5000",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.4",
@@ -11,6 +12,7 @@
     "@types/node": "^16.11.49",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "axios": "^0.27.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",

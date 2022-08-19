@@ -1,7 +1,18 @@
 import React, {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {registerViewModel} from '../viewModels/authViewModels'
+import {useAppSelector, useAppDispatch} from '../redux/hooks'
+import {register, reset} from '../redux/slices/authSlice'
+import { IUser } from '../interfaces/IAuth'
+
+
 function Register() {
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  // get redux data
+  const {user, isLoading, isError, isSuccess, message} = useAppSelector<any>((state) => state.auth)
 
   const [formData, setFormData] = useState<registerViewModel>({
     username : '',
@@ -9,6 +20,25 @@ function Register() {
     password : '',
     confirmPassword : '',
   })
+
+  const [invalidData, setInvalidData] = useState<boolean>(false);
+
+
+  useEffect(() => {
+
+    if(isError) {
+      console.log("Hit an error");
+      console.log(message);
+    }
+
+    if(isSuccess || user) {
+      navigate('/');
+    }
+
+    dispatch(reset());
+
+  }, [user, isError, isSuccess, message, navigate, dispatch])
+
 
   // onChange : Handles input change and updates formData
   const onChange = (e : any) => {
@@ -22,25 +52,40 @@ function Register() {
   const onSubmit = (e : any) => {
     e.preventDefault();
 
-    const userData = {
-      username : formData.username,
-      email : formData.email,
-      password : formData.password,
-      confirmPassword : formData.confirmPassword
+    if(formData.password != formData.confirmPassword)
+    {
+      setInvalidData(true);
+    } else {
+
+      setInvalidData(false);
+
+      const userData : IUser = {
+        username : formData.username,
+        email : formData.email,
+        password : formData.password
+      }
+
+      dispatch(register(userData));
+
     }
 
     //dispatch(register(userData))
 
   }
 
-  const navigate = useNavigate();
-
+  if(isLoading)
+  {
+    return (<>
+      <p>Loading</p>
+    </>)
+  }
 
   return (
     <div className='flex items-center justify-center w-full h-full bg-slate-dark'>
       <div className='flex flex-col items-center justify-center w-1/3 p-3 bg-slate-lightdark rounded-md'>
         <p className='text-3xl font-bold text-text-main'>Register for Slate</p>
-        <form className='flex flex-col w-full h-full space-y-5 p-6'>
+        <p hidden={!isError}>message</p>
+        <form onSubmit={onSubmit} className='flex flex-col w-full h-full space-y-5 p-6'>
         <input 
                 value={formData.username}
                 className = "w-full h-12 outline-none border-none text-text-tertiary bg-slate-dark rounded-md p-3" 
