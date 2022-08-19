@@ -1,6 +1,8 @@
 import React from 'react'
+import ArticleView from '../components/ArticleView';
 import Header from '../components/Header';
 import LeftTree from '../components/LeftTree';
+import ListView from '../components/ListView';
 
 function Dashboard() {
   return (
@@ -8,6 +10,7 @@ function Dashboard() {
       <Header/>
       <div className='flex flex-row grow bg-slate-dark'>
         <LeftTree/>
+        <ListView/>
       </div>
     </div>
   )
