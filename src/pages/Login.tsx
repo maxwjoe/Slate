@@ -3,7 +3,6 @@ import {useNavigate} from 'react-router-dom'
 import {loginViewModel} from '../viewModels/authViewModels'
 import {useAppSelector, useAppDispatch} from '../redux/hooks'
 import {login, register, reset} from '../redux/slices/authSlice'
-import { IUser } from '../interfaces/IAuth'
 import {toast} from 'react-hot-toast'
 import LoadingPage from '../components/LoadingPage'
 
@@ -47,18 +46,12 @@ function Login() {
   const onSubmit = (e : any) => {
     e.preventDefault();
 
-    const userData : IUser = {
+    const userData : any = {
       email : formData.email,
       password : formData.password,
-      username : ''
     }
-    console.log(userData)
 
     dispatch(login(userData))
-
-
-
-    //dispatch(login(userData))
 
   }
 

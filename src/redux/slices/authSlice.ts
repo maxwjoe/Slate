@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "../../services/authServices";
-import { IAuth, IUser } from "../../interfaces/IAuth";
+import { IAuth } from "../../interfaces/IAuth";
 
 // Find User in Local Storage
 //TODO: Define a user interface
 const localUser = localStorage.getItem("user") as string;
-const user: IUser = JSON.parse(localUser);
+const user: IAuth = JSON.parse(localUser) as IAuth;
 
 const initialState = {
   user: user ? user : null,
@@ -18,7 +18,7 @@ const initialState = {
 // Register the User
 export const register = createAsyncThunk(
   "auth/register",
-  async (user: IUser, thunkAPI) => {
+  async (user: IAuth, thunkAPI) => {
     try {
       return await authService.register(user);
     } catch (error: any) {
@@ -32,7 +32,7 @@ export const register = createAsyncThunk(
 // Login the User
 export const login = createAsyncThunk(
   "auth/login",
-  async (user: IUser, thunkAPI) => {
+  async (user: IAuth, thunkAPI) => {
     try {
       return await authService.login(user);
     } catch (error: any) {

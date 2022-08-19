@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom'
 import {registerViewModel} from '../viewModels/authViewModels'
 import {useAppSelector, useAppDispatch} from '../redux/hooks'
 import {register, reset} from '../redux/slices/authSlice'
-import { IUser } from '../interfaces/IAuth'
+import { IAuth } from '../interfaces/IAuth'
 import LoadingPage from '../components/LoadingPage'
 
 
@@ -50,21 +50,20 @@ function Register() {
   const onSubmit = (e : any) => {
     e.preventDefault();
 
-    if(formData.password != formData.confirmPassword)
+    if(formData.password !== formData.confirmPassword)
     {
       toast.error("Passwords do not match")
     } else {
 
 
-      const userData : IUser = {
+      const userData : any = {
         username : formData.username,
         email : formData.email,
         password : formData.password
       }
 
       dispatch(register(userData));
-      
-
+    
     }
   }
 
