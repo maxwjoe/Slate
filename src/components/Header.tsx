@@ -11,7 +11,9 @@ function Header() {
         <div className='flex grow flex-row items-center h-full bg-red-400'> 
             <div className='flex justify-center items-center grow h-full'>
                 <div className='flex flex-row justify-start pl-3 pr-3 items-center bg-slate-black rounded-md w-[60%] h-[70%]'>
-                <AiOutlineSearch className='w-4 h-4 text-text-tertiary'/>
+                <div className='flex items-center justify-center w-[5%] h-full'>
+                    <AiOutlineSearch className='w-4 h-4 min-h-[15px] min-w-[15px] text-text-tertiary'/>
+                </div>
                 <input 
                     className='w-[95%] h-full outline-none border-none rounded-md p-3 bg-slate-black text-text-tertiary'
                     type="text" 

@@ -8,7 +8,7 @@ function App() {
   return (
     <>
     <Router>
-      <div className='flex flex-col w-[100vw] h-[100vh]'>
+      <div className='flex flex-col overflow-hidden w-[100vw] h-[100vh]'>
         <Header/>
         <Routes>
           <Route path='/' element={<Dashboard/>}/>
