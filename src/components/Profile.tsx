@@ -16,11 +16,11 @@ function Profile() {
 
 
     // ---  Drop Down Functions ---
-    const logoutDropFunction = () => {
-        setOpen(false);
-        dispatch(logout());
+    const logoutDropFunction = async () => {
+        await dispatch(logout());
         dispatch(reset());
-        navigate('/login')
+        navigate('/login');
+        setOpen(false);
     }
 
     const profileDropFunction = () => {

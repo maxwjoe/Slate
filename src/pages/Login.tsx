@@ -4,6 +4,8 @@ import {loginViewModel} from '../viewModels/authViewModels'
 import {useAppSelector, useAppDispatch} from '../redux/hooks'
 import {login, register, reset} from '../redux/slices/authSlice'
 import { IUser } from '../interfaces/IAuth'
+import {toast} from 'react-hot-toast'
+import LoadingPage from '../components/LoadingPage'
 
 function Login() {
   
@@ -21,8 +23,7 @@ function Login() {
   useEffect(() => {
 
     if(isError) {
-      console.log("Hit an error");
-      console.log(message);
+      toast.error(message?.message || "Unknown Error");
     }
 
     if(isSuccess || user) {
@@ -64,7 +65,7 @@ function Login() {
   if(isLoading)
   {
     return (<>
-      <p>Loading</p>
+      <LoadingPage/>
     </>)
   }
 
@@ -86,7 +87,7 @@ function Login() {
           <input 
                 value={formData.password}
                 className = "w-full h-12 outline-none border-none text-text-tertiary bg-slate-dark rounded-md p-3" 
-                type="text"
+                type="password"
                 name="password"
                 placeholder='Password' 
                 onChange={onChange}

@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react'
+import { toast } from 'react-hot-toast'
 import {useNavigate} from 'react-router-dom'
 import {registerViewModel} from '../viewModels/authViewModels'
 import {useAppSelector, useAppDispatch} from '../redux/hooks'
 import {register, reset} from '../redux/slices/authSlice'
 import { IUser } from '../interfaces/IAuth'
+import LoadingPage from '../components/LoadingPage'
 
 
 function Register() {
@@ -21,14 +23,10 @@ function Register() {
     confirmPassword : '',
   })
 
-  const [invalidData, setInvalidData] = useState<boolean>(false);
-
-
   useEffect(() => {
 
     if(isError) {
-      console.log("Hit an error");
-      console.log(message);
+      toast.error(message?.message || "Unknown Error")
     }
 
     if(isSuccess || user) {
@@ -54,10 +52,9 @@ function Register() {
 
     if(formData.password != formData.confirmPassword)
     {
-      setInvalidData(true);
+      toast.error("Passwords do not match")
     } else {
 
-      setInvalidData(false);
 
       const userData : IUser = {
         username : formData.username,
@@ -66,17 +63,15 @@ function Register() {
       }
 
       dispatch(register(userData));
+      
 
     }
-
-    //dispatch(register(userData))
-
   }
 
   if(isLoading)
   {
     return (<>
-      <p>Loading</p>
+      <LoadingPage/>
     </>)
   }
 
@@ -84,7 +79,6 @@ function Register() {
     <div className='flex items-center justify-center w-full h-full bg-slate-dark'>
       <div className='flex flex-col items-center justify-center w-1/3 p-3 bg-slate-lightdark rounded-md'>
         <p className='text-3xl font-bold text-text-main'>Register for Slate</p>
-        <p hidden={!isError}>message</p>
         <form onSubmit={onSubmit} className='flex flex-col w-full h-full space-y-5 p-6'>
         <input 
                 value={formData.username}
