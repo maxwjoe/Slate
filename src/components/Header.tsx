@@ -1,12 +1,16 @@
 import React from 'react'
 import Profile from './Profile'
 import {AiOutlineSearch} from 'react-icons/ai'
+import {IoMdAdd} from 'react-icons/io'
 
 function Header() {
   return (
     <div className='flex flex-row items-center w-full h-12 bg-slate-dark'>
-        <div className='flex justify-start items-center w-[15%] min-w-[200px] h-full p-3 bg-green-400'>
+        <div className='flex justify-between items-center w-[15%] min-w-[200px] h-full p-3 bg-slate-super-dark'>
             <p className='text-2xl font-bold text-text-main'>Slate</p>
+            <div className='flex justify-center items-center w-7 h-7 bg-slate-lightdark rounded-md cursor-pointer'>
+                <IoMdAdd className='text-text-main text-xl'/>
+            </div>
         </div>
         <div className='flex grow flex-row items-center h-full bg-red-400'> 
             <div className='flex justify-center items-center grow h-full'>
