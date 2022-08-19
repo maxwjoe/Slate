@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {loginViewModel} from '../viewModels/loginViewModel'
+import {loginViewModel} from '../viewModels/authViewModels'
 function Login() {
 
   const [formData, setFormData] = useState<loginViewModel>({
     email : '',
-    password : '',
+    password : ''
   })
 
   // onChange : Handles input change and updates formData
