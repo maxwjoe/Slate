@@ -44,7 +44,7 @@ function Profile() {
                 alt="" />
             
             {open && (
-                <Dropdown dropDownPackages={dropDownItems} offset = {{t : 45, b : 'auto', l : 'auto', r : 15}}/>
+                <Dropdown dropDownPackages={dropDownItems} offset = {{t : 45, b : 'auto', l : 'auto', r : 15}} clickHandler={() => setOpen(false)}/>
             )}
             
         </div>

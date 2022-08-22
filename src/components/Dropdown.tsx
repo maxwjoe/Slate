@@ -1,6 +1,7 @@
 import React from 'react'
 import {IDropDownPackage} from '../interfaces/IDropDownPackage'
 import ReactDom from 'react-dom'
+import {useClickOutside} from '../helper/positionHelpers'
 
 interface Offset {
   t : any;
@@ -11,14 +12,18 @@ interface Offset {
 
 interface Props {
     dropDownPackages : IDropDownPackage[],
-    offset : Offset
+    offset : Offset,
+    clickHandler : any,
 }
 
-function Dropdown({dropDownPackages, offset} : Props) {
+function Dropdown({dropDownPackages, offset, clickHandler} : Props) {
 
+
+  const domNode = useClickOutside(clickHandler)
 
   return ReactDom.createPortal(
     <div
+        ref = {domNode}
         style = {{top : offset.t, bottom : offset.b , left : offset.l , right : offset.r }} 
         className="flex flex-col absolute w-24 bg-[#000] rounded-md p-1 space-y-1">
         {dropDownPackages.map(({Icon, ActionTitle, ActionFunction} : IDropDownPackage, index : number) => (

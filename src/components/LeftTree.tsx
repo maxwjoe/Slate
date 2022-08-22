@@ -16,7 +16,7 @@ function LeftTree() {
     <div className='min-w-[215px] bg-slate-super-dark h-full'>
         <div 
             style={{scrollbarGutter : 'auto'}}
-            className='flex flex-col w-full min-h-[80vh] max-h-[85vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark space-y-3 p-3'
+            className='flex flex-col w-full min-h-[80vh] max-h-[85vh] overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark space-y-3 p-3'
         >
 
           {

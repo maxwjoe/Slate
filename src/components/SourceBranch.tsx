@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {AiOutlineCaretDown, AiOutlineCaretRight} from 'react-icons/ai'
 import {FiEdit} from 'react-icons/fi'
+import {AiFillDelete} from 'react-icons/ai'
 import {BsThreeDots} from 'react-icons/bs'
 import SubSourceBranch from './SubSourceBranch'
 import Dropdown from '../components/Dropdown'
@@ -34,10 +35,8 @@ function SourceBranch({SourceObj} : Props) {
 
     // Dropdown packages for options menu
     const DropDownPackages : IDropDownPackage[] = [
-        {Icon : FiEdit, ActionTitle : "Profile", ActionFunction : () => console.log("Edit")},
-        {Icon : FiEdit, ActionTitle : "Logout", ActionFunction : () => console.log("Edit")},
-        {Icon : FiEdit, ActionTitle : "Profile", ActionFunction : () => console.log("Edit")},
-        {Icon : FiEdit, ActionTitle : "Logout", ActionFunction : () => console.log("Edit")},
+        {Icon : FiEdit, ActionTitle : "Edit", ActionFunction : () => console.log("Edit") },
+        {Icon : AiFillDelete, ActionTitle : "Delete", ActionFunction : () => console.log("Edit")},
     ]
 
 
@@ -49,11 +48,11 @@ function SourceBranch({SourceObj} : Props) {
                 <p className='text-md text-text-secondary cursor-default select-none'>{SourceObj.title}</p>
             </div>
 
-            <BsThreeDots onClick={() => setOpenDropDown(!openDropDown)} className='text-text-secondary cursor-pointer text-md'/>
+            <BsThreeDots onClick={() => setOpenDropDown(true)} className='text-text-secondary cursor-pointer text-md'/>
             
 
                 {openDropDown && 
-                    <Dropdown dropDownPackages={DropDownPackages} offset = {dropDownOffset}/>
+                    <Dropdown dropDownPackages={DropDownPackages} offset = {dropDownOffset} clickHandler={() => setOpenDropDown(false)}/>
                 }
         </div>
 
