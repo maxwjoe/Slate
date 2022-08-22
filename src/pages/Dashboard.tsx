@@ -15,7 +15,7 @@ function Dashboard() {
 
   const {user} = useAppSelector((state) => state.auth);
   const {sources, isLoading, isError, message} = useAppSelector((state) => state.sources);
-
+  const currSources = sources['sources'];
   // useEffect to handle auth access and source data pull on load
   useEffect(() => {
     
@@ -28,9 +28,9 @@ function Dashboard() {
     if(isError)
     {
       console.log(sources);
-      toast.error("There was an error fetching your data")
+      toast.error(message)
     }
-    
+    console.log("Use Effect Fired Off")
     dispatch(RDX_getSources());
 
   }, [user, navigate, isError, message, dispatch])

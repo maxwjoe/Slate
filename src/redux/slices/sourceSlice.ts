@@ -1,4 +1,9 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  createReducer,
+} from "@reduxjs/toolkit";
 import { ISource } from "../../interfaces/DataInterfaces";
 import sourceService from "../../services/sourceService";
 
@@ -76,11 +81,14 @@ export const sourceSlice = createSlice({
       .addCase(RDX_createSource.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(RDX_createSource.fulfilled, (state, action: any) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.sources.push(action.payload);
-      })
+      .addCase(
+        RDX_createSource.fulfilled,
+        (state, action: PayloadAction<ISource>) => {
+          state.isLoading = false;
+          state.isSuccess = true;
+          state.sources["sources"].push(action.payload);
+        }
+      )
       .addCase(RDX_createSource.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
@@ -89,11 +97,14 @@ export const sourceSlice = createSlice({
       .addCase(RDX_getSources.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(RDX_getSources.fulfilled, (state, action: any) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.sources = action.payload;
-      })
+      .addCase(
+        RDX_getSources.fulfilled,
+        (state, action: PayloadAction<ISource[]>) => {
+          state.isLoading = false;
+          state.isSuccess = true;
+          state.sources = action.payload;
+        }
+      )
       .addCase(RDX_getSources.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
@@ -103,11 +114,15 @@ export const sourceSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(RDX_deleteSource.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.sources = state.sources.filter(
-          (source: any) => source._id !== action.payload.id
-        );
+        return {
+          ...state,
+
+          isLoading: false,
+          isSuccess: true,
+          sources: state.sources["sources"].filter((source: any) => {
+            return source._id !== action.payload.id;
+          }),
+        };
       })
       .addCase(RDX_deleteSource.rejected, (state, action) => {
         state.isLoading = false;

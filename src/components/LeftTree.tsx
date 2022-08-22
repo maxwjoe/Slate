@@ -1,15 +1,42 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import SourceBranch from './SourceBranch'
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
 import { ISource } from '../interfaces/DataInterfaces';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { RDX_getSources } from '../redux/slices/sourceSlice';
 
 
 // LeftTree : Renders the left hand panel of the UI
 function LeftTree() {
 
-  // Get Sources from Redux
-  const {sources} = useAppSelector((state) => state.sources)
-  const userSources : ISource[] = sources['sources'];
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const {user} = useAppSelector((state) => state.auth);
+  const {sources, isLoading, isError, message} = useAppSelector((state) => state.sources);
+
+  //FIXME: Figure out why this happens
+  const userSources = sources['sources'] || sources;
+
+  // useEffect to handle auth access and source data pull on load
+  useEffect(() => {
+    
+    if(!user)
+    {
+      navigate('/login')
+      return;
+    }
+    
+    if(isError)
+    {
+      console.log(sources);
+      toast.error(message)
+    }
+    console.log("Use Effect Fired Off")
+    dispatch(RDX_getSources());
+
+  }, [user, navigate, isError,  message, dispatch])
 
 
   return (

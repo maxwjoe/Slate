@@ -1,15 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Profile from './Profile'
 import {AiOutlineSearch} from 'react-icons/ai'
 import {IoMdAdd} from 'react-icons/io'
+import GenericModal from '../modals/GenericModal';
+import CreateSource from './CRUD Modals/CreateSource';
+import {getExampleLanguage, getExampleTitle} from '../helper/genData'
 
 function Header() {
+
+    const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
+
+
   return (
     <div className='flex flex-row items-center w-full h-12 bg-slate-dark'>
         <div className='flex justify-between items-center min-w-[215px] h-full p-3 bg-slate-super-dark'>
             <p className='text-2xl font-bold text-text-main'>Slate</p>
             <div className='flex justify-center items-center w-7 h-7 bg-slate-lightdark rounded-md cursor-pointer'>
-                <IoMdAdd className='text-text-main text-xl'/>
+                <IoMdAdd onClick={() => setOpenCreateModal(true)} className='text-text-main text-xl'/>
             </div>
         </div>
         <div className='flex grow flex-row items-center h-full bg-red-400'> 
@@ -28,6 +35,13 @@ function Header() {
                 <Profile/>
             </div>
         </div>
+
+        {openCreateModal && 
+            <GenericModal handleClose={() => setOpenCreateModal(false)}>
+                <CreateSource handleClose={() => setOpenCreateModal(false)} exampleLanguage={getExampleLanguage()} exampleTitle = {getExampleTitle()}/>
+            </GenericModal>
+        }
+
     </div>
   )
 }

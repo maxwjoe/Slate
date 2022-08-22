@@ -4,12 +4,17 @@ import {FiEdit} from 'react-icons/fi'
 import {AiFillDelete} from 'react-icons/ai'
 import {BsThreeDots} from 'react-icons/bs'
 import SubSourceBranch from './SubSourceBranch'
-import Dropdown from '../components/Dropdown'
+import Dropdown from '../modals/Dropdown'
 import { IDropDownPackage } from '../interfaces/IDropDownPackage'
 import {getComponentBounds, applyShift} from '../helper/positionHelpers'
+import GenericModal from '../modals/GenericModal'
+import EditSource from './CRUD Modals/EditSource'
+import DeleteSource from './CRUD Modals/DeleteSource'
+import {ISource} from '../interfaces/DataInterfaces'
+
 
 interface Props {
-    SourceObj : any;
+    SourceObj : ISource;
 }
 
 
@@ -18,10 +23,19 @@ function SourceBranch({SourceObj} : Props) {
 
     const [open, setOpen] = useState<boolean>(false);
     const [openDropDown, setOpenDropDown] = useState<boolean>(false);
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [selectedModal, setSelectedModal] = useState<string>("None");
+
 
     // handleToggle : Handles opening and closing the source
     const handleToggle = () => {
         setOpen(!open);
+    }
+
+    // handleMenuSelect : Handles selecting an object (opens the modal AND closes the dropdown)
+    const handleMenuSelect = () => {
+        setOpenDropDown(false);
+        setOpenModal(true);
     }
 
     const sourceLocation = getComponentBounds(SourceObj.title);
@@ -35,9 +49,22 @@ function SourceBranch({SourceObj} : Props) {
 
     // Dropdown packages for options menu
     const DropDownPackages : IDropDownPackage[] = [
-        {Icon : FiEdit, ActionTitle : "Edit", ActionFunction : () => console.log("Edit") },
-        {Icon : AiFillDelete, ActionTitle : "Delete", ActionFunction : () => console.log("Edit")},
+        {Icon : FiEdit, ActionTitle : "Edit", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Edit") }},
+        {Icon : AiFillDelete, ActionTitle : "Delete", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Delete")}},
     ]
+
+    // renderCRUDModal : Return correct CRUD Modal (Could Make this generic and import it ? )
+    const renderCRUDModal = (modalName : string) => {
+        switch(modalName)
+        {
+            case "Edit" :
+                return <EditSource SourceObj={SourceObj}/>
+            case "Delete" :
+                return <DeleteSource SourceObj = {SourceObj}/>
+            default :
+                return null
+        }
+    }   
 
 
   return (
@@ -52,7 +79,14 @@ function SourceBranch({SourceObj} : Props) {
             
 
                 {openDropDown && 
-                    <Dropdown dropDownPackages={DropDownPackages} offset = {dropDownOffset} clickHandler={() => setOpenDropDown(false)}/>
+                    <Dropdown dropDownPackages={DropDownPackages} offset = {dropDownOffset} closeHandler={() => setOpenDropDown(false)}/>
+                }
+                {
+                 openModal && (
+                    <GenericModal handleClose={() => setOpenModal(false)}>
+                        {renderCRUDModal(selectedModal)}
+                    </GenericModal>
+                 )
                 }
         </div>
 

@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import Dropdown from './Dropdown';
+import Dropdown from '../modals/Dropdown';
 import {BiLogOut} from 'react-icons/bi'
 import {IDropDownPackage} from '../interfaces/IDropDownPackage'
 import {IoMdSettings} from 'react-icons/io'
@@ -44,7 +44,7 @@ function Profile() {
                 alt="" />
             
             {open && (
-                <Dropdown dropDownPackages={dropDownItems} offset = {{t : 45, b : 'auto', l : 'auto', r : 15}} clickHandler={() => setOpen(false)}/>
+                <Dropdown dropDownPackages={dropDownItems} offset = {{t : 45, b : 'auto', l : 'auto', r : 15}} closeHandler={() => setOpen(false)}/>
             )}
             
         </div>

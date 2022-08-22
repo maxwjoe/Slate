@@ -2,6 +2,7 @@ import React from 'react'
 import {IDropDownPackage} from '../interfaces/IDropDownPackage'
 import ReactDom from 'react-dom'
 import {useClickOutside} from '../helper/positionHelpers'
+import GenericModal from './GenericModal';
 
 interface Offset {
   t : any;
@@ -13,13 +14,13 @@ interface Offset {
 interface Props {
     dropDownPackages : IDropDownPackage[],
     offset : Offset,
-    clickHandler : any,
+    closeHandler : any,
 }
 
-function Dropdown({dropDownPackages, offset, clickHandler} : Props) {
+function Dropdown({dropDownPackages, offset, closeHandler} : Props) {
 
 
-  const domNode = useClickOutside(clickHandler)
+  const domNode = useClickOutside(closeHandler)
 
   return ReactDom.createPortal(
     <div
@@ -32,6 +33,7 @@ function Dropdown({dropDownPackages, offset, clickHandler} : Props) {
                 <p className='text-text-main'>{ActionTitle}</p>
             </div>
         ))}
+
     </div>, 
     document.getElementById('portal')!
   )
