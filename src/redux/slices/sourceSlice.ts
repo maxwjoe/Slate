@@ -86,7 +86,11 @@ export const sourceSlice = createSlice({
         (state, action: PayloadAction<ISource>) => {
           state.isLoading = false;
           state.isSuccess = true;
-          state.sources["sources"].push(action.payload);
+          try {
+            state.sources["sources"].push(action.payload);
+          } catch {
+            state.sources = action.payload;
+          }
         }
       )
       .addCase(RDX_createSource.rejected, (state, action) => {
@@ -119,9 +123,10 @@ export const sourceSlice = createSlice({
 
           isLoading: false,
           isSuccess: true,
-          sources: state.sources["sources"].filter((source: any) => {
-            return source._id !== action.payload.id;
-          }),
+          sources:
+            state?.sources["sources"]?.filter((source: any) => {
+              return source._id !== action.payload.id;
+            }) || [],
         };
       })
       .addCase(RDX_deleteSource.rejected, (state, action) => {
