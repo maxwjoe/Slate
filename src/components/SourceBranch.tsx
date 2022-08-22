@@ -5,12 +5,14 @@ import {BsThreeDots} from 'react-icons/bs'
 import SubSourceBranch from './SubSourceBranch'
 import Dropdown from '../components/Dropdown'
 import { IDropDownPackage } from '../interfaces/IDropDownPackage'
+import {getComponentBounds, applyShift} from '../helper/positionHelpers'
 
 interface Props {
     SourceObj : any;
 }
 
 
+// SourceBranch : Renders Source in Left Tree, has Toggle Functionality
 function SourceBranch({SourceObj} : Props) {
 
     const [open, setOpen] = useState<boolean>(false);
@@ -19,6 +21,15 @@ function SourceBranch({SourceObj} : Props) {
     // handleToggle : Handles opening and closing the source
     const handleToggle = () => {
         setOpen(!open);
+    }
+
+    const sourceLocation = getComponentBounds(SourceObj.title);
+
+    const dropDownOffset = {
+        l : applyShift(sourceLocation?.left, 175),
+        r : applyShift(sourceLocation?.right, 'auto'),
+        t : applyShift(sourceLocation?.top, 24),
+        b : applyShift(sourceLocation?.bottom, 'auto')
     }
 
     // Dropdown packages for options menu
@@ -32,7 +43,7 @@ function SourceBranch({SourceObj} : Props) {
 
   return (
     <>
-        <div className='flex relative items-center justify-between space-x-3 pr-2 pl-2 w-full h-6'>
+        <div id={SourceObj.title}  className='flex items-center relative justify-between space-x-3 pr-2 pl-2 w-full h-6'>
             <div onClick = {handleToggle} className='flex justify-start space-x-2 items-center'>
                 {open ? <AiOutlineCaretDown className='text-text-secondary text-md'/> : <AiOutlineCaretRight className='text-text-secondary text-md'/>}
                 <p className='text-md text-text-secondary cursor-default select-none'>{SourceObj.title}</p>
@@ -42,7 +53,7 @@ function SourceBranch({SourceObj} : Props) {
             
 
                 {openDropDown && 
-                    <Dropdown dropDownPackages={DropDownPackages} offset = {{l : 'auto', r : 'auto', t : 'auto', b : 'auto'}}/>
+                    <Dropdown dropDownPackages={DropDownPackages} offset = {dropDownOffset}/>
                 }
         </div>
 

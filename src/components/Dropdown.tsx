@@ -1,5 +1,6 @@
 import React from 'react'
 import {IDropDownPackage} from '../interfaces/IDropDownPackage'
+import ReactDom from 'react-dom'
 
 interface Offset {
   t : any;
@@ -16,7 +17,7 @@ interface Props {
 function Dropdown({dropDownPackages, offset} : Props) {
 
 
-  return (
+  return ReactDom.createPortal(
     <div
         style = {{top : offset.t, bottom : offset.b , left : offset.l , right : offset.r }} 
         className="flex flex-col absolute w-24 bg-[#000] rounded-md p-1 space-y-1">
@@ -26,7 +27,8 @@ function Dropdown({dropDownPackages, offset} : Props) {
                 <p className='text-text-main'>{ActionTitle}</p>
             </div>
         ))}
-    </div>
+    </div>, 
+    document.getElementById('portal')!
   )
 }
 

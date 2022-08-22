@@ -12,7 +12,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <div className='w-100vw h-100vh overflow-hidden'>
+        <App />
+      </div>
     </Provider>
   </React.StrictMode>
 );
