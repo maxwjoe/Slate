@@ -6,6 +6,7 @@ import {IoMdSettings} from 'react-icons/io'
 import {useNavigate} from 'react-router-dom'
 import {useAppSelector, useAppDispatch} from '../redux/hooks'
 import {logout, reset} from '../redux/slices/authSlice'
+import { resetAll } from '../helper/authHelper';
 
 function Profile() {
 
@@ -18,7 +19,7 @@ function Profile() {
     // ---  Drop Down Functions ---
     const logoutDropFunction = async () => {
         await dispatch(logout());
-        dispatch(reset());
+        resetAll(dispatch);
         navigate('/login');
         setOpen(false);
     }
