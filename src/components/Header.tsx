@@ -38,7 +38,7 @@ function Header() {
 
         {openCreateModal && 
             <GenericModal handleClose={() => setOpenCreateModal(false)}>
-                <CreateSource handleClose={() => setOpenCreateModal(false)} exampleLanguage={getExampleLanguage()} exampleTitle = {getExampleTitle()}/>
+                <CreateSource closeHandler={() => setOpenCreateModal(false)} exampleLanguage={getExampleLanguage()} exampleTitle = {getExampleTitle()}/>
             </GenericModal>
         }
 

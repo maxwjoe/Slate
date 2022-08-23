@@ -53,7 +53,20 @@ export const RDX_createSource = createAsyncThunk(
   }
 );
 
-// TODO: RDX_updateSource : Updates a Source
+// RDX_updateSource : Updates a Source
+export const RDX_updateSource = createAsyncThunk(
+  "sources/update",
+  async (SourceData: ISource, thunkAPI: any) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await sourceService.updateSource(SourceData, token);
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message || error?.message || error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 // RDX_deleteSource : Deletes a Source
 export const RDX_deleteSource = createAsyncThunk(
@@ -86,11 +99,7 @@ export const sourceSlice = createSlice({
         (state, action: PayloadAction<ISource>) => {
           state.isLoading = false;
           state.isSuccess = true;
-          try {
-            state.sources.push(action.payload);
-          } catch {
-            state.sources = action.payload;
-          }
+          state.sources.push(action.payload);
         }
       )
       .addCase(RDX_createSource.rejected, (state, action) => {
@@ -110,6 +119,25 @@ export const sourceSlice = createSlice({
         }
       )
       .addCase(RDX_getSources.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string;
+      })
+      .addCase(RDX_updateSource.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(
+        RDX_updateSource.fulfilled,
+        (state, action: PayloadAction<ISource>) => {
+          state.isLoading = false;
+          state.isSuccess = true;
+          const mutatedSourceIndex: number = state.sources.findIndex(
+            (source: ISource) => source._id === action.payload._id
+          );
+          state.sources[mutatedSourceIndex] = action.payload;
+        }
+      )
+      .addCase(RDX_updateSource.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string;

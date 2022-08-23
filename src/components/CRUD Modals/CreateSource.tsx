@@ -7,11 +7,11 @@ import {createSourceViewModel} from '../../viewModels/sourceViewModels'
 interface Props {
   exampleLanguage : string,
   exampleTitle : string,
-  handleClose : any,
+  closeHandler : any,
 }
 
 
-function CreateSource({handleClose, exampleLanguage, exampleTitle} : Props) {
+function CreateSource({closeHandler, exampleLanguage, exampleTitle} : Props) {
 
   const [formData, setFormData] = useState<createSourceViewModel>({
     title : '',
@@ -37,7 +37,7 @@ function CreateSource({handleClose, exampleLanguage, exampleTitle} : Props) {
       language : formData.language,
     }
     dispatch(RDX_createSource(sourceData))
-    handleClose()
+    closeHandler()
   }
 
 

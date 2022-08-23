@@ -13,10 +13,7 @@ const getSources = async (token: any) => {
 
   const response = await axios.get(API_URL, config);
 
-  const sources: ISource[] = response?.data["sources"] || [];
-
-  console.log("Source Service [GET] : ");
-  console.log(sources);
+  const sources: ISource[] = response?.data?.["sources"] || [];
   return sources;
 };
 
@@ -29,6 +26,22 @@ const createSource = async (sourceData: any, token: any) => {
   };
 
   const response = await axios.post(API_URL, sourceData, config);
+  return response.data;
+};
+
+// updateSource : Updates a source in the backend
+const updateSource = async (SourceData: ISource, token: any) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.put(
+    API_URL + SourceData._id,
+    SourceData,
+    config
+  );
   return response.data;
 };
 
@@ -47,6 +60,7 @@ const deleteSource = async (sourceId: string, token: any) => {
 const sourceService = {
   getSources,
   createSource,
+  updateSource,
   deleteSource,
 };
 

@@ -11,12 +11,10 @@ import { RDX_getSources } from '../redux/slices/sourceSlice';
 function Dashboard() {
 
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const {user} = useAppSelector((state) => state.auth);
-  const {sources, isLoading, isError, message} = useAppSelector((state) => state.sources);
-  const currSources = sources['sources'];
-  // useEffect to handle auth access and source data pull on load
+
+  // useEffect to handle auth access (Locks Dashboard)
   useEffect(() => {
     
     if(!user)
@@ -24,16 +22,9 @@ function Dashboard() {
       navigate('/login')
       return;
     }
-    
-    if(isError)
-    {
-      console.log(sources);
-      toast.error(message)
-    }
     console.log("Use Effect Fired Off")
-    dispatch(RDX_getSources());
 
-  }, [user, navigate, isError, message, dispatch])
+  }, [user, navigate])
 
   return (
     <div className='flex flex-col w-full h-full bg-slate-dark'>

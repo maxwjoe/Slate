@@ -6,10 +6,11 @@ import {ISource} from '../../interfaces/DataInterfaces'
 
 interface Props {
     SourceObj : ISource,
+    closeHandler : any,
 }
 
 
-function DeleteSource({SourceObj} : Props) {
+function DeleteSource({SourceObj, closeHandler} : Props) {
 
     const dispatch = useAppDispatch();
 
@@ -23,7 +24,7 @@ function DeleteSource({SourceObj} : Props) {
         <p className='text-text-main'>{`Are you sure you want to delete ${SourceObj?.title}?`}</p>
         <p className='text-text-main'>Hi</p>
         <button 
-                onClick={async () => {await handleDelete()}}
+                onClick={async () => {await handleDelete(); closeHandler();}}
                 className='text-text-main font-bold border-2 border-text-danger rounded-md'>Confirm</button>
     </div>
   )

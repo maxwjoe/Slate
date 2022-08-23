@@ -58,9 +58,9 @@ function SourceBranch({SourceObj} : Props) {
         switch(modalName)
         {
             case "Edit" :
-                return <EditSource SourceObj={SourceObj}/>
+                return <EditSource closeHandler = {() => setOpenModal(false)} SourceObj={SourceObj}/>
             case "Delete" :
-                return <DeleteSource SourceObj = {SourceObj}/>
+                return <DeleteSource closeHandler = {() => setOpenModal(false)} SourceObj = {SourceObj}/>
             default :
                 return null
         }
