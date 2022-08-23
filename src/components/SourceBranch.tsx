@@ -4,7 +4,6 @@ import {FiEdit} from 'react-icons/fi'
 import {AiFillDelete} from 'react-icons/ai'
 import {BsThreeDots} from 'react-icons/bs'
 import {RiArticleLine} from 'react-icons/ri'
-import SubSourceBranch from './SubSourceBranch'
 import Dropdown from '../modals/Dropdown'
 import { IDropDownPackage } from '../interfaces/IDropDownPackage'
 import {getComponentBounds, applyShift} from '../helper/positionHelpers'
@@ -14,6 +13,7 @@ import DeleteSource from './CRUD Modals/DeleteSource'
 import {IArticle, ISource} from '../interfaces/DataInterfaces'
 import CreateArticle from './CRUD Modals/CreateArticle'
 import { useAppSelector } from '../redux/hooks'
+import ArticleBranch from './ArticleBranch'
 
 
 interface Props {
@@ -77,9 +77,9 @@ function SourceBranch({SourceObj} : Props) {
 
   return (
     <>
-        <div id={SourceObj.title}  className='flex items-center relative justify-between space-x-3 pr-2 pl-2 w-full h-6'>
+        <div id={SourceObj.title}  className='flex items-center relative justify-between space-x-3 pr-2 pl-2 w-full h-8 rounded-md hover:bg-slate-lightdark'>
             <div onClick = {handleToggle} className='flex justify-start space-x-2 items-center'>
-                {open ? <AiOutlineCaretDown className='text-text-secondary text-md'/> : <AiOutlineCaretRight className='text-text-secondary text-md'/>}
+                {open ? <AiOutlineCaretDown className='text-text-secondary text-md cursor-pointer'/> : <AiOutlineCaretRight className='text-text-secondary text-md cursor-pointer'/>}
                 <p className='text-md text-text-secondary cursor-default select-none'>{SourceObj.title}</p>
             </div>
 
@@ -101,7 +101,7 @@ function SourceBranch({SourceObj} : Props) {
     {open && 
         <div className='flex flex-col space-y-3 items-end justify-center w-full'>
             {SourceArticles.map((article : IArticle, index : number) => {
-                return <SubSourceBranch key = {index} ArticleObj = {article}/>
+                return <ArticleBranch key = {index} ArticleObj = {article}/>
             })}
         </div>
     }

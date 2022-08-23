@@ -18,3 +18,13 @@ export interface IArticle {
   createdAt: string;
   __v: number;
 }
+
+export interface IList {
+  _id: string;
+  source: string;
+  user: string;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+  __v: number;
+}

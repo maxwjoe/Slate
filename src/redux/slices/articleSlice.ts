@@ -53,6 +53,36 @@ export const RDX_createArticle = createAsyncThunk(
   }
 );
 
+// RDX_updateArticle : Updates an Article
+export const RDX_updateArticle = createAsyncThunk(
+  "articles/update",
+  async (ArticleData: IArticle, thunkAPI: any) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await articleService.updateArticle(ArticleData, token);
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message || error?.message || error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// RDX_deleteArticle : Deletes an Article
+export const RDX_deleteArticle = createAsyncThunk(
+  "articles/delete",
+  async (id: string, thunkAPI: any) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await articleService.deleteArticle(id, token);
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message || error?.message || error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const articleSlice = createSlice({
   name: "article",
   initialState,
@@ -90,6 +120,40 @@ export const articleSlice = createSlice({
         }
       )
       .addCase(RDX_createArticle.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string;
+      })
+      .addCase(RDX_updateArticle.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(
+        RDX_updateArticle.fulfilled,
+        (state, action: PayloadAction<IArticle>) => {
+          state.isLoading = false;
+          state.isSuccess = true;
+          const mutatedSourceIndex: number = state.articles.findIndex(
+            (article: IArticle) => article._id === action.payload._id
+          );
+          state.articles[mutatedSourceIndex] = action.payload;
+        }
+      )
+      .addCase(RDX_updateArticle.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string;
+      })
+      .addCase(RDX_deleteArticle.pending, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(RDX_deleteArticle.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.articles = state.articles.filter(
+          (source: IArticle) => source._id !== action.payload.id
+        );
+      })
+      .addCase(RDX_deleteArticle.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string;
