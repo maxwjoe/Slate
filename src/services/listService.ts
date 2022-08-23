@@ -12,7 +12,7 @@ const getLists = async (token: any) => {
   };
 
   const response = await axios.get(API_URL, config);
-  const Lists: IList[] = response?.data?.["Lists"] || [];
+  const Lists: IList[] = response?.data?.["lists"] || [];
   return Lists;
 };
 

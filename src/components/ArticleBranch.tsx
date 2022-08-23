@@ -8,6 +8,8 @@ import { IDropDownPackage } from '../interfaces/IDropDownPackage'
 import { applyShift, getComponentBounds } from '../helper/positionHelpers'
 import GenericModal from '../modals/GenericModal'
 import DeleteArticle from './CRUD Modals/DeleteArticle'
+import { useAppDispatch } from '../redux/hooks'
+import {setSelectedArticle} from '../redux/slices/applicationSlice'
 
 interface Props {
   ArticleObj : IArticle;
@@ -20,9 +22,17 @@ function ArticleBranch({ArticleObj} : Props) {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [selectedModal, setSelectedModal] = useState<string>("None");
 
+  const dispatch = useAppDispatch();
+
+  // handleDropdownDelete : Passed to dropdown menu to handle modal logic
   const handleDropdownDelete = () => {
     setOpenDropDown(false);
     setOpenModal(true);
+  }
+
+  // handleSelect : Handles selecting the article (When the user clicks on it)
+  const handleSelect = () => {
+    dispatch(setSelectedArticle(ArticleObj));
   }
   
   const dropDownPackage : IDropDownPackage[] = [
@@ -52,7 +62,7 @@ function ArticleBranch({ArticleObj} : Props) {
 
   return (
     <div id={ArticleObj.title} className='flex items-center justify-start w-full h-8 pr-2 pl-8 hover:bg-slate-lightdark rounded-md'>
-        <div className='flex grow justify-start space-x-1 items-center cursor-pointer'>
+        <div onClick = {handleSelect} className='flex grow justify-start space-x-1 items-center cursor-pointer'>
             <RiArticleLine className='text-text-secondary text-md'/>
             <p className='text-md text-text-secondary select-none'>{ArticleObj?.title}</p>
         </div>

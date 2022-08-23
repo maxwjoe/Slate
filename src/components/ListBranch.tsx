@@ -9,6 +9,8 @@ import { applyShift, getComponentBounds } from '../helper/positionHelpers'
 import GenericModal from '../modals/GenericModal'
 import DeleteArticle from './CRUD Modals/DeleteArticle'
 import DeleteList from './CRUD Modals/DeleteList'
+import {setSelectedList} from '../redux/slices/applicationSlice'
+import { useAppDispatch } from '../redux/hooks'
 
 interface Props {
   ListObj : IList;
@@ -21,10 +23,18 @@ function ListBranch({ListObj} : Props) {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [selectedModal, setSelectedModal] = useState<string>("None");
 
+  const dispatch = useAppDispatch();
+
+  // handleDropdownDelete : Passed to dropdown menu to handle modal logic
   const handleDropdownDelete = () => {
     setOpenDropDown(false);
     setOpenModal(true);
   }
+
+    // handleSelect : Handles selecting the article (When the user clicks on it)
+    const handleSelect = () => {
+      dispatch(setSelectedList(ListObj));
+    }
   
   const dropDownPackage : IDropDownPackage[] = [
     {Icon : AiFillDelete, ActionTitle : `Delete "${ListObj.title}"`, ActionFunction : handleDropdownDelete}
@@ -53,7 +63,7 @@ function ListBranch({ListObj} : Props) {
 
   return (
     <div id={ListObj.title} className='flex items-center justify-start w-full h-8 pr-2 pl-8 hover:bg-slate-lightdark rounded-md'>
-        <div className='flex grow justify-start space-x-1 items-center cursor-pointer'>
+        <div onClick = {handleSelect} className='flex grow justify-start space-x-1 items-center cursor-pointer'>
             <RiListCheck2 className='text-text-secondary text-md'/>
             <p className='text-md grow text-text-secondary select-none overflow-hidden'>{ListObj?.title}</p>
         </div>

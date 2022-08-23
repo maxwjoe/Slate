@@ -3,6 +3,7 @@ import authReducer from "./slices/authSlice";
 import sourceReducer from "./slices/sourceSlice";
 import articleReducer from "./slices/articleSlice";
 import listReducer from "./slices/listSlice";
+import applicationReducer from "./slices/applicationSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     sources: sourceReducer,
     articles: articleReducer,
     lists: listReducer,
+    applicationState: applicationReducer,
   },
 });
 

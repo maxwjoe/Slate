@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { RDX_getSources } from '../redux/slices/sourceSlice';
 import { RDX_getArticles } from '../redux/slices/articleSlice';
+import { RDX_getLists } from '../redux/slices/listSlice';
 
 
 // LeftTree : Renders the left hand panel of the UI
@@ -17,6 +18,7 @@ function LeftTree() {
   const {user} = useAppSelector((state) => state.auth);
   const sourceState = useAppSelector((state) => state.sources)
   const articleState = useAppSelector((state) => state.articles);
+  const listState = useAppSelector((state) => state.lists);
   // useEffect to handle auth access and source data pull on load
   useEffect(() => {
     
@@ -28,12 +30,13 @@ function LeftTree() {
     
     if(sourceState.isError || articleState.isError)
     {
-      console.log(sourceState.sources || articleState.articles);
-      toast.error(sourceState.message || articleState.message);
+      console.log(sourceState?.sources || articleState?.articles || listState?.lists);
+      toast.error(sourceState?.message || articleState?.message || listState?.message);
     }
     console.log("Use Effect Fired Off")
     dispatch(RDX_getSources());
     dispatch(RDX_getArticles());
+    dispatch(RDX_getLists());
 
   }, [user,
      navigate, 
