@@ -3,17 +3,19 @@ import {AiOutlineCaretDown, AiOutlineCaretRight} from 'react-icons/ai'
 import {FiEdit} from 'react-icons/fi'
 import {AiFillDelete} from 'react-icons/ai'
 import {BsThreeDots} from 'react-icons/bs'
-import {RiArticleLine} from 'react-icons/ri'
+import {RiArticleLine, RiListCheck2} from 'react-icons/ri'
 import Dropdown from '../modals/Dropdown'
 import { IDropDownPackage } from '../interfaces/IDropDownPackage'
 import {getComponentBounds, applyShift} from '../helper/positionHelpers'
 import GenericModal from '../modals/GenericModal'
 import EditSource from './CRUD Modals/EditSource'
 import DeleteSource from './CRUD Modals/DeleteSource'
-import {IArticle, ISource} from '../interfaces/DataInterfaces'
+import {IArticle, IList, ISource} from '../interfaces/DataInterfaces'
 import CreateArticle from './CRUD Modals/CreateArticle'
+import CreateList from './CRUD Modals/CreateList'
 import { useAppSelector } from '../redux/hooks'
 import ArticleBranch from './ArticleBranch'
+import ListBranch from './ListBranch'
 
 
 interface Props {
@@ -29,8 +31,8 @@ function SourceBranch({SourceObj} : Props) {
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [selectedModal, setSelectedModal] = useState<string>("None");
 
-    const SourceArticles = useAppSelector((state) => state.articles).articles.filter((article : IArticle) => article.source === SourceObj._id);
-
+    const SourceArticles = useAppSelector((state) => state.articles.articles).filter((article : IArticle) => article.source === SourceObj._id);
+    const SourceLists = useAppSelector((state) => state.lists.lists).filter((list :IList) => list.source === SourceObj._id);
 
     // handleToggle : Handles opening and closing the source
     const handleToggle = () => {
@@ -56,7 +58,8 @@ function SourceBranch({SourceObj} : Props) {
     const DropDownPackages : IDropDownPackage[] = [
         {Icon : FiEdit, ActionTitle : "Edit", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Edit") }},
         {Icon : AiFillDelete, ActionTitle : "Delete", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Delete")}},
-        {Icon : RiArticleLine, ActionTitle : "New Article", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Add Article")}}
+        {Icon : RiArticleLine, ActionTitle : "New Article", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Add Article")}},
+        {Icon : RiListCheck2, ActionTitle : "New Vocab List", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Add List")}},
     ]
 
     // renderCRUDModal : Return correct CRUD Modal (Could Make this generic and import it ? )
@@ -69,6 +72,8 @@ function SourceBranch({SourceObj} : Props) {
                 return <DeleteSource closeHandler = {() => setOpenModal(false)} SourceObj = {SourceObj}/>
             case "Add Article" : 
                 return <CreateArticle closeHandler = {() => setOpenModal(false)} SourceId = {SourceObj._id}/>
+            case "Add List":
+                return <CreateList closeHandler = {() => setOpenModal(false)} SourceId = {SourceObj._id}/>
             default :
                 return null
         }
@@ -102,6 +107,9 @@ function SourceBranch({SourceObj} : Props) {
         <div className='flex flex-col space-y-3 items-end justify-center w-full'>
             {SourceArticles.map((article : IArticle, index : number) => {
                 return <ArticleBranch key = {index} ArticleObj = {article}/>
+            })}
+            {SourceLists.map((list : IList, index : number) => {
+                return <ListBranch key = {index} ListObj = {list}/>
             })}
         </div>
     }
