@@ -3,6 +3,7 @@ import {AiOutlineCaretDown, AiOutlineCaretRight} from 'react-icons/ai'
 import {FiEdit} from 'react-icons/fi'
 import {AiFillDelete} from 'react-icons/ai'
 import {BsThreeDots} from 'react-icons/bs'
+import {RiArticleLine} from 'react-icons/ri'
 import SubSourceBranch from './SubSourceBranch'
 import Dropdown from '../modals/Dropdown'
 import { IDropDownPackage } from '../interfaces/IDropDownPackage'
@@ -10,7 +11,9 @@ import {getComponentBounds, applyShift} from '../helper/positionHelpers'
 import GenericModal from '../modals/GenericModal'
 import EditSource from './CRUD Modals/EditSource'
 import DeleteSource from './CRUD Modals/DeleteSource'
-import {ISource} from '../interfaces/DataInterfaces'
+import {IArticle, ISource} from '../interfaces/DataInterfaces'
+import CreateArticle from './CRUD Modals/CreateArticle'
+import { useAppSelector } from '../redux/hooks'
 
 
 interface Props {
@@ -25,6 +28,8 @@ function SourceBranch({SourceObj} : Props) {
     const [openDropDown, setOpenDropDown] = useState<boolean>(false);
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [selectedModal, setSelectedModal] = useState<string>("None");
+
+    const SourceArticles = useAppSelector((state) => state.articles).articles.filter((article : IArticle) => article.source === SourceObj._id);
 
 
     // handleToggle : Handles opening and closing the source
@@ -51,6 +56,7 @@ function SourceBranch({SourceObj} : Props) {
     const DropDownPackages : IDropDownPackage[] = [
         {Icon : FiEdit, ActionTitle : "Edit", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Edit") }},
         {Icon : AiFillDelete, ActionTitle : "Delete", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Delete")}},
+        {Icon : RiArticleLine, ActionTitle : "New Article", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Add Article")}}
     ]
 
     // renderCRUDModal : Return correct CRUD Modal (Could Make this generic and import it ? )
@@ -61,6 +67,8 @@ function SourceBranch({SourceObj} : Props) {
                 return <EditSource closeHandler = {() => setOpenModal(false)} SourceObj={SourceObj}/>
             case "Delete" :
                 return <DeleteSource closeHandler = {() => setOpenModal(false)} SourceObj = {SourceObj}/>
+            case "Add Article" : 
+                return <CreateArticle closeHandler = {() => setOpenModal(false)} SourceId = {SourceObj._id}/>
             default :
                 return null
         }
@@ -92,10 +100,9 @@ function SourceBranch({SourceObj} : Props) {
 
     {open && 
         <div className='flex flex-col space-y-3 items-end justify-center w-full'>
-            <SubSourceBranch/>
-            <SubSourceBranch/>
-            <SubSourceBranch/>
-            <SubSourceBranch/>
+            {SourceArticles.map((article : IArticle, index : number) => {
+                return <SubSourceBranch key = {index} ArticleObj = {article}/>
+            })}
         </div>
     }
     </>

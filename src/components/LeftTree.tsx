@@ -5,6 +5,7 @@ import { ISource } from '../interfaces/DataInterfaces';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { RDX_getSources } from '../redux/slices/sourceSlice';
+import { RDX_getArticles } from '../redux/slices/articleSlice';
 
 
 // LeftTree : Renders the left hand panel of the UI
@@ -14,7 +15,8 @@ function LeftTree() {
   const dispatch = useAppDispatch();
 
   const {user} = useAppSelector((state) => state.auth);
-  const {sources, isLoading, isError, message} = useAppSelector((state) => state.sources)
+  const sourceState = useAppSelector((state) => state.sources)
+  const articleState = useAppSelector((state) => state.articles);
   // useEffect to handle auth access and source data pull on load
   useEffect(() => {
     
@@ -24,15 +26,22 @@ function LeftTree() {
       return;
     }
     
-    if(isError)
+    if(sourceState.isError || articleState.isError)
     {
-      console.log(sources);
-      toast.error(message)
+      console.log(sourceState.sources || articleState.articles);
+      toast.error(sourceState.message || articleState.message);
     }
     console.log("Use Effect Fired Off")
     dispatch(RDX_getSources());
+    dispatch(RDX_getArticles());
 
-  }, [user, navigate, isError,  message, dispatch])
+  }, [user,
+     navigate, 
+     sourceState.isError, 
+     articleState.isError, 
+     articleState.message, 
+     sourceState.message, 
+     dispatch])
 
 
   return (
@@ -43,8 +52,8 @@ function LeftTree() {
         >
 
           {
-            sources?.length ? 
-              sources?.map((source : ISource, index : number) => (
+            sourceState.sources?.length ? 
+              sourceState.sources?.map((source : ISource, index : number) => (
                 <SourceBranch key = {index} SourceObj = {source}/>
               )) 
               : 

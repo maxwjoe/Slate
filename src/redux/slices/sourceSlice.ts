@@ -8,7 +8,7 @@ import { ISource } from "../../interfaces/DataInterfaces";
 import sourceService from "../../services/sourceService";
 
 interface sourceState {
-  sources: any;
+  sources: ISource[];
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
