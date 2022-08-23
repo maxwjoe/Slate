@@ -14,11 +14,7 @@ function LeftTree() {
   const dispatch = useAppDispatch();
 
   const {user} = useAppSelector((state) => state.auth);
-  const {sources, isLoading, isError, message} = useAppSelector((state) => state.sources);
-
-  //FIXME: Figure out why this happens
-  const userSources = sources['sources'] || sources;
-
+  const {sources, isLoading, isError, message} = useAppSelector((state) => state.sources)
   // useEffect to handle auth access and source data pull on load
   useEffect(() => {
     
@@ -47,8 +43,8 @@ function LeftTree() {
         >
 
           {
-            userSources?.length ? 
-              userSources?.map((source : ISource, index : number) => (
+            sources?.length ? 
+              sources?.map((source : ISource, index : number) => (
                 <SourceBranch key = {index} SourceObj = {source}/>
               )) 
               : 

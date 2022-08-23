@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ISource } from "../interfaces/DataInterfaces";
 
 const API_URL = "api/sources/";
 
@@ -11,7 +12,12 @@ const getSources = async (token: any) => {
   };
 
   const response = await axios.get(API_URL, config);
-  return response.data;
+
+  const sources: ISource[] = response?.data["sources"] || [];
+
+  console.log("Source Service [GET] : ");
+  console.log(sources);
+  return sources;
 };
 
 // createSource : Creates a source in the backend
