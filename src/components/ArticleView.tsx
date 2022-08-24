@@ -5,24 +5,24 @@ import {MdCancel} from 'react-icons/md'
 import { IArticle } from "../interfaces/DataInterfaces";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import DocPath from "./DocPath";
-import { getSourceTitleFromId } from "../helper/dataHelpers";
+import { getSourceTitleFromId, getArticleFromId } from "../helper/dataHelpers";
 import { createArticleViewModel } from "../viewModels/createArticleViewModel";
 import { RDX_updateArticle } from "../redux/slices/articleSlice";
+import { setSelectedArticle } from "../redux/slices/applicationSlice";
 
 function ArticleView() {
 
   const curArticle : IArticle = useAppSelector((state) => state.applicationState.selectedArticle) as IArticle
-  const docPath : string[] = [getSourceTitleFromId(curArticle?.source), curArticle?.title];
-  
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
   const [formData, setFormData] = useState<createArticleViewModel>({
     title : curArticle.title,
     content : curArticle.content,
     source : curArticle.source
   })
-
+  
   const dispatch = useAppDispatch();
-
+  
+  const docPath : string[] = [getSourceTitleFromId(curArticle?.source), curArticle?.title];
   const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-2xl font-bold text-text-main`
   const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-sm leading-loose text-text-main`
   
@@ -45,7 +45,9 @@ function ArticleView() {
       content : formData.content
     };
 
+    
     dispatch(RDX_updateArticle(updatedArticle));
+    dispatch(setSelectedArticle(updatedArticle));
     setEnableEdit(false);
   }
 
