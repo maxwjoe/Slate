@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IArticle } from "../interfaces/DataInterfaces";
 
-const API_URL = "api/articles/";
+const API_URL: string = "api/articles/";
 
 // getArticles: Gets all user articles from the backend
 const getArticles = async (token: any) => {

@@ -1,4 +1,4 @@
-import { IArticle, ISource } from "../interfaces/DataInterfaces";
+import { IArticle, IItem, ISource } from "../interfaces/DataInterfaces";
 import store from "../redux/store";
 
 // getSourceTitleFromId : Returns the title of a source given its ID
@@ -17,4 +17,16 @@ export const getArticleFromId = (articleId: string) => {
     if (articles[i]._id === articleId) return articles[i];
   }
   return undefined;
+};
+
+// getItemsFromListId : Returns items in a list
+export const getItemsFromListId = (listId: string) => {
+  const items: IItem[] = store.getState().items.items;
+  const listItems: IItem[] = [];
+
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].list === listId) listItems.push(items[i]);
+  }
+
+  return listItems;
 };

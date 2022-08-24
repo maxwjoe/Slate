@@ -28,3 +28,15 @@ export interface IList {
   createdAt: string;
   __v: number;
 }
+
+export interface IItem {
+  _id: string;
+  list: string;
+  user: string;
+  title: string;
+  definition: string;
+  pronunciation: string;
+  updatedAt: string;
+  createdAt: string;
+  __v: number;
+}

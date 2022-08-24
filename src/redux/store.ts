@@ -3,6 +3,7 @@ import authReducer from "./slices/authSlice";
 import sourceReducer from "./slices/sourceSlice";
 import articleReducer from "./slices/articleSlice";
 import listReducer from "./slices/listSlice";
+import itemReducer from "./slices/itemSlice";
 import applicationReducer from "./slices/applicationSlice";
 
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
     sources: sourceReducer,
     articles: articleReducer,
     lists: listReducer,
+    items: itemReducer,
     applicationState: applicationReducer,
   },
 });

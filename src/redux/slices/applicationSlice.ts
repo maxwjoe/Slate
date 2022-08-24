@@ -4,12 +4,12 @@ import {
   PayloadAction,
   createReducer,
 } from "@reduxjs/toolkit";
-import { type } from "os";
-import { IArticle, IList } from "../../interfaces/DataInterfaces";
+import { IArticle, IItem, IList } from "../../interfaces/DataInterfaces";
 
 interface applicationState {
   selectedArticle?: IArticle;
   selectedList?: IList;
+  selectedItem?: IItem;
   selectedContentType: string;
 }
 
@@ -28,6 +28,7 @@ const applicationSlice = createSlice({
         selectedContentType: "IArticle",
         selectedArticle: action.payload,
         selectedList: undefined,
+        selectedItem: undefined,
       };
     },
     setSelectedList: (state, action: PayloadAction<IList>) => {
@@ -36,11 +37,18 @@ const applicationSlice = createSlice({
         selectedContentType: "IList",
         selectedArticle: undefined,
         selectedList: action.payload,
+        selectedItem: undefined,
+      };
+    },
+    setSelectedItem: (state, action: PayloadAction<IItem>) => {
+      return {
+        ...state,
+        selectedItem: action.payload,
       };
     },
   },
 });
 
-export const { reset, setSelectedArticle, setSelectedList } =
+export const { reset, setSelectedArticle, setSelectedList, setSelectedItem } =
   applicationSlice.actions;
 export default applicationSlice.reducer;

@@ -1,9 +1,15 @@
 import React from 'react'
+import { IItem } from '../interfaces/DataInterfaces'
 
-function ListItem() {
+interface Props {
+    ItemObj : IItem;
+}
+
+function ListItem({ItemObj} : Props) {
   return (
-    <div className='flex items-center justify-center cursor-pointer text-text-main w-full h-12 bg-slate-dark rounded-md'>
-            <p className='text-lg font-bold'>Word</p>
+    <div className='flex flex-col justify-center items-start w-full h-12 bg-slate-dark hover:bg-slate-lightdark p-3'>
+        <p className='text-md text-text-secondary'>{ItemObj.title}</p>
+        <p className='text-sm text-text-secondary'>{ItemObj.definition}</p>
     </div>
   )
 }
