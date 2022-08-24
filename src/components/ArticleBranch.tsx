@@ -48,23 +48,12 @@ function ArticleBranch({ArticleObj} : Props) {
       b : applyShift(sourceLocation?.bottom, 'auto')
   }
 
-  // renderCRUDModal : Return correct CRUD Modal (Could Make this generic and import it ? )
-  const renderCRUDModal = (modalName : string) => {
-    switch(modalName)
-    {
-        case "Delete" :
-            return null
-        default :
-            return null
-    }
-}  
-
 
   return (
-    <div id={ArticleObj.title} className='flex items-center justify-start w-full h-8 pr-2 pl-8 hover:bg-slate-lightdark rounded-md'>
+    <div id={ArticleObj.title} className='flex items-center justify-start w-full h-8 pr-2 pl-8 hover:bg-slate-lightdark rounded-md whitespace-nowrap overflow-hidden'>
         <div onClick = {handleSelect} className='flex grow justify-start space-x-1 items-center cursor-pointer'>
             <RiArticleLine className='text-text-secondary text-md'/>
-            <p className='text-md text-text-secondary select-none'>{ArticleObj?.title}</p>
+            <p className='text-md text-text-secondary select-none max-w-[90px] overflow-hidden whitespace-nowrap'>{ArticleObj?.title}</p>
         </div>
         <BsThreeDots onClick = {() => setOpenDropDown(true)} className='text-text-secondary hover:text-text-danger cursor-pointer text-md'/>
 
