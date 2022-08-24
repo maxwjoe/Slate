@@ -3,7 +3,6 @@ import { IItem, IList } from '../interfaces/DataInterfaces'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
 import {BsSearch} from 'react-icons/bs'
 import {IoMdAdd} from 'react-icons/io'
-import ItemDefinitionView from './ItemDefinitionView'
 import { RDX_getItems, RDX_updateItem } from '../redux/slices/itemSlice'
 import GenericModal from '../modals/GenericModal'
 import CreateItem from './CRUD Modals/CreateItem'
@@ -20,14 +19,23 @@ import { reset as resetApplicationState } from '../redux/slices/applicationSlice
 function ListView() {
 
   const curList : IList = useAppSelector((state) => state.applicationState.selectedList) as IList;
-  const curListItems : IItem[] = getItemsFromListId(curList?._id);
+  const [curListItems, setCurListItems] = useState<IItem[]>([]);
   const curItem : IItem = useAppSelector((state) => state.applicationState.selectedItem) as IItem;
   const dispatch = useAppDispatch();
 
-  if(!curItem)
-  {
-    dispatch(setSelectedItem(curListItems?.[0]));
-  }
+  useEffect(() => {
+    
+    // Get the list items when the selected list changes
+    setCurListItems(getItemsFromListId(curList?._id));
+    
+    // Reflect the change by updating the form data with the new selected item
+    setFormData({
+      title : curItem?.title as string,
+      definition : curItem?.definition as string,
+      pronunciation : curItem?.pronunciation as string,
+      list : curList._id
+    })
+  }, [curList, curItem])
 
   const [createItemModal, setCreateItemModal] = useState<boolean>(false);
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
@@ -40,8 +48,6 @@ function ListView() {
     list : curList._id
   })
 
-  console.log(formData)
-
 
   const docPath : string[] = ["test", "test", "test"];
   const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-2xl font-bold text-text-main`
@@ -49,9 +55,10 @@ function ListView() {
   
 
 
-  // onAdd : Handles user clicking add item
+  // onAdd : Handles user confirming add item (passed to createItemModal)
   const onAdd = () => {
-
+      setCurListItems(getItemsFromListId(curList?._id));
+      setCreateItemModal(false);
   }
 
   // onChange : Handles input change and updates formData
@@ -63,7 +70,7 @@ function ListView() {
   }
 
   // onEditSubmit : Handles submitting the form (Edit)
-  const onEditSubmit = (e : any) => {
+  const onEditSubmit = async (e : any) => {
     e.preventDefault();
 
     // Create new Item
@@ -74,9 +81,9 @@ function ListView() {
       pronunciation : formData.pronunciation
     };
 
-    
-    dispatch(RDX_updateItem(updatedItem));
+    await dispatch(RDX_updateItem(updatedItem));
     dispatch(setSelectedItem(updatedItem));
+    setCurListItems(getItemsFromListId(curList._id));
     setEnableEdit(false);
   }
 
@@ -97,11 +104,7 @@ function ListView() {
     dispatch(resetApplicationState())
   }
 
-  useEffect(() => {
-
-    dispatch(RDX_getItems())
-
-  }, [curList])
+  
 
   return (
     <div className="flex w-full h-full">
@@ -160,38 +163,45 @@ function ListView() {
       <div className="flex flex-row w-full h-full bg-slate-dark pl-5 pr-5 pt-2 ">
         
         {/* Main Panel (Content) */}
-        <div className="flex flex-col grow pr-6">
+        {curItem ? 
+        (
 
-          <div className="w-full h-12">
-            <input 
-                  type="text" 
-                  name="title"
-                  disabled={!enableEdit}
-                  onChange = {onChange}
-                  className = {titleClass}
-                  value={"Word"} />
-          </div>
-          <div className='w-full h-12'>
-            <input 
-                  type="text" 
-                  name="title"
-                  disabled={!enableEdit}
-                  onChange = {onChange}
-                  className = {contentClass}
-                  value={"Pronunciation"} />
-          </div>
+          <div className="flex flex-col grow pr-6">
 
-          <div className="w-full grow max-h-[75vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark">
-            <textarea 
-                    name="content"
-                    disabled = {!enableEdit}
+            <div className="w-full h-12">
+              <input 
+                    type="text" 
+                    name="title"
+                    disabled={!enableEdit}
                     onChange = {onChange}
-                    className={contentClass}
-                    value={"Definition"}
-            />
-          </div>
+                    className = {titleClass}
+                    value={formData?.title} />
+            </div>
+            <div className='w-full h-12'>
+              <input 
+                    type="text" 
+                    name="definition"
+                    disabled={!enableEdit}
+                    onChange = {onChange}
+                    className = {contentClass}
+                    value={formData?.definition} />
+            </div>
 
-        </div>
+            <div className="w-full grow max-h-[75vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark">
+              <textarea 
+                      name="pronunciation"
+                      disabled = {!enableEdit}
+                      onChange = {onChange}
+                      className={contentClass}
+                      value={formData?.pronunciation}
+              />
+            </div>
+
+          </div>
+        ) : 
+        (
+          <div>No Item</div>
+        )}
 
         </div>
 
@@ -201,7 +211,7 @@ function ListView() {
       {
         createItemModal && 
         <GenericModal handleClose = {() => setCreateItemModal(false)}>
-          <CreateItem closeHandler={() => setCreateItemModal(false)} list = {curList}/>
+          <CreateItem closeHandler={onAdd} list = {curList}/>
         </GenericModal>
       }
 

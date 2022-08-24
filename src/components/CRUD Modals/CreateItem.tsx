@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { IList } from '../../interfaces/DataInterfaces';
 import { useAppDispatch } from '../../redux/hooks';
-import { setSelectedList } from '../../redux/slices/applicationSlice';
-import { RDX_createItem } from '../../redux/slices/itemSlice';
+import { setSelectedItem, setSelectedList } from '../../redux/slices/applicationSlice';
+import { RDX_createItem, RDX_getItems } from '../../redux/slices/itemSlice';
 import { createItemViewModel } from '../../viewModels/createItemViewModel';
 
 interface Props {
@@ -30,11 +30,10 @@ function CreateItem({closeHandler, list} : Props) {
         }))
       }
         // onSubmit : Handles login form submission
-      const onSubmit = (e : any) => {
+      const onSubmit = async (e : any) => {
         e.preventDefault();
     
-        dispatch(RDX_createItem(formData))
-        dispatch(setSelectedList(list));
+        await dispatch(RDX_createItem(formData))
         closeHandler()
       }
 

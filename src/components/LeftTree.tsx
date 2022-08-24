@@ -9,6 +9,7 @@ import { RDX_getArticles } from '../redux/slices/articleSlice';
 import { RDX_getLists } from '../redux/slices/listSlice';
 import Profile from './Profile';
 import Header from './Header';
+import { RDX_getItems } from '../redux/slices/itemSlice';
 
 
 // LeftTree : Renders the left hand panel of the UI
@@ -21,6 +22,7 @@ function LeftTree() {
   const sourceState = useAppSelector((state) => state.sources)
   const articleState = useAppSelector((state) => state.articles);
   const listState = useAppSelector((state) => state.lists);
+  const itemState = useAppSelector((state) => state.items);
   // useEffect to handle auth access and source data pull on load
   useEffect(() => {
     
@@ -30,15 +32,16 @@ function LeftTree() {
       return;
     }
     
-    if(sourceState.isError || articleState.isError)
+    if(sourceState.isError || articleState.isError || itemState.isError)
     {
-      console.log(sourceState?.sources || articleState?.articles || listState?.lists);
-      toast.error(sourceState?.message || articleState?.message || listState?.message);
+      console.log(sourceState?.sources || articleState?.articles || listState?.lists || itemState?.items);
+      toast.error(sourceState?.message || articleState?.message || listState?.message || itemState?.message);
     }
     console.log("Use Effect Fired Off")
     dispatch(RDX_getSources());
     dispatch(RDX_getArticles());
     dispatch(RDX_getLists());
+    dispatch(RDX_getItems());
 
   }, [user,
      navigate, 
