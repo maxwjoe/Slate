@@ -4,25 +4,97 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks'
 import {BsSearch} from 'react-icons/bs'
 import {IoMdAdd} from 'react-icons/io'
 import ItemDefinitionView from './ItemDefinitionView'
-import { RDX_getItems } from '../redux/slices/itemSlice'
+import { RDX_getItems, RDX_updateItem } from '../redux/slices/itemSlice'
 import GenericModal from '../modals/GenericModal'
 import CreateItem from './CRUD Modals/CreateItem'
 import ListItem from './ListItem'
 import { getItemsFromListId } from '../helper/dataHelpers'
 import { setSelectedItem } from '../redux/slices/applicationSlice'
+import DocPath from './DocPath'
+import { AiFillDelete, AiFillSave } from 'react-icons/ai'
+import { MdCancel } from 'react-icons/md'
+import { FiEdit } from 'react-icons/fi'
+import { createItemViewModel } from '../viewModels/createItemViewModel'
+import { reset as resetApplicationState } from '../redux/slices/applicationSlice'
 
 function ListView() {
 
   const curList : IList = useAppSelector((state) => state.applicationState.selectedList) as IList;
   const curListItems : IItem[] = getItemsFromListId(curList?._id);
+  const curItem : IItem = useAppSelector((state) => state.applicationState.selectedItem) as IItem;
+  const dispatch = useAppDispatch();
+
+  if(!curItem)
+  {
+    dispatch(setSelectedItem(curListItems?.[0]));
+  }
 
   const [createItemModal, setCreateItemModal] = useState<boolean>(false);
+  const [enableEdit, setEnableEdit] = useState<boolean>(false);
+  const [deleteItemModal, setDeleteItemModal] = useState<boolean>(false);
 
-  const dispatch = useAppDispatch();
+  const [formData, setFormData] = useState<createItemViewModel>({
+    title : curItem?.title as string,
+    definition : curItem?.definition as string,
+    pronunciation : curItem?.pronunciation as string,
+    list : curList._id
+  })
+
+  console.log(formData)
+
+
+  const docPath : string[] = ["test", "test", "test"];
+  const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-2xl font-bold text-text-main`
+  const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-sm leading-loose text-text-main`
+  
+
 
   // onAdd : Handles user clicking add item
   const onAdd = () => {
 
+  }
+
+  // onChange : Handles input change and updates formData
+  const onChange = (e : any) => {
+    setFormData((prevState : createItemViewModel) => ({
+      ...prevState,
+      [e.target.name] : e.target.value
+    }))
+  }
+
+  // onEditSubmit : Handles submitting the form (Edit)
+  const onEditSubmit = (e : any) => {
+    e.preventDefault();
+
+    // Create new Item
+    const updatedItem : IItem= {
+      ...curItem,
+      title : formData.title,
+      definition : formData.definition,
+      pronunciation : formData.pronunciation
+    };
+
+    
+    dispatch(RDX_updateItem(updatedItem));
+    dispatch(setSelectedItem(updatedItem));
+    setEnableEdit(false);
+  }
+
+  // onCancel : Handles the user pressing cancel when editing 
+  const onCancel = () => {
+    setFormData((prevState : createItemViewModel) => ({
+      ...prevState,
+      title : curItem.title,
+      definition : curItem.definition,
+      pronunciation : curItem.pronunciation,
+    }))
+    setEnableEdit(false);
+  }
+
+  // onDelete : Handles the user pressing confirm delete
+  const onDelete = () => {
+    setDeleteItemModal(false);
+    dispatch(resetApplicationState())
   }
 
   useEffect(() => {
@@ -67,9 +139,64 @@ function ListView() {
 
       </div>
 
-      <div className='flex grow bg-text-danger'>
+      <div className='flex grow'>
+        <div className="flex flex-col w-full h-full">
+        <div className="flex w-full h-12">
+          <DocPath Path={docPath}/>
+          <div className="flex items-center justify-end space-x-3 pr-6 h-full w-1/2">
+            {enableEdit ? 
+            <>
+            <AiFillSave onClick = {onEditSubmit} className="text-lg text-text-secondary cursor-pointer hover:text-[#9fb0e7]"/>
+            <MdCancel onClick = {onCancel} className="text-lg text-text-secondary cursor-pointer hover:text-text-danger"/>
+            </>
+            : 
+            <>
+            <FiEdit onClick = {() => setEnableEdit(true)} className="text-lg text-text-secondary cursor-pointer hover:text-[#9fb0e7]"/>
+              <AiFillDelete onClick = {() => setDeleteItemModal(true)} className="text-lg text-text-secondary cursor-pointer hover:text-text-danger"/>
+            </>
+            }
+          </div>
+        </div>
+      <div className="flex flex-row w-full h-full bg-slate-dark pl-5 pr-5 pt-2 ">
+        
+        {/* Main Panel (Content) */}
+        <div className="flex flex-col grow pr-6">
+
+          <div className="w-full h-12">
+            <input 
+                  type="text" 
+                  name="title"
+                  disabled={!enableEdit}
+                  onChange = {onChange}
+                  className = {titleClass}
+                  value={"Word"} />
+          </div>
+          <div className='w-full h-12'>
+            <input 
+                  type="text" 
+                  name="title"
+                  disabled={!enableEdit}
+                  onChange = {onChange}
+                  className = {contentClass}
+                  value={"Pronunciation"} />
+          </div>
+
+          <div className="w-full grow max-h-[75vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark">
+            <textarea 
+                    name="content"
+                    disabled = {!enableEdit}
+                    onChange = {onChange}
+                    className={contentClass}
+                    value={"Definition"}
+            />
+          </div>
+
+        </div>
+
+        </div>
 
       </div>
+    </div>
 
       {
         createItemModal && 

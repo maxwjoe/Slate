@@ -4,6 +4,7 @@ import {
   PayloadAction,
   createReducer,
 } from "@reduxjs/toolkit";
+import { getItemsFromListId } from "../../helper/dataHelpers";
 import { IArticle, IItem, IList } from "../../interfaces/DataInterfaces";
 
 interface applicationState {
