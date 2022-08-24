@@ -19,7 +19,7 @@ function Header() {
                 <IoMdAdd onClick={() => setOpenCreateModal(true)} className='text-text-main text-xl'/>
             </div>
         </div>
-        <div className='flex grow flex-row items-center h-full bg-red-400'> 
+        {/* <div className='flex grow flex-row items-center h-full bg-red-400'> 
             <div className='flex justify-center items-center grow h-full'>
                 <div className='flex flex-row justify-start pl-3 pr-3 items-center bg-slate-black rounded-md w-[60%] h-[70%]'>
                 <div className='flex items-center justify-center w-[5%] h-full'>
@@ -31,10 +31,7 @@ function Header() {
                     placeholder='Search'/>
                 </div>
             </div>
-            <div className='w-16 h-full flex items-center justify-center'>
-                <Profile/>
-            </div>
-        </div>
+        </div> */}
 
         {openCreateModal && 
             <GenericModal handleClose={() => setOpenCreateModal(false)}>

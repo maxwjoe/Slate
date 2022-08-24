@@ -13,6 +13,7 @@ function Dashboard() {
   const navigate = useNavigate();
 
   const {user} = useAppSelector((state) => state.auth);
+  const selectedContentType = useAppSelector((state) => state.applicationState.selectedContentType);
 
   // useEffect to handle auth access (Locks Dashboard)
   useEffect(() => {
@@ -26,12 +27,30 @@ function Dashboard() {
 
   }, [user, navigate])
 
+  // renderMainView : Renders the main view based on selected content type
+  const renderMainView = (selectionType : string) => {
+    switch(selectionType)
+    {
+      case "IArticle":
+        return <ArticleView/>
+      case "IList":
+        return <ListView/>
+      default :
+      return ( 
+        <>
+        <div className='flex items-center justify-center bg-slate-lightdark w-full h-full'>
+          <p className='text-2xl font-bold text-text-main'>No Content Selected</p>
+        </div>
+        </>
+      )
+    }
+  }
+
   return (
     <div className='flex flex-col w-full h-full bg-slate-dark'>
-      <Header/>
       <div className='flex flex-row grow bg-slate-dark'>
         <LeftTree/>
-        {/* <ListView/> */}
+        {renderMainView(selectedContentType)} 
       </div>
     </div>
   )

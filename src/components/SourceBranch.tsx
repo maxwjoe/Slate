@@ -82,7 +82,7 @@ function SourceBranch({SourceObj} : Props) {
 
   return (
     <>
-        <div id={SourceObj.title}  className='flex items-center relative justify-between space-x-3 pr-2 pl-2 w-full h-8 rounded-md hover:bg-slate-lightdark'>
+        <div id={SourceObj.title}  className='flex items-center relative justify-between space-x-3 pr-2 pl-2 w-full h-[32px] min-h-[32px] rounded-md hover:bg-slate-lightdark'>
             <div onClick = {handleToggle} className='flex justify-start space-x-2 items-center'>
                 {open ? <AiOutlineCaretDown className='text-text-secondary text-md cursor-pointer'/> : <AiOutlineCaretRight className='text-text-secondary text-md cursor-pointer'/>}
                 <p className='text-md text-text-secondary cursor-default select-none'>{SourceObj.title}</p>

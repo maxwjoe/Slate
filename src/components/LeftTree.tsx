@@ -7,6 +7,8 @@ import toast from 'react-hot-toast';
 import { RDX_getSources } from '../redux/slices/sourceSlice';
 import { RDX_getArticles } from '../redux/slices/articleSlice';
 import { RDX_getLists } from '../redux/slices/listSlice';
+import Profile from './Profile';
+import Header from './Header';
 
 
 // LeftTree : Renders the left hand panel of the UI
@@ -48,10 +50,11 @@ function LeftTree() {
 
 
   return (
-    <div className='min-w-[215px] bg-slate-super-dark h-full'>
+    <div className='flex flex-col justify-between min-w-[215px] bg-slate-super-dark h-[100vh]'>
+        <Header/>
         <div 
             style={{scrollbarGutter : 'auto'}}
-            className='flex flex-col w-full min-h-[80vh] max-h-[85vh] overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark space-y-3 p-3'
+            className='flex flex-col w-full max-h-[80vh] overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark space-y-3 p-3'
         >
 
           {
@@ -68,6 +71,11 @@ function LeftTree() {
           }
        
      
+        </div>
+        <div className='flex w-full grow justify-end items-end'>
+          <div className='flex w-full h-12'>
+            <Profile/>
+          </div>
         </div>
     </div>
   )
