@@ -8,12 +8,15 @@ import DocPath from "./DocPath";
 import { getSourceTitleFromId, getArticleFromId } from "../helper/dataHelpers";
 import { createArticleViewModel } from "../viewModels/createArticleViewModel";
 import { RDX_updateArticle } from "../redux/slices/articleSlice";
-import { setSelectedArticle } from "../redux/slices/applicationSlice";
+import { reset as resetApplicationState, setSelectedArticle } from "../redux/slices/applicationSlice";
+import GenericModal from "../modals/GenericModal";
+import DeleteArticle from "./CRUD Modals/DeleteArticle";
 
 function ArticleView() {
 
   const curArticle : IArticle = useAppSelector((state) => state.applicationState.selectedArticle) as IArticle
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [formData, setFormData] = useState<createArticleViewModel>({
     title : curArticle.title,
     content : curArticle.content,
@@ -61,6 +64,12 @@ function ArticleView() {
     setEnableEdit(false);
   }
 
+  // onDelete : Handles the user pressing confirm delete
+  const onDelete = () => {
+    setShowDeleteModal(false);
+    dispatch(resetApplicationState())
+  }
+
   // useEffect : Handles updating the rendered article when selection changes in redux
   useEffect(() => {
     setFormData({
@@ -85,7 +94,7 @@ function ArticleView() {
           : 
           <>
            <FiEdit onClick = {() => setEnableEdit(true)} className="text-lg text-text-secondary cursor-pointer hover:text-[#9fb0e7]"/>
-            <AiFillDelete className="text-lg text-text-secondary cursor-pointer hover:text-text-danger"/>
+            <AiFillDelete onClick = {() => setShowDeleteModal(true)} className="text-lg text-text-secondary cursor-pointer hover:text-text-danger"/>
           </>
           }
         </div>
@@ -153,6 +162,11 @@ function ArticleView() {
       </div>
     </div>
     
+    {showDeleteModal &&
+      <GenericModal handleClose={() => setShowDeleteModal(false)}>
+            <DeleteArticle ArticleObj={curArticle} closeHandler = {onDelete}/>
+      </GenericModal>
+    }
     
     </>
 
