@@ -104,7 +104,6 @@ function ListView() {
     dispatch(setSelectedItem({} as IItem))
     setDeleteItemModal(false);
   }
-  console.log(curItem)
 
   return (
     <div className="flex w-full h-full">

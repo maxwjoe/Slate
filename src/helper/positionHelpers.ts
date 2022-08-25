@@ -21,6 +21,33 @@ export const useClickOutside = (handler: any) => {
   return domNode;
 };
 
+// useTextSelector : Handles user highlighting text
+export const useTextSelector = () => {
+  const handler = () => {
+    const selection = window.getSelection();
+    const text = selection?.toString();
+    const location = selection?.getRangeAt(0).getBoundingClientRect();
+  };
+
+  const domNode = useRef<any>();
+
+  useEffect(() => {
+    const checkHandler = (event: any) => {
+      if (domNode.current.contains(event.target)) {
+        handler();
+      }
+    };
+
+    document.addEventListener("mouseup", checkHandler);
+
+    return () => {
+      document.addEventListener("mouseup", checkHandler);
+    };
+  });
+
+  return domNode;
+};
+
 // getComponentBounds : Gets offset of an element on page
 export const getComponentBounds = (elementId: string) => {
   const boundingRect = document

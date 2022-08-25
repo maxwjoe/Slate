@@ -11,6 +11,7 @@ import { RDX_updateArticle } from "../../redux/slices/articleSlice";
 import { reset as resetApplicationState, setSelectedArticle } from "../../redux/slices/applicationSlice";
 import GenericModal from "../Modals/GenericModal";
 import DeleteArticle from "../CRUD_Components/DeleteArticle";
+import {useTextSelector} from "../../helper/positionHelpers"
 
 function ArticleView() {
 
@@ -24,6 +25,7 @@ function ArticleView() {
   })
   
   const dispatch = useAppDispatch();
+  const textSelector = useTextSelector();
   
   const docPath : string[] = [getSourceTitleFromId(curArticle?.source), curArticle?.title];
   const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-2xl font-bold text-text-main`
@@ -99,7 +101,7 @@ function ArticleView() {
           }
         </div>
       </div>
-      <div className="flex flex-row w-full h-full bg-slate-dark pl-5 pr-5 pt-2 ">
+      <div ref={textSelector} className="flex flex-row w-full h-full bg-slate-dark pl-5 pr-5 pt-2 ">
         
         {/* Main Panel (Content) */}
         <div className="flex flex-col grow pr-6">

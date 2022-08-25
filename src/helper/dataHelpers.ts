@@ -31,3 +31,8 @@ export const getItemsFromListId = (listId: string) => {
 
   return listItems;
 };
+
+// mongoTimeToJsTime : Converts mongoDB timestamp to Javascript object
+export const mongoTimeToJsTime = (mongoTime: string) => {
+  return new Date(mongoTime);
+};
