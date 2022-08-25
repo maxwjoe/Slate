@@ -7,10 +7,11 @@ import {AiFillDelete} from 'react-icons/ai'
 import { IDropDownPackage } from '../../interfaces/IDropDownPackage'
 import { applyShift, getComponentBounds } from '../../helper/positionHelpers'
 import GenericModal from '../Modals/GenericModal'
-import DeleteArticle from '../CRUD_Components/DeleteArticle'
 import DeleteList from '../CRUD_Components/DeleteList'
 import {setSelectedList} from '../../redux/slices/applicationSlice'
 import { useAppDispatch } from '../../redux/hooks'
+import EditList from '../CRUD_Components/EditList'
+import { FiEdit } from 'react-icons/fi'
 
 interface Props {
   ListObj : IList;
@@ -20,7 +21,8 @@ interface Props {
 function ListBranch({ListObj} : Props) {
 
   const [openDropdown, setOpenDropDown] = useState<boolean>(false);
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openDeleteModal, setopenDeleteModal] = useState<boolean>(false);
+  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
   const [selectedModal, setSelectedModal] = useState<string>("None");
 
   const dispatch = useAppDispatch();
@@ -28,7 +30,13 @@ function ListBranch({ListObj} : Props) {
   // handleDropdownDelete : Passed to dropdown menu to handle modal logic
   const handleDropdownDelete = () => {
     setOpenDropDown(false);
-    setOpenModal(true);
+    setopenDeleteModal(true);
+  }
+
+  // handleDropdownEdit : Passed to dropdown menu to handle modal logic
+  const handleDropdownEdit = () => {
+    setOpenDropDown(false);
+    setOpenEditModal(true);
   }
 
     // handleSelect : Handles selecting the article (When the user clicks on it)
@@ -37,6 +45,7 @@ function ListBranch({ListObj} : Props) {
     }
   
   const dropDownPackage : IDropDownPackage[] = [
+    {Icon : FiEdit, ActionTitle : `Edit "${ListObj.title}"`, ActionFunction : handleDropdownEdit},
     {Icon : AiFillDelete, ActionTitle : `Delete "${ListObj.title}"`, ActionFunction : handleDropdownDelete}
   ];
 
@@ -71,11 +80,18 @@ function ListBranch({ListObj} : Props) {
 
         {openDropdown && <Dropdown dropDownPackages={dropDownPackage} offset={dropDownOffset} closeHandler={() => setOpenDropDown(false)}/>}
     
-        {openModal && 
-        <GenericModal handleClose={() => setOpenModal(false)}>
-          <DeleteList ListObj={ListObj} closeHandler = {() => setOpenModal(false)}/>
+        {openDeleteModal && 
+        <GenericModal handleClose={() => setopenDeleteModal(false)}>
+          <DeleteList ListObj={ListObj} closeHandler = {() => setopenDeleteModal(false)}/>
         </GenericModal>
         }
+
+        {openEditModal && 
+        <GenericModal handleClose={() => setOpenEditModal(false)}>
+          <EditList ListObj={ListObj} closeHandler = {() => setOpenEditModal(false)}/>
+        </GenericModal>
+        }
+
     </div>
   )
 }

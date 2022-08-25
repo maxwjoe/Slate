@@ -8,7 +8,7 @@ import GenericModal from '../Modals/GenericModal'
 import CreateItem from '../CRUD_Components/CreateItem'
 import ListItem from './ListItem'
 import { getItemsFromListId } from '../../helper/dataHelpers'
-import { setSelectedItem } from '../../redux/slices/applicationSlice'
+import { clearSelectedItem, setSelectedItem } from '../../redux/slices/applicationSlice'
 import DocPath from './DocPath'
 import { AiFillDelete, AiFillSave } from 'react-icons/ai'
 import { MdCancel } from 'react-icons/md'
@@ -100,8 +100,7 @@ function ListView() {
 
   // onDelete : Handles the user pressing confirm delete
   const onDelete = () => {
-    setCurListItems(getItemsFromListId(curList._id))
-    dispatch(setSelectedItem({} as IItem))
+    dispatch(clearSelectedItem());
     setDeleteItemModal(false);
   }
 
@@ -130,11 +129,9 @@ function ListView() {
         <div>
           {curListItems.map((item : IItem, index : number) => {
             return (
-              <>
-              <div onClick = {() => dispatch(setSelectedItem(item))}>
+              <div key = {index} onClick = {() => dispatch(setSelectedItem(item))}>
                 <ListItem key={index} ItemObj = {item}/>
               </div>
-              </>
             )
           })}
         </div>
@@ -162,7 +159,7 @@ function ListView() {
       <div className="flex flex-row w-full h-full bg-slate-dark pl-5 pr-5 pt-2 ">
         
         {/* Main Panel (Content) */}
-        {curItem !== {} as IItem && !!curItem ? 
+        {!!curItem ? 
         (
 
           <div className="flex flex-col grow pr-6">
@@ -174,7 +171,7 @@ function ListView() {
                     disabled={!enableEdit}
                     onChange = {onChange}
                     className = {titleClass}
-                    value={formData?.title} />
+                    value={formData?.title || "No Data"} />
             </div>
             <div className='w-full h-12'>
               <input 
@@ -183,7 +180,7 @@ function ListView() {
                     disabled={!enableEdit}
                     onChange = {onChange}
                     className = {contentClass}
-                    value={formData?.definition} />
+                    value={formData?.definition || "No Data"} />
             </div>
 
             <div className="w-full grow max-h-[75vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark">
@@ -192,7 +189,7 @@ function ListView() {
                       disabled = {!enableEdit}
                       onChange = {onChange}
                       className={contentClass}
-                      value={formData?.pronunciation}
+                      value={formData?.pronunciation || "No Data"}
               />
             </div>
 

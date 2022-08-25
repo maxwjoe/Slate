@@ -24,18 +24,18 @@ export const useClickOutside = (handler: any) => {
 // useTextSelector : Handles user highlighting text
 export const useTextSelector = () => {
   const handler = () => {
-    const selection = window.getSelection();
-    const text = selection?.toString();
-    const location = selection?.getRangeAt(0).getBoundingClientRect();
+    // const selection = window.getSelection();
+    // const text = selection?.toString();
+    // const location = selection?.getRangeAt(0).getBoundingClientRect();
   };
 
   const domNode = useRef<any>();
 
   useEffect(() => {
     const checkHandler = (event: any) => {
-      if (domNode.current.contains(event.target)) {
-        handler();
-      }
+      // if (domNode.current.contains(event.target)) {
+      //   handler();
+      // }
     };
 
     document.addEventListener("mouseup", checkHandler);

@@ -23,6 +23,9 @@ const applicationSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => initialState,
+    clearSelectedItem: (state) => {
+      return { ...state, selectedItem: undefined };
+    },
     setSelectedArticle: (state, action: PayloadAction<IArticle>) => {
       return {
         ...state,
@@ -50,6 +53,11 @@ const applicationSlice = createSlice({
   },
 });
 
-export const { reset, setSelectedArticle, setSelectedList, setSelectedItem } =
-  applicationSlice.actions;
+export const {
+  reset,
+  setSelectedArticle,
+  setSelectedList,
+  setSelectedItem,
+  clearSelectedItem,
+} = applicationSlice.actions;
 export default applicationSlice.reducer;
