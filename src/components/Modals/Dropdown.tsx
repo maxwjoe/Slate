@@ -1,8 +1,8 @@
 import React from 'react'
-import {IDropDownPackage} from '../interfaces/IDropDownPackage'
+import {IDropDownPackage} from '../../interfaces/IDropDownPackage'
 import ReactDom from 'react-dom'
-import {useClickOutside} from '../helper/positionHelpers'
-import GenericModal from './GenericModal';
+import {useClickOutside} from '../../helper/positionHelpers'
+import GenericModal from '../Modals/GenericModal';
 
 interface Offset {
   t : any;

@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import {RiArticleLine, RiListCheck2} from 'react-icons/ri'
 import {BsThreeDots} from 'react-icons/bs'
-import { IArticle, IList } from '../interfaces/DataInterfaces'
-import Dropdown from '../modals/Dropdown'
+import { IArticle, IList } from '../../interfaces/DataInterfaces'
+import Dropdown from '../Modals/Dropdown'
 import {AiFillDelete} from 'react-icons/ai'
-import { IDropDownPackage } from '../interfaces/IDropDownPackage'
-import { applyShift, getComponentBounds } from '../helper/positionHelpers'
-import GenericModal from '../modals/GenericModal'
-import DeleteArticle from './CRUD Modals/DeleteArticle'
-import { useAppDispatch } from '../redux/hooks'
-import {setSelectedArticle} from '../redux/slices/applicationSlice'
+import { IDropDownPackage } from '../../interfaces/IDropDownPackage'
+import { applyShift, getComponentBounds } from '../../helper/positionHelpers'
+import GenericModal from '../Modals/GenericModal'
+import DeleteArticle from '../CRUD_Components/DeleteArticle'
+import { useAppDispatch } from '../../redux/hooks'
+import {setSelectedArticle} from '../../redux/slices/applicationSlice'
 
 interface Props {
   ArticleObj : IArticle;

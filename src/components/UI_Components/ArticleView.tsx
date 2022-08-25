@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import {FiEdit} from 'react-icons/fi'
 import {AiFillDelete, AiFillSave} from 'react-icons/ai'
 import {MdCancel} from 'react-icons/md'
-import { IArticle } from "../interfaces/DataInterfaces";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { IArticle } from "../../interfaces/DataInterfaces";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import DocPath from "./DocPath";
-import { getSourceTitleFromId, getArticleFromId } from "../helper/dataHelpers";
-import { createArticleViewModel } from "../viewModels/createArticleViewModel";
-import { RDX_updateArticle } from "../redux/slices/articleSlice";
-import { reset as resetApplicationState, setSelectedArticle } from "../redux/slices/applicationSlice";
-import GenericModal from "../modals/GenericModal";
-import DeleteArticle from "./CRUD Modals/DeleteArticle";
+import { getSourceTitleFromId, getArticleFromId } from "../../helper/dataHelpers";
+import { createArticleViewModel } from "../../viewModels/createArticleViewModel";
+import { RDX_updateArticle } from "../../redux/slices/articleSlice";
+import { reset as resetApplicationState, setSelectedArticle } from "../../redux/slices/applicationSlice";
+import GenericModal from "../Modals/GenericModal";
+import DeleteArticle from "../CRUD_Components/DeleteArticle";
 
 function ArticleView() {
 

@@ -4,7 +4,7 @@ import {loginViewModel} from '../viewModels/authViewModels'
 import {useAppSelector, useAppDispatch} from '../redux/hooks'
 import {login, register, reset} from '../redux/slices/authSlice'
 import {toast} from 'react-hot-toast'
-import LoadingPage from '../components/LoadingPage'
+import LoadingPage from '../components/Other/LoadingPage'
 
 function Login() {
   

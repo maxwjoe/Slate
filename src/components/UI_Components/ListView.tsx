@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { IItem, IList } from '../interfaces/DataInterfaces'
-import { useAppDispatch, useAppSelector } from '../redux/hooks'
+import { IItem, IList } from '../../interfaces/DataInterfaces'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import {BsSearch} from 'react-icons/bs'
 import {IoMdAdd} from 'react-icons/io'
-import { RDX_getItems, RDX_updateItem } from '../redux/slices/itemSlice'
-import GenericModal from '../modals/GenericModal'
-import CreateItem from './CRUD Modals/CreateItem'
+import { RDX_updateItem } from '../../redux/slices/itemSlice'
+import GenericModal from '../Modals/GenericModal'
+import CreateItem from '../CRUD_Components/CreateItem'
 import ListItem from './ListItem'
-import { getItemsFromListId } from '../helper/dataHelpers'
-import { setSelectedItem } from '../redux/slices/applicationSlice'
+import { getItemsFromListId } from '../../helper/dataHelpers'
+import { setSelectedItem } from '../../redux/slices/applicationSlice'
 import DocPath from './DocPath'
 import { AiFillDelete, AiFillSave } from 'react-icons/ai'
 import { MdCancel } from 'react-icons/md'
 import { FiEdit } from 'react-icons/fi'
-import { createItemViewModel } from '../viewModels/createItemViewModel'
-import { reset as resetApplicationState } from '../redux/slices/applicationSlice'
+import { createItemViewModel } from '../../viewModels/createItemViewModel'
+import DeleteItem from '../CRUD_Components/DeleteItem'
 
 function ListView() {
 
@@ -100,11 +100,11 @@ function ListView() {
 
   // onDelete : Handles the user pressing confirm delete
   const onDelete = () => {
+    setCurListItems(getItemsFromListId(curList._id))
+    dispatch(setSelectedItem({} as IItem))
     setDeleteItemModal(false);
-    dispatch(resetApplicationState())
   }
-
-  
+  console.log(curItem)
 
   return (
     <div className="flex w-full h-full">
@@ -163,7 +163,7 @@ function ListView() {
       <div className="flex flex-row w-full h-full bg-slate-dark pl-5 pr-5 pt-2 ">
         
         {/* Main Panel (Content) */}
-        {curItem ? 
+        {curItem !== {} as IItem && !!curItem ? 
         (
 
           <div className="flex flex-col grow pr-6">
@@ -200,7 +200,7 @@ function ListView() {
           </div>
         ) : 
         (
-          <div>No Item</div>
+          <div className='text-text-main'>No Item</div>
         )}
 
         </div>
@@ -212,6 +212,13 @@ function ListView() {
         createItemModal && 
         <GenericModal handleClose = {() => setCreateItemModal(false)}>
           <CreateItem closeHandler={onAdd} list = {curList}/>
+        </GenericModal>
+      }
+
+      {
+        deleteItemModal &&
+        <GenericModal handleClose = {() => setDeleteItemModal(false)}>
+          <DeleteItem closeHandler = {onDelete} ItemObj = {curItem}/>
         </GenericModal>
       }
 

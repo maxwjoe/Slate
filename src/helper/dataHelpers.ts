@@ -23,7 +23,6 @@ export const getArticleFromId = (articleId: string) => {
 export const getItemsFromListId = (listId: string) => {
   const items: IItem[] = store.getState().items.items;
   const listItems: IItem[] = [];
-
   for (let i = 0; i < items.length; i++) {
     if (items[i].list === listId) {
       listItems.push(items[i]);

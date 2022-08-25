@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import Profile from './Profile'
 import {AiOutlineSearch} from 'react-icons/ai'
 import {IoMdAdd} from 'react-icons/io'
-import GenericModal from '../modals/GenericModal';
-import CreateSource from './CRUD Modals/CreateSource';
-import {getExampleLanguage, getExampleTitle} from '../helper/genData'
+import GenericModal from '../Modals/GenericModal';
+import CreateSource from '../CRUD_Components/CreateSource';
+import {getExampleLanguage, getExampleTitle} from '../../helper/genData'
 
 function Header() {
 

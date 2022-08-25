@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import ArticleView from '../components/ArticleView';
-import Header from '../components/Header';
-import LeftTree from '../components/LeftTree';
-import ListView from '../components/ListView';
+import ArticleView from '../components/UI_Components/ArticleView';
+import Header from '../components/UI_Components/Header';
+import LeftTree from '../components/UI_Components/LeftTree';
+import ListView from '../components/UI_Components/ListView';
 import toast from 'react-hot-toast';
 import { RDX_getSources } from '../redux/slices/sourceSlice';
 

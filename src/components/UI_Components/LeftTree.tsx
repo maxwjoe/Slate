@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react'
 import SourceBranch from './SourceBranch'
-import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import { ISource } from '../interfaces/DataInterfaces';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { ISource } from '../../interfaces/DataInterfaces';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { RDX_getSources } from '../redux/slices/sourceSlice';
-import { RDX_getArticles } from '../redux/slices/articleSlice';
-import { RDX_getLists } from '../redux/slices/listSlice';
+import { RDX_getSources } from '../../redux/slices/sourceSlice';
+import { RDX_getArticles } from '../../redux/slices/articleSlice';
+import { RDX_getLists } from '../../redux/slices/listSlice';
 import Profile from './Profile';
 import Header from './Header';
-import { RDX_getItems } from '../redux/slices/itemSlice';
+import { RDX_getItems } from '../../redux/slices/itemSlice';
 
 
 // LeftTree : Renders the left hand panel of the UI

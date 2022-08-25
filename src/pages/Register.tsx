@@ -5,7 +5,7 @@ import {registerViewModel} from '../viewModels/authViewModels'
 import {useAppSelector, useAppDispatch} from '../redux/hooks'
 import {register, reset} from '../redux/slices/authSlice'
 import { IAuth } from '../interfaces/IAuth'
-import LoadingPage from '../components/LoadingPage'
+import LoadingPage from '../components/Other/LoadingPage'
 
 
 function Register() {

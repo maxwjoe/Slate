@@ -1,5 +1,5 @@
 import React from 'react'
-import { IItem } from '../interfaces/DataInterfaces'
+import { IItem } from '../../interfaces/DataInterfaces'
 
 interface Props {
     ItemObj : IItem;

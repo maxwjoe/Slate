@@ -1,14 +1,14 @@
 import React, {useState} from 'react'
-import Dropdown from '../modals/Dropdown';
+import Dropdown from '../Modals/Dropdown';
 import {BiLogOut} from 'react-icons/bi'
-import {IDropDownPackage} from '../interfaces/IDropDownPackage'
+import {IDropDownPackage} from '../../interfaces/IDropDownPackage'
 import {IoMdSettings} from 'react-icons/io'
 import {useNavigate} from 'react-router-dom'
-import {useAppSelector, useAppDispatch} from '../redux/hooks'
-import {logout, reset} from '../redux/slices/authSlice'
-import { resetAll } from '../helper/authHelper';
-import { applyShift, getComponentBounds } from '../helper/positionHelpers';
-import { IAuth } from '../interfaces/IAuth';
+import {useAppSelector, useAppDispatch} from '../../redux/hooks'
+import {logout, reset} from '../../redux/slices/authSlice'
+import { resetAll } from '../../helper/authHelper';
+import { applyShift, getComponentBounds } from '../../helper/positionHelpers';
+import { IAuth } from '../../interfaces/IAuth';
 
 function Profile() {
 

@@ -150,7 +150,7 @@ export const Itemslice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.items = state.items.filter(
-          (source: IItem) => source._id !== action.payload.id
+          (item: IItem) => item._id !== action.payload.id
         );
       })
       .addCase(RDX_deleteItem.rejected, (state, action) => {
