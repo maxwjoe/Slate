@@ -26,7 +26,7 @@ function GenericModal({children, handleClose} : Props) {
     <div 
       ref = {domNode}
       style = {modalStyles}
-      className = "bg-[#27292b] rounded-md"
+      className = "bg-[#27292b] rounded-md border-[2px] border-slate-accent overflow-hidden w-[40vw] "
       >
         
       {children}

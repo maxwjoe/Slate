@@ -21,13 +21,22 @@ function DeleteArticle({ArticleObj, closeHandler} : Props) {
 
 
   return (
-    <div className='flex flex-col items-center justify-center w-[50vw] h-[50vh]'>
-        <p className='text-text-main'>{`Are you sure you want to delete ${ArticleObj?.title}?`}</p>
-        <p className='text-text-main'>Hi</p>
-        <button 
-                onClick={async () => {await handleDelete()}}
-                className='text-text-main font-bold border-2 border-text-danger rounded-md'>Confirm</button>
-    </div>
+    <div className='flex flex-col space-y-6 bg-slate-dark p-3'>
+        
+        <div className='flex flex-col space-y-3 p-3 items-center justify-center grow'>
+          <p className='text-2xl text-text-main'>{`Delete "${ArticleObj?.title}"?`}</p>
+          <p className='text-md text-text-main'>This action cannot be undone</p>
+        </div>
+  
+        <div className='flex flex-row w-full justify-end space-x-3'>
+            <button 
+                    onClick={() => closeHandler()}
+                    className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
+            <button 
+                    onClick={handleDelete}
+                    className='text-text-main w-24 h-10 bg-slate-accent font-bold border-2 border-none rounded-md'>Confirm</button>
+        </div>
+      </div>
   )
 }
 

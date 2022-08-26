@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import toast from 'react-hot-toast';
 import { IList } from '../../interfaces/DataInterfaces'
 import { useAppDispatch } from '../../redux/hooks';
 import { RDX_updateList } from '../../redux/slices/listSlice';
@@ -30,6 +31,12 @@ function EditList({ListObj, closeHandler} : Props) {
       // onSubmit : Handles submitting the form 
       const onSubmit = (e : any) => {
         e.preventDefault();
+
+        if(!formData.title)
+        {
+          toast.error("Title is required");
+          return;
+        }
     
         // Create new List Object
         const updatedList : IList = {
@@ -42,19 +49,34 @@ function EditList({ListObj, closeHandler} : Props) {
       }
     
       return (
-        <div className='flex flex-col items-center justify-center w-[50vw] h-[50vh]'>
-            <p className='text-text-main'>Edit List</p>
-            <p className='text-text-main'>Title</p>
+        <div className='flex flex-col items-center p-3 w-[40vw] min-h-[200px] h-[40vh]'>
+        
+        <div className='flex items-center justify-center w-full h-12'>
+          <p className='text-2xl text-text-main'>{`Edit "${ListObj.title}"`}</p>
+        </div>
+        
+        <div className='flex w-full p-3 flex-col space-y-5 grow items-start justify-start'>
+          <div className='flex space-y-2 flex-col w-full'>
+            <p className='text-lg text-text-main'>Title</p>
             <input 
                   type="text" 
                   name ="title"
+                  className='w-full p-3 h-9 outline-none border-none bg-slate-lightdark text-text-secondary rounded-md'
                   value = {formData.title}
                   onChange={onChange}
-                  placeholder={`New Title`}/>
+                  />
+          </div>
+         
+        </div>
+        <div className='flex flex-row w-full justify-end space-x-3'>
+            <button 
+                    onClick={() => closeHandler()}
+                    className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
             <button 
                     onClick={onSubmit}
-                    className='text-text-main font-bold border-2 border-text-danger rounded-md'>Confirm</button>
+                    className='text-text-main w-24 h-10 bg-slate-accent font-bold border-2 border-none rounded-md'>Confirm</button>
         </div>
+      </div>
       )
     }
     

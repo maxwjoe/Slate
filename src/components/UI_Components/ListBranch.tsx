@@ -72,7 +72,7 @@ function ListBranch({ListObj, isSelected} : Props) {
 
 
   return (
-    <div id={ListObj.title} className={`flex items-center justify-start w-full h-9 pr-2 pl-8 rounded-md ${isSelected ? "bg-[#0b84ff] text-text-main" : "hover:bg-slate-lightdark rounded-md text-text-secondary"}`}>
+    <div id={ListObj.title} className={`flex items-center justify-start w-full h-9 pr-2 pl-8 rounded-md ${isSelected ? "bg-slate-accent text-text-main" : "hover:bg-slate-lightdark rounded-md text-text-secondary"}`}>
         <div onClick = {handleSelect} className='flex grow justify-start space-x-1 items-center cursor-pointer'>
             <RiListCheck2 className='text-md'/>
             <p className='text-md grow select-none overflow-hidden'>{ListObj?.title}</p>

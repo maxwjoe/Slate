@@ -13,6 +13,7 @@ module.exports = {
       'text-danger' : '#FD5D5D',
       'text-secondary' : "#999ba2",
       'text-tertiary' : "#999ba2",
+      'slate-accent' : "#d94c68",
     },
     extend: {},
   },

@@ -115,7 +115,7 @@ function ListView() {
             <input className='flex text-sm h-full w-4/5 outline-none bg-slate-lightdark text-text-secondary' type="text" placeholder = {`Search "${curList.title}"`}/>
           </div>
 
-          <div onClick={() => setCreateItemModal(true)} className='flex w-7 h-7 rounded-md items-center justify-center bg-[#4f9df6] cursor-pointer'>
+          <div onClick={() => setCreateItemModal(true)} className='flex w-7 h-7 rounded-md items-center justify-center bg-slate-accent cursor-pointer'>
             <IoMdAdd  className='w-5 h-5'/>
           </div>
         </div>
