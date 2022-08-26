@@ -50,8 +50,8 @@ function ListView() {
 
 
   const docPath : string[] = ["test", "test", "test"];
-  const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-2xl font-bold text-text-main`
-  const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-sm leading-loose text-text-main`
+  const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-dark " : "bg-slate-lightdark "} text-2xl font-bold text-text-main`
+  const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-dark " : "bg-slate-lightdark "} text-sm leading-loose text-text-main`
   
 
 
@@ -140,7 +140,7 @@ function ListView() {
 
       <div className='flex grow'>
         <div className="flex flex-col w-full h-full">
-        <div className="flex w-full h-12">
+        <div className="flex w-full h-12 bg-slate-lightdark">
           <DocPath Path={docPath}/>
           <div className="flex items-center justify-end space-x-3 pr-6 h-full w-1/2">
             {enableEdit ? 
@@ -156,7 +156,7 @@ function ListView() {
             }
           </div>
         </div>
-      <div className="flex flex-row w-full h-full bg-slate-dark pl-5 pr-5 pt-2 ">
+      <div className="flex flex-row w-full h-full bg-slate-lightdark pl-5 pr-5 pt-2 ">
         
         {/* Main Panel (Content) */}
         {!!curItem ? 
