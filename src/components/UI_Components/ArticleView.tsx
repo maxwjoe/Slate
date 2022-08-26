@@ -11,7 +11,7 @@ import { RDX_updateArticle } from "../../redux/slices/articleSlice";
 import { reset as resetApplicationState, setSelectedArticle } from "../../redux/slices/applicationSlice";
 import GenericModal from "../Modals/GenericModal";
 import DeleteArticle from "../CRUD_Components/DeleteArticle";
-import {useTextSelector} from "../../helper/positionHelpers"
+import {getWordCount, useTextSelector} from "../../helper/positionHelpers"
 
 function ArticleView() {
 
@@ -31,6 +31,9 @@ function ArticleView() {
   const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-2xl font-bold text-text-main`
   const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-sm leading-loose text-text-main`
   
+  const createdDate : string = new Date(curArticle?.createdAt).toLocaleDateString();
+  const updatedDate : string = new Date(curArticle?.updatedAt).toLocaleDateString();
+
   // onChange : Handles input change and updates formData
   const onChange = (e : any) => {
     setFormData((prevState : createArticleViewModel) => ({
@@ -101,7 +104,7 @@ function ArticleView() {
           }
         </div>
       </div>
-      <div ref={textSelector} className="flex flex-row w-full h-full bg-slate-dark pl-5 pr-5 pt-2 ">
+      <div className="flex flex-row w-full h-full bg-slate-dark pl-5 pr-5 pt-2 ">
         
         {/* Main Panel (Content) */}
         <div className="flex flex-col grow pr-6">
@@ -116,17 +119,16 @@ function ArticleView() {
                   value={formData.title} />
           </div>
 
-          <div className="w-full grow max-h-[75vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark">
-            <textarea 
-                    name="content"
-                    disabled = {!enableEdit}
-                    onChange = {onChange}
-                    className={contentClass}
-                    value={formData.content}
-            />
+          <div  className="w-full grow max-h-[75vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark">
+              <textarea 
+                      ref ={textSelector}
+                      name="content"
+                      disabled = {!enableEdit}
+                      onChange = {onChange}
+                      className={contentClass}
+                      value={formData.content}
+              />
           </div>
-
-
         </div>
 
         {/* Right Panel (Stats and Mode Controls) */}
@@ -135,23 +137,23 @@ function ArticleView() {
           <div className="flex w-full flex-col space-y-2">
             <div className="flex flex-row justify-between w-full">
               <p className="text-xs text-text-secondary">Word Count</p>
-              <p className="text-xs text-text-secondary">24</p>
+              <p className="text-xs text-text-secondary">{getWordCount(formData.content)}</p>
             </div>
-            <div className="flex flex-row justify-between w-full">
+            {/* <div className="flex flex-row justify-between w-full">
               <p className="text-xs text-text-secondary">Words Saved</p>
               <p className="text-xs text-text-secondary">12</p>
             </div>
             <div className="flex flex-row justify-between w-full">
               <p className="text-xs text-text-secondary">Comprehension</p>
               <p className="text-xs text-text-secondary">50%</p>
-            </div>
+            </div> */}
             <div className="flex flex-row justify-between w-full">
               <p className="text-xs text-text-secondary">Created At</p>
-              <p className="text-xs text-text-secondary">12/03/2034</p>
+              <p className="text-xs text-text-secondary">{createdDate}</p>
             </div>
             <div className="flex flex-row justify-between w-full">
               <p className="text-xs text-text-secondary">Updated At</p>
-              <p className="text-xs text-text-secondary">15/03/2034</p>
+              <p className="text-xs text-text-secondary">{updatedDate}</p>
             </div>
           </div>
 
