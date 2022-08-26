@@ -40,6 +40,7 @@ function ListView() {
   const [createItemModal, setCreateItemModal] = useState<boolean>(false);
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
   const [deleteItemModal, setDeleteItemModal] = useState<boolean>(false);
+  const [searchField, setSearchField] = useState<string>('');
 
   const [formData, setFormData] = useState<createItemViewModel>({
     title : curItem?.title as string,
@@ -67,6 +68,17 @@ function ListView() {
       [e.target.name] : e.target.value
     }))
   }
+
+  // performSearch : Performs search operation through list 
+  const performSearch = (item : IItem) => {
+    if(!searchField) return true;
+    return (
+      item?.title.toLowerCase().includes(searchField.toLowerCase()) || 
+      item?.definition.toLowerCase().includes(searchField.toLowerCase()) || 
+      item?.pronunciation.toLowerCase().includes(searchField.toLowerCase())
+    )
+  }
+
 
   // onEditSubmit : Handles submitting the form (Edit)
   const onEditSubmit = async (e : any) => {
@@ -112,7 +124,12 @@ function ListView() {
         <div className='flex justify-between items-center h-8'>
           <div className='flex pl-1 pr-1 space-x-1 items-center grow mr-2 h-full bg-slate-lightdark rounded-md'>
             <BsSearch className='w-3 h-3 text-text-secondary'/>
-            <input className='flex text-sm h-full w-4/5 outline-none bg-slate-lightdark text-text-secondary' type="text" placeholder = {`Search "${curList.title}"`}/>
+            <input 
+                  className='flex text-sm h-full w-4/5 outline-none bg-slate-lightdark text-text-secondary' 
+                  type="text" 
+                  value = {searchField}
+                  onChange = {(e : any) => setSearchField(e?.target?.value)}
+                  placeholder = {`Search "${curList.title}"`}/>
           </div>
 
           <div onClick={() => setCreateItemModal(true)} className='flex w-7 h-7 rounded-md items-center justify-center bg-slate-accent cursor-pointer'>
@@ -127,6 +144,7 @@ function ListView() {
 
         <div className='space-y-2'>
           {curListItems.map((item : IItem, index : number) => {
+            if(!performSearch(item)) return null;
             return (
               <div key = {index} onClick = {() => dispatch(setSelectedItem(item))}>
                 <ListItem key={index} ItemObj = {item} isSelected={item?._id === curItem?._id}/>
