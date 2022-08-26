@@ -12,7 +12,7 @@ function DocPath({Path} : Props) {
           {Path.map((docItem : string, item : number) => {
             return (
               <div key={item} className="flex items-center space-x-2">
-                {item == Path.length || item == 0 ? null : <AiOutlineCaretRight className="w-3 h-3 text-text-secondary"/>}
+                {(item == Path.length || item == 0) && !!docItem ? null : <AiOutlineCaretRight className="w-3 h-3 text-text-secondary"/>}
                 <p className="text-sm text-text-secondary whitespace-nowrap">{docItem}</p>
               </div>
             )

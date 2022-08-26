@@ -13,10 +13,11 @@ import {setSelectedArticle} from '../../redux/slices/applicationSlice'
 
 interface Props {
   ArticleObj : IArticle;
+  isSelected? : boolean;
 }
 
 
-function ArticleBranch({ArticleObj} : Props) {
+function ArticleBranch({ArticleObj, isSelected} : Props) {
 
   const [openDropdown, setOpenDropDown] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -50,12 +51,12 @@ function ArticleBranch({ArticleObj} : Props) {
 
 
   return (
-    <div id={ArticleObj.title} className='flex items-center justify-start w-full h-8 pr-2 pl-8 hover:bg-slate-lightdark rounded-md whitespace-nowrap overflow-hidden'>
+    <div id={ArticleObj.title} className={`flex items-center justify-start w-full h-9 pr-2 pl-8 rounded-md ${isSelected ? "bg-[#0b84ff] text-text-main" : "hover:bg-slate-lightdark rounded-md text-text-secondary"}`}>
         <div onClick = {handleSelect} className='flex grow justify-start space-x-1 items-center cursor-pointer'>
-            <RiArticleLine className='text-text-secondary text-md'/>
-            <p className='text-md text-text-secondary select-none max-w-[90px] overflow-hidden whitespace-nowrap'>{ArticleObj?.title}</p>
+            <RiArticleLine className=' text-md'/>
+            <p className='text-md  select-none max-w-[90px] overflow-hidden whitespace-nowrap'>{ArticleObj?.title}</p>
         </div>
-        <BsThreeDots onClick = {() => setOpenDropDown(true)} className='text-text-secondary hover:text-text-danger cursor-pointer text-md'/>
+        <BsThreeDots onClick = {() => setOpenDropDown(true)} className='cursor-pointer text-md'/>
 
         {openDropdown && <Dropdown dropDownPackages={dropDownPackage} offset={dropDownOffset} closeHandler={() => setOpenDropDown(false)}/>}
     

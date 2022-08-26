@@ -15,10 +15,11 @@ import { FiEdit } from 'react-icons/fi'
 
 interface Props {
   ListObj : IList;
+  isSelected? : boolean;
 }
 
 
-function ListBranch({ListObj} : Props) {
+function ListBranch({ListObj, isSelected} : Props) {
 
   const [openDropdown, setOpenDropDown] = useState<boolean>(false);
   const [openDeleteModal, setopenDeleteModal] = useState<boolean>(false);
@@ -71,12 +72,12 @@ function ListBranch({ListObj} : Props) {
 
 
   return (
-    <div id={ListObj.title} className='flex items-center justify-start w-full h-8 pr-2 pl-8 hover:bg-slate-lightdark rounded-md'>
+    <div id={ListObj.title} className={`flex items-center justify-start w-full h-9 pr-2 pl-8 rounded-md ${isSelected ? "bg-[#0b84ff] text-text-main" : "hover:bg-slate-lightdark rounded-md text-text-secondary"}`}>
         <div onClick = {handleSelect} className='flex grow justify-start space-x-1 items-center cursor-pointer'>
-            <RiListCheck2 className='text-text-secondary text-md'/>
-            <p className='text-md grow text-text-secondary select-none overflow-hidden'>{ListObj?.title}</p>
+            <RiListCheck2 className='text-md'/>
+            <p className='text-md grow select-none overflow-hidden'>{ListObj?.title}</p>
         </div>
-        <BsThreeDots onClick = {() => setOpenDropDown(true)} className='text-text-secondary hover:text-text-danger cursor-pointer text-md'/>
+        <BsThreeDots onClick = {() => setOpenDropDown(true)} className=' cursor-pointer text-md'/>
 
         {openDropdown && <Dropdown dropDownPackages={dropDownPackage} offset={dropDownOffset} closeHandler={() => setOpenDropDown(false)}/>}
     

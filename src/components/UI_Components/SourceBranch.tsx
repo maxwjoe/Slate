@@ -31,6 +31,11 @@ function SourceBranch({SourceObj} : Props) {
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [selectedModal, setSelectedModal] = useState<string>("None");
 
+    const selectedList : IList = useAppSelector((state) => state.applicationState.selectedList) as IList;
+    const selectedArticle : IArticle = useAppSelector((state) => state.applicationState.selectedArticle) as IArticle;
+    const selectedSubSourceId : string = selectedList?._id || selectedArticle?._id;
+
+
     const SourceArticles = useAppSelector((state) => state.articles.articles).filter((article : IArticle) => article.source === SourceObj._id);
     const SourceLists = useAppSelector((state) => state.lists.lists).filter((list :IList) => list.source === SourceObj._id);
 
@@ -82,7 +87,7 @@ function SourceBranch({SourceObj} : Props) {
 
   return (
     <>
-        <div id={SourceObj.title}  className='flex items-center relative justify-between space-x-3 pr-2 pl-2 w-full h-[32px] min-h-[32px] rounded-md hover:bg-slate-lightdark'>
+        <div id={SourceObj.title}  className='flex items-center relative justify-between space-x-3 pr-2 pl-2 w-full h-[35px] min-h-[35px] rounded-md hover:bg-slate-lightdark'>
             <div onClick = {handleToggle} className='flex justify-start space-x-2 items-center'>
                 {open ? <AiOutlineCaretDown className='text-text-secondary text-md cursor-pointer'/> : <AiOutlineCaretRight className='text-text-secondary text-md cursor-pointer'/>}
                 <p className='text-md text-text-secondary cursor-default select-none'>{SourceObj.title}</p>
@@ -106,10 +111,10 @@ function SourceBranch({SourceObj} : Props) {
     {open && 
         <div className='flex flex-col space-y-3 items-end justify-center w-full'>
             {SourceArticles.map((article : IArticle, index : number) => {
-                return <ArticleBranch key = {index} ArticleObj = {article}/>
+                return <ArticleBranch key = {index} ArticleObj = {article} isSelected={article._id === selectedSubSourceId}/>
             })}
             {SourceLists.map((list : IList, index : number) => {
-                return <ListBranch key = {index} ListObj = {list}/>
+                return <ListBranch key = {index} ListObj = {list} isSelected={list._id === selectedSubSourceId}/>
             })}
         </div>
     }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { IItem, IList } from '../../interfaces/DataInterfaces'
+import { IItem, IList, ISource } from '../../interfaces/DataInterfaces'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import {BsSearch} from 'react-icons/bs'
 import {IoMdAdd} from 'react-icons/io'
@@ -7,7 +7,7 @@ import { RDX_updateItem } from '../../redux/slices/itemSlice'
 import GenericModal from '../Modals/GenericModal'
 import CreateItem from '../CRUD_Components/CreateItem'
 import ListItem from './ListItem'
-import { getItemsFromListId } from '../../helper/dataHelpers'
+import { getItemsFromListId, getSourceTitleFromId } from '../../helper/dataHelpers'
 import { clearSelectedItem, setSelectedItem } from '../../redux/slices/applicationSlice'
 import DocPath from './DocPath'
 import { AiFillDelete, AiFillSave } from 'react-icons/ai'
@@ -48,8 +48,7 @@ function ListView() {
     list : curList._id
   })
 
-
-  const docPath : string[] = ["test", "test", "test"];
+  const docPath : string[] = [getSourceTitleFromId(curList.source), curList?.title, curItem?.title];
   const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-dark " : "bg-slate-lightdark "} text-2xl font-bold text-text-main`
   const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-dark " : "bg-slate-lightdark "} text-sm leading-loose text-text-main`
   
@@ -126,11 +125,11 @@ function ListView() {
           <p className='text-lg text-text-secondary'>{curList.title}</p>
         </div>
 
-        <div>
+        <div className='space-y-2'>
           {curListItems.map((item : IItem, index : number) => {
             return (
               <div key = {index} onClick = {() => dispatch(setSelectedItem(item))}>
-                <ListItem key={index} ItemObj = {item}/>
+                <ListItem key={index} ItemObj = {item} isSelected={item?._id === curItem?._id}/>
               </div>
             )
           })}

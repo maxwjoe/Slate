@@ -42,26 +42,38 @@ function CreateSource({closeHandler, exampleLanguage, exampleTitle} : Props) {
 
 
   return (
-    <div className='flex flex-col items-center justify-center w-[50vw] h-[50vh]'>
-        <p className='text-text-main'>Create a new Source</p>
-        <p className='text-text-main'>Title</p>
-        <input 
-              type="text" 
-              name ="title"
-              value = {formData.title}
-              onChange={onChange}
-              placeholder={`Eg. ${exampleTitle}`}/>
-        <p className='text-text-main'>Language</p>
-        <input 
-              type="text" 
-              name = "language"
-              value={formData.language}
-              onChange={onChange}
-              placeholder={`Eg. ${exampleLanguage}`} />
-        <button 
-                onClick={onSubmit}
-                className='text-text-main font-bold border-2 border-text-danger rounded-md'>Confirm</button>
-    </div>
+      <div className='flex flex-col items-center p-3 w-[40vw] h-[50vh]'>
+        
+        <div className='flex items-center justify-center w-full h-12'>
+          <p className='text-2xl text-text-main'>Create Source</p>
+        </div>
+        
+        <div className='flex w-full p-3 flex-col space-y-5 grow items-start justify-start'>
+          <div className='flex flex-col w-full'>
+            <p className='text-lg text-text-main'>Title</p>
+            <input 
+                  type="text" 
+                  name ="title"
+                  className='w-[75%] h-8 outline-none border-none bg-slate-lightdark text-text-secondary'
+                  value = {formData.title}
+                  onChange={onChange}
+                  placeholder={`Eg. ${exampleTitle}`}/>
+          </div>
+
+          <div className='flex flex-col w-full'>
+            <p className='text-lg text-text-main'>Language</p>
+            <input 
+                  type="text" 
+                  name = "language"
+                  value={formData.language}
+                  onChange={onChange}
+                  placeholder={`Eg. ${exampleLanguage}`} />
+          </div>
+        </div>
+          <button 
+                  onClick={onSubmit}
+                  className='text-text-main font-bold border-2 border-text-danger rounded-md'>Confirm</button>
+      </div>
   )
 }
 
