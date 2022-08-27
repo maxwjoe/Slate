@@ -1,5 +1,6 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, LegacyRef, useState } from "react";
 import { BsWordpress } from "react-icons/bs";
+import { IFloatingMenuData } from "../interfaces/IFloatingMenuData";
 
 // useClickOutside : Handles user clicking outside of an element by calling handler() callback
 export const useClickOutside = (handler: any) => {
@@ -24,23 +25,39 @@ export const useClickOutside = (handler: any) => {
 
 // useTextSelector : Handles user highlighting text
 export const useTextSelector = () => {
+  const [floatingMenuData, setFloatingMenuData] = useState<IFloatingMenuData>({
+    selectedText: "",
+    positionData: window
+      .getSelection()
+      ?.getRangeAt(0)
+      ?.getBoundingClientRect() as DOMRect,
+  });
+
+  // Handles text selection
   const handler = () => {
-    // const selection = window?.getSelection();
-    // if (!selection) return;
-    // const highlightedText: string = selection.toString();
-    // const highlightedPos = selection.getRangeAt(0).getBoundingClientRect();
-    // console.log(highlightedPos);
-    // const text = selection?.toString();
-    // const location = selection?.getRangeAt(0).getBoundingClientRect();
+    try {
+      const selection = window.getSelection()?.getRangeAt(0);
+      const selectedText = selection?.toString();
+      const selectionPosition = selection?.getBoundingClientRect();
+      setFloatingMenuData({
+        ...floatingMenuData,
+        selectedText: selectedText as string,
+        positionData: selectionPosition as DOMRect,
+      });
+    } catch (error: any) {
+      // Do nothing (Maybe not the best solution)
+      console.log(error);
+      return;
+    }
   };
 
-  const domNode = useRef<any>();
+  const domNode: any = useRef();
 
   useEffect(() => {
     const checkHandler = (event: any) => {
-      // if (domNode.current.contains(event.target)) {
-      //   handler();
-      // }
+      if (domNode?.current?.contains(event?.target)) {
+        handler();
+      }
     };
 
     document.addEventListener("mouseup", checkHandler);
@@ -48,9 +65,9 @@ export const useTextSelector = () => {
     return () => {
       document.addEventListener("mouseup", checkHandler);
     };
-  });
+  }, []);
 
-  return domNode;
+  return { domNode, floatingMenuData };
 };
 
 // getWordCount : Gets word count for a string

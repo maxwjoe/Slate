@@ -7,7 +7,7 @@ import {useNavigate} from 'react-router-dom'
 import {useAppSelector, useAppDispatch} from '../../redux/hooks'
 import {logout, reset} from '../../redux/slices/authSlice'
 import { resetAll } from '../../helper/authHelper';
-import { applyShift, getComponentBounds } from '../../helper/positionHelpers';
+import { applyShift, getComponentBounds } from '../../helper/UIHelpers';
 import { IAuth } from '../../interfaces/IAuth';
 
 function Profile() {

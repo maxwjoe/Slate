@@ -11,13 +11,19 @@ import { RDX_updateArticle } from "../../redux/slices/articleSlice";
 import { reset as resetApplicationState, setSelectedArticle } from "../../redux/slices/applicationSlice";
 import GenericModal from "../Modals/GenericModal";
 import DeleteArticle from "../CRUD_Components/DeleteArticle";
-import {getWordCount, useTextSelector} from "../../helper/positionHelpers"
+import {getWordCount, useTextSelector} from "../../helper/UIHelpers"
+import FloatingActionMenu from "../Modals/FloatingActionMenu";
+import { IDropDownPackage } from "../../interfaces/IDropDownPackage";
+import {RiTranslate} from 'react-icons/ri'
+import {IoMdAdd} from 'react-icons/io'
 
 function ArticleView() {
 
+  // --- State ---
   const curArticle : IArticle = useAppSelector((state) => state.applicationState.selectedArticle) as IArticle
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [showFloatingMenu, setShowFloatingMenu] = useState<boolean>(false);
   const [formData, setFormData] = useState<createArticleViewModel>({
     title : curArticle.title,
     content : curArticle.content,
@@ -25,14 +31,31 @@ function ArticleView() {
   })
   
   const dispatch = useAppDispatch();
-  const textSelector = useTextSelector();
   
+  // --- Constants ---
   const docPath : string[] = [getSourceTitleFromId(curArticle?.source), curArticle?.title];
   const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-2xl font-bold text-text-main`
   const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-sm leading-loose text-text-main`
   
+  const {domNode, floatingMenuData} = useTextSelector();
+  const dropDownPackages : IDropDownPackage[] = [
+    {Icon : RiTranslate, ActionTitle : "Translate", ActionFunction : () => {}},
+    {Icon : IoMdAdd, ActionTitle : "Add to List", ActionFunction : () => {}},
+  ]
+  
   const createdDate : string = new Date(curArticle?.createdAt).toLocaleDateString();
   const updatedDate : string = new Date(curArticle?.updatedAt).toLocaleDateString();
+
+
+  // --- Hooks and Functions ---
+
+  // useEffect : Handles selecting text floating action menu
+  useEffect(() => {
+
+    setShowFloatingMenu(floatingMenuData.selectedText !== '');
+
+  }, [floatingMenuData])
+
 
   // onChange : Handles input change and updates formData
   const onChange = (e : any) => {
@@ -84,6 +107,8 @@ function ArticleView() {
     })
   }, [curArticle])
 
+  // --- Render ---
+
   return (
 
     <>
@@ -120,14 +145,26 @@ function ArticleView() {
           </div>
 
           <div  className="w-full grow max-h-[75vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark">
-              <textarea 
-                      ref ={textSelector}
-                      name="content"
-                      disabled = {!enableEdit}
-                      onChange = {onChange}
-                      className={contentClass}
-                      value={formData.content}
-              />
+              
+              {
+              enableEdit ? 
+              (
+                <textarea 
+                        name="content"
+                        disabled = {!enableEdit}
+                        onChange = {onChange}
+                        className={contentClass}
+                        value={formData.content}
+                />
+              ) 
+              : 
+              (
+              <p ref={domNode} className="text-text-main">
+                {formData.content}
+              </p>
+
+              )
+              }
           </div>
         </div>
 
@@ -170,6 +207,11 @@ function ArticleView() {
       <GenericModal handleClose={() => setShowDeleteModal(false)}>
             <DeleteArticle ArticleObj={curArticle} closeHandler = {onDelete}/>
       </GenericModal>
+    }
+
+    {
+      showFloatingMenu &&
+      <FloatingActionMenu dropdownPackages={dropDownPackages} floatingMenuData={floatingMenuData} closeHandler = {() => setShowFloatingMenu(false)}/>
     }
     
     </>

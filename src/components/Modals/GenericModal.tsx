@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDom from 'react-dom'
-import {useClickOutside} from '../../helper/positionHelpers'
+import {useClickOutside} from '../../helper/UIHelpers'
 
 interface Props {
   children : any,
