@@ -11,16 +11,18 @@ import { RDX_updateArticle } from "../../redux/slices/articleSlice";
 import { reset as resetApplicationState, setSelectedArticle } from "../../redux/slices/applicationSlice";
 import GenericModal from "../Modals/GenericModal";
 import DeleteArticle from "../CRUD_Components/DeleteArticle";
-import {getWordCount, useTextSelector} from "../../helper/UIHelpers"
+import {getWordCount} from "../../helper/UIHelpers"
 import FloatingActionMenu from "../Modals/FloatingActionMenu";
 import { IDropDownPackage } from "../../interfaces/IDropDownPackage";
 import {RiTranslate} from 'react-icons/ri'
 import {IoMdAdd} from 'react-icons/io'
+import { IFloatingMenuData } from "../../interfaces/IFloatingMenuData";
 
 function ArticleView() {
 
   // --- State ---
   const curArticle : IArticle = useAppSelector((state) => state.applicationState.selectedArticle) as IArticle
+  const [floatingMenuData, setFloatingMenuData] = useState<IFloatingMenuData>({selectedText : '', positionData : {} as DOMRect});
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showFloatingMenu, setShowFloatingMenu] = useState<boolean>(false);
@@ -37,7 +39,6 @@ function ArticleView() {
   const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-2xl font-bold text-text-main`
   const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-sm leading-loose text-text-main`
   
-  const {domNode, floatingMenuData} = useTextSelector();
   const dropDownPackages : IDropDownPackage[] = [
     {Icon : RiTranslate, ActionTitle : "Translate", ActionFunction : () => {}},
     {Icon : IoMdAdd, ActionTitle : "Add to List", ActionFunction : () => {}},
@@ -49,10 +50,38 @@ function ArticleView() {
 
   // --- Hooks and Functions ---
 
+  // onHighlight : Handles Highlighting Text
+  const onHighlight = () => {
+    const sel = window.getSelection();
+    console.log(sel?.getRangeAt(0).toString());
+  }
+
   // useEffect : Handles selecting text floating action menu
   useEffect(() => {
 
+    const handler = () => {
+      const sel = window.getSelection()
+      if(sel === null || isNaN(sel.rangeCount)) return;
+
+      const range = sel.getRangeAt(0).cloneRange();
+      const text: string = range.toString();
+      const pos: DOMRect = range.getBoundingClientRect();
+      setFloatingMenuData({
+        selectedText: text,
+        positionData: pos,
+      });
+
+
+      console.log(sel)
+    }
+
+    document.addEventListener("mouseup", handler)
     setShowFloatingMenu(floatingMenuData.selectedText !== '');
+
+    return () => {
+      document.removeEventListener("mouseup", handler)
+    }
+
 
   }, [floatingMenuData])
 
@@ -159,7 +188,7 @@ function ArticleView() {
               ) 
               : 
               (
-              <p ref={domNode} className="text-text-main">
+              <p className="text-text-main">
                 {formData.content}
               </p>
 

@@ -23,53 +23,6 @@ export const useClickOutside = (handler: any) => {
   return domNode;
 };
 
-// useTextSelector : Handles user highlighting text
-export const useTextSelector = () => {
-  const [floatingMenuData, setFloatingMenuData] = useState<IFloatingMenuData>({
-    selectedText: "",
-    positionData: window
-      .getSelection()
-      ?.getRangeAt(0)
-      ?.getBoundingClientRect() as DOMRect,
-  });
-
-  // Handles text selection
-  const handler = () => {
-    try {
-      const selection = window.getSelection()?.getRangeAt(0);
-      const selectedText = selection?.toString();
-      const selectionPosition = selection?.getBoundingClientRect();
-      setFloatingMenuData({
-        ...floatingMenuData,
-        selectedText: selectedText as string,
-        positionData: selectionPosition as DOMRect,
-      });
-    } catch (error: any) {
-      // Do nothing (Maybe not the best solution)
-      console.log(error);
-      return;
-    }
-  };
-
-  const domNode: any = useRef();
-
-  useEffect(() => {
-    const checkHandler = (event: any) => {
-      if (domNode?.current?.contains(event?.target)) {
-        handler();
-      }
-    };
-
-    document.addEventListener("mouseup", checkHandler);
-
-    return () => {
-      document.addEventListener("mouseup", checkHandler);
-    };
-  }, []);
-
-  return { domNode, floatingMenuData };
-};
-
 // getWordCount : Gets word count for a string
 export const getWordCount = (data: string) => {
   // //Count Korean Words
@@ -110,3 +63,48 @@ export const applyShift = (value: any, shift: any) => {
   if (!value || shift === "auto") return "auto";
   return value + shift;
 };
+
+// // useTextSelector : Handles user highlighting text
+// export const useTextSelector = () => {
+//   const [floatingMenuData, setFloatingMenuData] = useState<IFloatingMenuData>({
+//     selectedText: "",
+//     positionData: window
+//       .getSelection()
+//       ?.getRangeAt(0)
+//       ?.getBoundingClientRect() as DOMRect,
+//   });
+
+//   // Handles text selection
+//   const handler = () => {
+//     // const sel = window?.getSelection();
+//     // if (sel === null || sel.rangeCount === null || isNaN(sel.rangeCount)) {
+//     //   console.log("Invalid Selection");
+//     //   return;
+//     // }
+//     // const range = sel.getRangeAt(0).cloneRange();
+//     // const text: string = range.toString();
+//     // const pos: DOMRect = range.getBoundingClientRect();
+//     // setFloatingMenuData({
+//     //   selectedText: text,
+//     //   positionData: pos,
+//     // });
+//   };
+
+//   const domNode: any = useRef();
+
+//   useEffect(() => {
+//     const checkHandler = (event: any) => {
+//       if (domNode?.current?.contains(event?.target)) {
+//         handler();
+//       }
+//     };
+
+//     document.addEventListener("mouseup", checkHandler);
+
+//     return () => {
+//       document.addEventListener("mouseup", checkHandler);
+//     };
+//   }, []);
+
+//   return { domNode, floatingMenuData };
+// };
