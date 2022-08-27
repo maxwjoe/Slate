@@ -8,7 +8,7 @@ import DocPath from "./DocPath";
 import { getSourceTitleFromId, getArticleFromId } from "../../helper/dataHelpers";
 import { createArticleViewModel } from "../../viewModels/createArticleViewModel";
 import { RDX_updateArticle } from "../../redux/slices/articleSlice";
-import { reset as resetApplicationState, setSelectedArticle } from "../../redux/slices/applicationSlice";
+import { reset as resetApplicationState, setFloatingMenuOpen, setSelectedArticle, setSelectedText, setSelectionPosition } from "../../redux/slices/applicationSlice";
 import GenericModal from "../Modals/GenericModal";
 import DeleteArticle from "../CRUD_Components/DeleteArticle";
 import {getWordCount} from "../../helper/UIHelpers"
@@ -19,65 +19,67 @@ function ArticleView() {
 
   // --- State ---
   const curArticle : IArticle = useAppSelector((state) => state.applicationState.selectedArticle) as IArticle
-  const [floatingMenuData, setFloatingMenuData] = useState<IFloatingMenuData>({selectedText : '', positionData : {} as DOMRect});
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [showFloatingMenu, setShowFloatingMenu] = useState<boolean>(false);
   const [formData, setFormData] = useState<createArticleViewModel>({
     title : curArticle.title,
     content : curArticle.content,
     source : curArticle.source
   })
 
-  const menuRef = useRef<any>();
-  
   const dispatch = useAppDispatch();
   
   // --- Constants ---
+  const selectedText : string = useAppSelector((state) => state.applicationState.selectedText) as string;
   const docPath : string[] = [getSourceTitleFromId(curArticle?.source), curArticle?.title];
   const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-2xl font-bold text-text-main`
   const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-sm leading-loose text-text-main`
   
+
   const createdDate : string = new Date(curArticle?.createdAt).toLocaleDateString();
   const updatedDate : string = new Date(curArticle?.updatedAt).toLocaleDateString();
 
   // --- Hooks and Functions ---
 
-  // useEffect : Handles selecting text floating action menu
-  //TODO: Stop updating when inside menu
+  // useEffect Hook to update redux data layer for highlighted text and position
   useEffect(() => {
 
-    // Handler called on mouseUp for selection
-    const handler = () => {
-      
-      const sel = window.getSelection()
-      if(sel === null || isNaN(sel.rangeCount)) return;
+    document.addEventListener("mouseup", hightlightHandler)
 
-      const range = sel.getRangeAt(0).cloneRange();
-      const text: string = range.toString();
-      const pos: DOMRect = range.getBoundingClientRect();
-
-      if(text === floatingMenuData.selectedText) return;
-      
-      setFloatingMenuData({
-        selectedText: text,
-        positionData: pos,
-      });
-
-    }
-
-    document.addEventListener("mouseup", handler)
-    setShowFloatingMenu(floatingMenuData.selectedText !== '');
-    
     return () => {
-      document.removeEventListener("mouseup", handler)
+      document.removeEventListener("mouseup", hightlightHandler)
     }
 
+  }, [selectedText])
 
-  }, [floatingMenuData])
+  // highlightHandler : Handler for highlight action
+  const hightlightHandler = () => {
+    
+    // Check validity of selection
+    const sel = window.getSelection()
+    if(sel === null || isNaN(sel.rangeCount)) return;
+    
+    // Get Selection Content and Position
+    const range = sel.getRangeAt(0).cloneRange();
+    const text: string = range.toString();
+    const pos: DOMRect = range.getBoundingClientRect();
+    
+    // Send to Redux
+    if(text !== "")
+    {
+      dispatch(setSelectedText(text));
+      dispatch(setFloatingMenuOpen(true));
 
-
-
+      dispatch(setSelectionPosition({
+        top : pos.top,
+        bottom : pos.bottom,
+        left : pos.left,
+        right : pos.right
+      }));
+    }
+  }
+  
+  
   // onChange : Handles input change and updates formData
   const onChange = (e : any) => {
     setFormData((prevState : createArticleViewModel) => ({
@@ -230,12 +232,7 @@ function ArticleView() {
       </GenericModal>
     }
 
-    {
-      showFloatingMenu &&
-      <div ref={menuRef}>
-        <FloatingActionMenu floatingMenuData={floatingMenuData} closeHandler = {() => setShowFloatingMenu(false)}/>
-      </div>
-    }
+      <FloatingActionMenu/>
     
     </>
 

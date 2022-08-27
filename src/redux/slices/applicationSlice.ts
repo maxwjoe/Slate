@@ -1,21 +1,20 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  PayloadAction,
-  createReducer,
-} from "@reduxjs/toolkit";
-import { getItemsFromListId } from "../../helper/dataHelpers";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IArticle, IItem, IList } from "../../interfaces/DataInterfaces";
+import { ITextPosition } from "../../interfaces/IFloatingMenuData";
 
 interface applicationState {
   selectedArticle?: IArticle;
   selectedList?: IList;
   selectedItem?: IItem;
   selectedContentType: string;
+  selectedText?: string;
+  selectionPosition?: ITextPosition;
+  floatingMenuOpen: boolean;
 }
 
 const initialState: applicationState = {
   selectedContentType: "",
+  floatingMenuOpen: false,
 };
 
 const applicationSlice = createSlice({
@@ -33,6 +32,7 @@ const applicationSlice = createSlice({
         selectedArticle: action.payload,
         selectedList: undefined,
         selectedItem: undefined,
+        selectedText: "",
       };
     },
     setSelectedList: (state, action: PayloadAction<IList>) => {
@@ -50,6 +50,24 @@ const applicationSlice = createSlice({
         selectedItem: action.payload,
       };
     },
+    setSelectedText: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        selectedText: action.payload,
+      };
+    },
+    setSelectionPosition: (state, action: PayloadAction<ITextPosition>) => {
+      return {
+        ...state,
+        selectionPosition: action.payload,
+      };
+    },
+    setFloatingMenuOpen: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        floatingMenuOpen: action.payload,
+      };
+    },
   },
 });
 
@@ -59,5 +77,8 @@ export const {
   setSelectedList,
   setSelectedItem,
   clearSelectedItem,
+  setSelectedText,
+  setSelectionPosition,
+  setFloatingMenuOpen,
 } = applicationSlice.actions;
 export default applicationSlice.reducer;

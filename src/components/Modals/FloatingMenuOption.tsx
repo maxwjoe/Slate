@@ -10,8 +10,7 @@ function FloatingMenuOption({DropdownPackage} : Props) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const handleClick = () => {
-        setIsOpen(true);
-        DropdownPackage.ActionFunction();
+      DropdownPackage.ActionFunction();
     }
 
   return (
