@@ -49,7 +49,7 @@ function CreateItem({closeHandler, list} : Props) {
     <div className='flex flex-col items-center p-3 w-[40vw] min-h-[400px] h-[70vh]'>
         
         <div className='flex items-center justify-center w-full h-12'>
-          <p className='text-2xl text-text-main'>{`Add a word to "${getSourceTitleFromId(list.source)}"`}</p>
+          <p className='text-2xl text-text-main'>{`Add a word to "${list.title}"`}</p>
         </div>
         
         <div className='flex w-full p-3 flex-col space-y-5 grow items-start justify-start'>
