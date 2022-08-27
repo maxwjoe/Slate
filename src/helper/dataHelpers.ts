@@ -1,4 +1,4 @@
-import { IArticle, IItem, ISource } from "../interfaces/DataInterfaces";
+import { IArticle, IItem, IList, ISource } from "../interfaces/DataInterfaces";
 import store from "../redux/store";
 
 // getSourceTitleFromId : Returns the title of a source given its ID
@@ -15,6 +15,34 @@ export const getArticleFromId = (articleId: string) => {
   const articles: IArticle[] = store.getState().articles.articles;
   for (let i = 0; i < articles.length; i++) {
     if (articles[i]._id === articleId) return articles[i];
+  }
+  return {} as IArticle;
+};
+
+// listNameTaken : Checks if there is an existing list with a name
+export const listNameTaken = (listName: string) => {
+  const lists: IList[] = store.getState().lists.lists as IList[];
+  for (let i = 0; lists && i < lists?.length; i++) {
+    if (lists[i].title === listName) return true;
+  }
+
+  return false;
+};
+
+// getListFromTitle : Gets list object from title
+export const getListFromTitle = (title: string) => {
+  const lists: IList[] = store.getState().lists.lists as IList[];
+  for (let i = 0; lists && i < lists?.length; i++) {
+    if (lists[i].title === title) return lists[i];
+  }
+  return {} as IList;
+};
+
+// getListFromListId : Returns list Object from list ID
+export const getListFromListId = (listId: string) => {
+  const lists: IList[] = store.getState().lists.lists;
+  for (let i = 0; lists && i < lists?.length; i++) {
+    if (lists[i]._id === listId) return lists[i];
   }
   return undefined;
 };

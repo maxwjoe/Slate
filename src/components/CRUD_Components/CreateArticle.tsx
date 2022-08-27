@@ -15,6 +15,7 @@ function CreateArticle({SourceId, closeHandler} : Props) {
         title : '',
         content : '',
         source : SourceId,
+        associatedList : 'None',
     });
 
     const dispatch = useAppDispatch();

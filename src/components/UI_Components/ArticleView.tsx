@@ -24,7 +24,7 @@ function ArticleView() {
   const [formData, setFormData] = useState<createArticleViewModel>({
     title : curArticle.title,
     content : curArticle.content,
-    source : curArticle.source
+    source : curArticle.source,
   })
 
   const dispatch = useAppDispatch();

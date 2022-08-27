@@ -16,6 +16,7 @@ export interface IArticle {
   content: string;
   updatedAt: string;
   createdAt: string;
+  associatedList?: string;
   __v: number;
 }
 
