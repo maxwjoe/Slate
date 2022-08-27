@@ -14,6 +14,9 @@ import { getListFromListId, getListFromTitle, listNameTaken } from '../../helper
 import { RDX_updateArticle } from '../../redux/slices/articleSlice'
 import { RDX_createItem } from '../../redux/slices/itemSlice'
 import { createItemViewModel } from '../../viewModels/createItemViewModel'
+import { translateText } from '../../services/translationService'
+import { BsArrowRight } from 'react-icons/bs'
+import { Ping } from '@uiball/loaders'
 
 interface Props {
     closeHandler? : any,
@@ -27,6 +30,7 @@ function FloatingActionMenu({closeHandler} : Props) {
     const position : DOMRect = useAppSelector((state) => state.applicationState.selectionPosition) as DOMRect;
 
     const dispatch = useAppDispatch();
+    const [translation, setTranslation] = useState<any>(null);
 
     const offsetStyle = {top : position?.top + 30, bottom : position?.bottom , left : position?.left , right : position?.right }
 
@@ -34,6 +38,7 @@ function FloatingActionMenu({closeHandler} : Props) {
         dispatch(setFloatingMenuOpen(false))
         dispatch(setSelectedText(""));
         dispatch(setSelectionPosition({} as ITextPosition))
+        setTranslation(null);
     }
 
     const domNode = useClickOutside(() => {
@@ -42,6 +47,8 @@ function FloatingActionMenu({closeHandler} : Props) {
 
     // onAddToList : Handles user selecting add to list
     const onAddToList = async () => {
+
+        const def : string = translation?.translatedText && translation?.valid ? translation?.translatedText : "No Definition"
 
         // Check if article has an associated list (Create one if not)
         if(!curArticle?.associatedList || !getListFromListId(curArticle?.associatedList))
@@ -68,7 +75,7 @@ function FloatingActionMenu({closeHandler} : Props) {
             // Add currently selected word to associated list
             let newItem : createItemViewModel = {
                 title : selectedText,
-                definition : "No Definition",
+                definition : def,
                 pronunciation : "No Pronunciation",
                 list : tgtList._id,
             }
@@ -81,7 +88,7 @@ function FloatingActionMenu({closeHandler} : Props) {
             // Add currently selected word to associated list
             let newItem : createItemViewModel = {
                 title : selectedText,
-                definition : "No Definition",
+                definition : def,
                 pronunciation : "No Pronunciation",
                 list : curArticle?.associatedList,
             }
@@ -95,8 +102,29 @@ function FloatingActionMenu({closeHandler} : Props) {
 
     }
 
+    const onTranslate = async () => 
+    {
+        const translationRes = await translateText(selectedText, 'zh', 'en');
+        
+        if(!translationRes){
+            setTranslation({
+                ...translationRes,
+                valid : false,
+            })
+            return
+        } 
+
+        setTranslation({
+            ...translationRes,
+            valid : true,
+        })
+    }
+
+    useEffect(() => {
+        onTranslate();
+    }, [selectedText])
+
     const dropdownPackages : IDropDownPackage[] = [
-        {Icon : RiTranslate, ActionTitle : "Translate", ActionFunction : () => {}},
         {Icon : IoMdAdd, ActionTitle : "Add to List", ActionFunction : onAddToList},
     ]
 
@@ -108,9 +136,32 @@ function FloatingActionMenu({closeHandler} : Props) {
     <div
         ref = {domNode}
         style = {offsetStyle} 
-        className='flex flex-col p-3 w-[180px] min-h-[130px] max-h-[200px] bg-slate-black absolute rounded-md'>
-        <div className='flex pb-3 mb-3 w-full min-h-[30px] max-h-[33%] overflow-scroll scrollbar-thin border-b-2 border-slate-lightdark'>
+        className='flex flex-col p-3 w-[180px] min-h-[150px] max-h-[200px] bg-slate-black absolute rounded-md'>
+        <div className='flex justify-between items-center pb-3 mb-3 w-full min-h-[45px] overflow-scroll scrollbar-thin border-b-2 border-slate-lightdark'>
             <p className='text-md select-none text-text-main leading-tight'>{selectedText}</p>
+            {
+                translation == null ? 
+                (
+                    <>
+                        <BsArrowRight className='text-lg select-none text-text-main'/>
+                        <Ping size={20} color={"#FFF"}/>
+                    </>
+                ) 
+                : translation?.valid == true ? 
+                (
+                    <>
+                     <BsArrowRight className='text-lg select-none text-text-main'/>
+                    <div className='flex flex-col'>
+                        <p className='text-sm select-none text-text-main leading-tight'>{translation.translatedText}</p>
+                        <p className='text-sm slect-none text-text-main leading-tight'>{`(${translation.match * 100}%)`}</p>
+                    </div>
+                    </>
+                ) 
+                :
+                (<></>) 
+
+            }
+           
         </div>
             {dropdownPackages.map(({Icon, ActionTitle, ActionFunction} : IDropDownPackage, index : number) => (
                 <FloatingMenuOption key={index} DropdownPackage={{Icon, ActionTitle, ActionFunction}}/>
