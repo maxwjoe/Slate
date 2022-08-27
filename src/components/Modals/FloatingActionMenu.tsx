@@ -3,19 +3,26 @@ import ReactDom from 'react-dom'
 import { useClickOutside } from '../../helper/UIHelpers'
 import { IDropDownPackage } from '../../interfaces/IDropDownPackage'
 import { IFloatingMenuData } from '../../interfaces/IFloatingMenuData'
+import FloatingMenuOption from './FloatingMenuOption'
+import {RiTranslate} from 'react-icons/ri'
+import {IoMdAdd} from 'react-icons/io'
 
 interface Props {
-    dropdownPackages : IDropDownPackage[],
     floatingMenuData : IFloatingMenuData,
     closeHandler : any,
 }
 
-function FloatingActionMenu({dropdownPackages, floatingMenuData, closeHandler} : Props) {
+function FloatingActionMenu({floatingMenuData, closeHandler} : Props) {
 
     const position = floatingMenuData.positionData
     const offsetStyle = {top : position.top + 30, bottom : position.bottom , left : position.left , right : position.right }
 
     const domNode = useClickOutside(closeHandler)
+
+    const dropdownPackages : IDropDownPackage[] = [
+        {Icon : RiTranslate, ActionTitle : "Translate", ActionFunction : () => console.log(floatingMenuData.selectedText)},
+        {Icon : IoMdAdd, ActionTitle : "Add to List", ActionFunction : () => console.log(floatingMenuData.selectedText)},
+    ]
 
 
   return ReactDom.createPortal(
@@ -28,10 +35,7 @@ function FloatingActionMenu({dropdownPackages, floatingMenuData, closeHandler} :
             <p className='text-md text-text-main leading-tight'>{floatingMenuData.selectedText}</p>
         </div>
             {dropdownPackages.map(({Icon, ActionTitle, ActionFunction} : IDropDownPackage, index : number) => (
-                <div key={index} className='flex items-center justify-start p-1 space-x-2 w-full h-10 cursor-pointer rounded-md hover:bg-slate-dark' onClick = {ActionFunction}>
-                    <Icon className='text-text-main w-5 h-5'/>
-                    <p className='text-text-main'>{ActionTitle}</p>
-                </div>
+                <FloatingMenuOption key={index} DropdownPackage={{Icon, ActionTitle, ActionFunction}}/>
             ))}
     </div>
     

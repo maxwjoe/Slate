@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {FiEdit} from 'react-icons/fi'
 import {AiFillDelete, AiFillSave} from 'react-icons/ai'
 import {MdCancel} from 'react-icons/md'
@@ -13,9 +13,6 @@ import GenericModal from "../Modals/GenericModal";
 import DeleteArticle from "../CRUD_Components/DeleteArticle";
 import {getWordCount} from "../../helper/UIHelpers"
 import FloatingActionMenu from "../Modals/FloatingActionMenu";
-import { IDropDownPackage } from "../../interfaces/IDropDownPackage";
-import {RiTranslate} from 'react-icons/ri'
-import {IoMdAdd} from 'react-icons/io'
 import { IFloatingMenuData } from "../../interfaces/IFloatingMenuData";
 
 function ArticleView() {
@@ -31,6 +28,8 @@ function ArticleView() {
     content : curArticle.content,
     source : curArticle.source
   })
+
+  const menuRef = useRef<any>();
   
   const dispatch = useAppDispatch();
   
@@ -39,51 +38,44 @@ function ArticleView() {
   const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-2xl font-bold text-text-main`
   const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-sm leading-loose text-text-main`
   
-  const dropDownPackages : IDropDownPackage[] = [
-    {Icon : RiTranslate, ActionTitle : "Translate", ActionFunction : () => {}},
-    {Icon : IoMdAdd, ActionTitle : "Add to List", ActionFunction : () => {}},
-  ]
-  
   const createdDate : string = new Date(curArticle?.createdAt).toLocaleDateString();
   const updatedDate : string = new Date(curArticle?.updatedAt).toLocaleDateString();
 
-
   // --- Hooks and Functions ---
 
-  // onHighlight : Handles Highlighting Text
-  const onHighlight = () => {
-    const sel = window.getSelection();
-    console.log(sel?.getRangeAt(0).toString());
-  }
-
   // useEffect : Handles selecting text floating action menu
+  //TODO: Stop updating when inside menu
   useEffect(() => {
 
+    // Handler called on mouseUp for selection
     const handler = () => {
+      
       const sel = window.getSelection()
       if(sel === null || isNaN(sel.rangeCount)) return;
 
       const range = sel.getRangeAt(0).cloneRange();
       const text: string = range.toString();
       const pos: DOMRect = range.getBoundingClientRect();
+
+      if(text === floatingMenuData.selectedText) return;
+      
       setFloatingMenuData({
         selectedText: text,
         positionData: pos,
       });
 
-
-      console.log(sel)
     }
 
     document.addEventListener("mouseup", handler)
     setShowFloatingMenu(floatingMenuData.selectedText !== '');
-
+    
     return () => {
       document.removeEventListener("mouseup", handler)
     }
 
 
   }, [floatingMenuData])
+
 
 
   // onChange : Handles input change and updates formData
@@ -202,8 +194,8 @@ function ArticleView() {
 
           <div className="flex w-full flex-col space-y-2">
             <div className="flex flex-row justify-between w-full">
-              <p className="text-xs text-text-secondary">Word Count</p>
-              <p className="text-xs text-text-secondary">{getWordCount(formData.content)}</p>
+              <p className="text-xs text-text-secondary select-none">Word Count</p>
+              <p className="text-xs text-text-secondary select-none">{getWordCount(formData.content)}</p>
             </div>
             {/* <div className="flex flex-row justify-between w-full">
               <p className="text-xs text-text-secondary">Words Saved</p>
@@ -214,12 +206,12 @@ function ArticleView() {
               <p className="text-xs text-text-secondary">50%</p>
             </div> */}
             <div className="flex flex-row justify-between w-full">
-              <p className="text-xs text-text-secondary">Created At</p>
-              <p className="text-xs text-text-secondary">{createdDate}</p>
+              <p className="text-xs text-text-secondary select-none">Created At</p>
+              <p className="text-xs text-text-secondary select-none">{createdDate}</p>
             </div>
             <div className="flex flex-row justify-between w-full">
-              <p className="text-xs text-text-secondary">Updated At</p>
-              <p className="text-xs text-text-secondary">{updatedDate}</p>
+              <p className="text-xs text-text-secondary select-none">Updated At</p>
+              <p className="text-xs text-text-secondary select-none">{updatedDate}</p>
             </div>
           </div>
 
@@ -240,7 +232,9 @@ function ArticleView() {
 
     {
       showFloatingMenu &&
-      <FloatingActionMenu dropdownPackages={dropDownPackages} floatingMenuData={floatingMenuData} closeHandler = {() => setShowFloatingMenu(false)}/>
+      <div ref={menuRef}>
+        <FloatingActionMenu floatingMenuData={floatingMenuData} closeHandler = {() => setShowFloatingMenu(false)}/>
+      </div>
     }
     
     </>
