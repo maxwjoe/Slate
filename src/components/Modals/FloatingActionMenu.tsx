@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
 import { useClickOutside } from '../../helper/UIHelpers'
 import { IDropDownPackage } from '../../interfaces/IDropDownPackage'
-import { IFloatingMenuData } from '../../interfaces/IFloatingMenuData'
+import { IFloatingMenuData, ITextPosition } from '../../interfaces/IFloatingMenuData'
 import FloatingMenuOption from './FloatingMenuOption'
 import {RiTranslate} from 'react-icons/ri'
 import {IoMdAdd} from 'react-icons/io'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { setFloatingMenuOpen } from '../../redux/slices/applicationSlice'
+import { setFloatingMenuOpen, setSelectedText, setSelectionPosition } from '../../redux/slices/applicationSlice'
 
 interface Props {
     closeHandler? : any,
@@ -23,7 +23,11 @@ function FloatingActionMenu({closeHandler} : Props) {
 
     const offsetStyle = {top : position?.top + 30, bottom : position?.bottom , left : position?.left , right : position?.right }
 
-    const domNode = useClickOutside(() => dispatch(setFloatingMenuOpen(false)));
+    const domNode = useClickOutside(() => {
+        dispatch(setFloatingMenuOpen(false))
+        dispatch(setSelectedText(""));
+        dispatch(setSelectionPosition({} as ITextPosition))
+    });
 
     const dropdownPackages : IDropDownPackage[] = [
         {Icon : RiTranslate, ActionTitle : "Translate", ActionFunction : () => {}},
