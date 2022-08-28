@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import {FiEdit} from 'react-icons/fi'
-import {AiFillDelete, AiFillSave} from 'react-icons/ai'
+import {AiFillDelete, AiFillSave, AiFillHighlight} from 'react-icons/ai'
 import {MdCancel} from 'react-icons/md'
-import { IArticle } from "../../interfaces/DataInterfaces";
+import { IArticle, IItem } from "../../interfaces/DataInterfaces";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import DocPath from "./DocPath";
-import { getSourceTitleFromId, getArticleFromId } from "../../helper/dataHelpers";
+import { getSourceTitleFromId, getArticleFromId, getItemsFromListId } from "../../helper/dataHelpers";
 import { createArticleViewModel } from "../../viewModels/createArticleViewModel";
 import { RDX_updateArticle } from "../../redux/slices/articleSlice";
 import { reset as resetApplicationState, setFloatingMenuOpen, setSelectedArticle, setSelectedText, setSelectionPosition } from "../../redux/slices/applicationSlice";
@@ -21,6 +21,7 @@ function ArticleView() {
   const curArticle : IArticle = useAppSelector((state) => state.applicationState.selectedArticle) as IArticle
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [showHighlight, setShowHighlight] = useState<boolean>(true);
   const [formData, setFormData] = useState<createArticleViewModel>({
     title : curArticle.title,
     content : curArticle.content,
@@ -35,6 +36,13 @@ function ArticleView() {
   const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-2xl font-bold text-text-main`
   const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-sm leading-loose text-text-main`
   
+  const associatedListItems : IItem[] = getItemsFromListId(curArticle?.associatedList as string);
+  const associatedListItemTitles : string[] = [];
+
+  for(let i = 0 ; i < associatedListItems.length ; i++)
+  {
+    associatedListItemTitles.push(associatedListItems[i].title);
+  }
 
   const createdDate : string = new Date(curArticle?.createdAt).toLocaleDateString();
   const updatedDate : string = new Date(curArticle?.updatedAt).toLocaleDateString();
@@ -79,6 +87,39 @@ function ArticleView() {
     }
   }
   
+  // highlightText : returns highlighted text
+  const getHighlightedText = (text : string, highlight : string[]) => {
+    
+    if(!showHighlight) return text;
+    
+    let regexMatchString : string = "";
+    
+    for(let i = 0 ; i < highlight.length ; i++)
+    {
+      regexMatchString = regexMatchString.concat(highlight[i]);
+      if (i != highlight.length - 1) 
+      {
+        regexMatchString = regexMatchString.concat("|");
+      }
+    }
+
+    const isContained = (part : string, highlight : string[]) =>
+    {
+      for(let i = 0 ; i < highlight.length ; i++)
+      {
+        if(part.toLowerCase() === highlight[i].toLowerCase()) return true;
+      }
+      return false;
+    }
+
+    const parts = text.split(new RegExp(`(${regexMatchString})`, 'gi'));
+    return <span> { parts.map((part, i) => 
+        <span className="rounded-md" key={i} style={isContained(part, highlight) ? { backgroundColor: "#d94c68" } : {} }>
+            { part }
+        </span>)
+    } </span>;
+}
+
   
   // onChange : Handles input change and updates formData
   const onChange = (e : any) => {
@@ -139,6 +180,9 @@ function ArticleView() {
       <div className="flex w-full h-12">
         <DocPath Path={docPath}/>
         <div className="flex items-center justify-end space-x-3 pr-6 h-full w-1/2">
+          <AiFillHighlight
+                          onClick = {() => setShowHighlight(!showHighlight)} 
+                          className={`text-lg ${showHighlight ? "text-slate-accent" : "text-text-secondary"} cursor-pointer`}/>
           {enableEdit ? 
           <>
            <AiFillSave onClick = {onEditSubmit} className="text-lg text-text-secondary cursor-pointer hover:text-slate-accent"/>
@@ -183,7 +227,7 @@ function ArticleView() {
               : 
               (
               <p className="text-text-main">
-                {formData.content}
+                {getHighlightedText(formData.content, associatedListItemTitles)}
               </p>
 
               )

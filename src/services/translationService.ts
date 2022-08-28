@@ -19,7 +19,8 @@ export const translateText = async (
   sourceLang: string,
   tgtLang: string
 ) => {
-  if (text == "" || text?.split(" ").length < 1) return;
+  if (text == "" || text?.split(" ").length < 1 || sourceLang === tgtLang)
+    return null;
   const reqString: string = `https://api.mymemory.translated.net/get?q=${text}&langpair=${sourceLang}|${tgtLang}`;
   const res = await axios.get(reqString);
   console.log(res);
