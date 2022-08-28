@@ -7,7 +7,7 @@ import FloatingMenuOption from './FloatingMenuOption'
 import {RiTranslate} from 'react-icons/ri'
 import {IoMdAdd} from 'react-icons/io'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { setFloatingMenuOpen, setSelectedText, setSelectionPosition } from '../../redux/slices/applicationSlice'
+import { setFloatingMenuOpen, setSelectedArticle, setSelectedText, setSelectionPosition } from '../../redux/slices/applicationSlice'
 import { IArticle, IList } from '../../interfaces/DataInterfaces'
 import { RDX_createList } from '../../redux/slices/listSlice'
 import { getListFromListId, getListFromTitle, getSourceLanguageFromId, listNameTaken } from '../../helper/dataHelpers'
@@ -72,6 +72,8 @@ function FloatingActionMenu({closeHandler} : Props) {
                 associatedList : tgtList._id,
             }))
 
+            dispatch(setSelectedArticle({...curArticle, associatedList : tgtList._id}))
+
             // Add currently selected word to associated list
             let newItem : createItemViewModel = {
                 title : selectedText,
@@ -84,7 +86,6 @@ function FloatingActionMenu({closeHandler} : Props) {
         }
         else 
         {
-            console.log(curArticle?.associatedList)
             // Add currently selected word to associated list
             let newItem : createItemViewModel = {
                 title : selectedText,
@@ -136,8 +137,8 @@ function FloatingActionMenu({closeHandler} : Props) {
     <div
         ref = {domNode}
         style = {offsetStyle} 
-        className='flex flex-col p-3 w-[180px] min-h-[150px] max-h-[200px] bg-slate-black absolute rounded-md'>
-        <div className='flex justify-between items-center pb-3 mb-3 w-full min-h-[45px] overflow-scroll scrollbar-thin border-b-2 border-slate-lightdark'>
+        className='flex flex-col p-3 w-[180px] max-h-[130px] bg-slate-black absolute rounded-md'>
+        <div className='flex justify-between items-center pb-3 mb-3 w-full max-h-[80px] overflow-scroll scrollbar-thin border-b-2 border-slate-lightdark'>
             <p className='text-md select-none text-text-main leading-tight'>{selectedText}</p>
             {
                 translation == null ? 
@@ -166,7 +167,7 @@ function FloatingActionMenu({closeHandler} : Props) {
             {dropdownPackages.map(({Icon, ActionTitle, ActionFunction} : IDropDownPackage, index : number) => (
                 <FloatingMenuOption key={index} DropdownPackage={{Icon, ActionTitle, ActionFunction}}/>
             ))}
-    </div>
+        </div>
     
     </>,
     document.getElementById("portal")!

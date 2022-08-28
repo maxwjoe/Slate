@@ -180,9 +180,6 @@ function ArticleView() {
       <div className="flex w-full h-12">
         <DocPath Path={docPath}/>
         <div className="flex items-center justify-end space-x-3 pr-6 h-full w-1/2">
-          <AiFillHighlight
-                          onClick = {() => setShowHighlight(!showHighlight)} 
-                          className={`text-lg ${showHighlight ? "text-slate-accent" : "text-text-secondary"} cursor-pointer`}/>
           {enableEdit ? 
           <>
            <AiFillSave onClick = {onEditSubmit} className="text-lg text-text-secondary cursor-pointer hover:text-slate-accent"/>
@@ -190,6 +187,9 @@ function ArticleView() {
           </>
           : 
           <>
+          <AiFillHighlight
+                          onClick = {() => setShowHighlight(!showHighlight)} 
+                          className={`text-lg ${showHighlight ? "text-slate-accent" : "text-text-secondary"} cursor-pointer`}/>
            <FiEdit onClick = {() => setEnableEdit(true)} className="text-lg text-text-secondary cursor-pointer hover:text-slate-accent"/>
             <AiFillDelete onClick = {() => setShowDeleteModal(true)} className="text-lg text-text-secondary cursor-pointer hover:text-text-danger"/>
           </>
