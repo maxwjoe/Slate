@@ -33,11 +33,11 @@ function DropdownSelector({selectionFunction, defaultSelection} : Props) {
 
         {
             isOpen && 
-            <div ref = {domNode} className='z-0 flex flex-col items-start justify-start absolute top-7 h-24 w-full rounded-b-md bg-slate-lightdark overflow-y-scroll overflow-x-hidden scrollbar-thin'>
+            <div ref = {domNode} className='z-0 flex pt-2 flex-col items-start justify-start absolute top-7 h-24 w-full rounded-b-md bg-slate-lightdark overflow-y-scroll overflow-x-hidden scrollbar-thin'>
                 
                 {languageOptions.map((option : Option, index : number) => {
                     return (
-                        <div onClick = {() => handleSelect(option)} className='flex flex-row items-center w-full h-9 space-x-2 p-3'>
+                        <div onClick = {() => handleSelect(option)} className='flex flex-row items-center w-full h-9 space-x-2 p-3 hover:bg-slate-dark'>
                             <p className='text-text-main'>{option.disp}</p>
                         </div>
                     )

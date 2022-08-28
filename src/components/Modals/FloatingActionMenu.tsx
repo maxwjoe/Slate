@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { setFloatingMenuOpen, setSelectedText, setSelectionPosition } from '../../redux/slices/applicationSlice'
 import { IArticle, IList } from '../../interfaces/DataInterfaces'
 import { RDX_createList } from '../../redux/slices/listSlice'
-import { getListFromListId, getListFromTitle, listNameTaken } from '../../helper/dataHelpers'
+import { getListFromListId, getListFromTitle, getSourceLanguageFromId, listNameTaken } from '../../helper/dataHelpers'
 import { RDX_updateArticle } from '../../redux/slices/articleSlice'
 import { RDX_createItem } from '../../redux/slices/itemSlice'
 import { createItemViewModel } from '../../viewModels/createItemViewModel'
@@ -28,10 +28,10 @@ function FloatingActionMenu({closeHandler} : Props) {
     const curArticle : IArticle = useAppSelector((state) => state.applicationState.selectedArticle) as IArticle;
     const selectedText : string = useAppSelector((state) => state.applicationState.selectedText) as string;
     const position : DOMRect = useAppSelector((state) => state.applicationState.selectionPosition) as DOMRect;
+    const sourceLanguage : string = getSourceLanguageFromId(curArticle?.source as string);
 
     const dispatch = useAppDispatch();
     const [translation, setTranslation] = useState<any>(null);
-
     const offsetStyle = {top : position?.top + 30, bottom : position?.bottom , left : position?.left , right : position?.right }
 
     const clearFloatingStateRDX = () => {
@@ -104,7 +104,7 @@ function FloatingActionMenu({closeHandler} : Props) {
 
     const onTranslate = async () => 
     {
-        const translationRes = await translateText(selectedText, 'zh', 'en');
+        const translationRes = await translateText(selectedText, sourceLanguage, 'en');
         
         if(!translationRes){
             setTranslation({

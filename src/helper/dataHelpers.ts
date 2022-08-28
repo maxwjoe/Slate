@@ -10,6 +10,15 @@ export const getSourceTitleFromId = (sourceId: string) => {
   return "Unknown Source";
 };
 
+// getSourceLanguageFromId : Returns the language of a source from its ID
+export const getSourceLanguageFromId = (sourceId: string) => {
+  const sources: ISource[] = store.getState().sources.sources;
+  for (let i = 0; i < sources.length; i++) {
+    if (sources[i]._id === sourceId) return sources[i].language;
+  }
+  return "No Language";
+};
+
 // getArticleFromId : Returns article given its ID
 export const getArticleFromId = (articleId: string) => {
   const articles: IArticle[] = store.getState().articles.articles;
