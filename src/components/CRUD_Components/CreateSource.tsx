@@ -4,6 +4,7 @@ import {ISource} from '../../interfaces/DataInterfaces'
 import { useAppDispatch } from '../../redux/hooks';
 import { RDX_createSource } from '../../redux/slices/sourceSlice';
 import {createSourceViewModel} from '../../viewModels/sourceViewModels'
+import DropdownSelector from '../Other/DropdownSelector';
 
 interface Props {
   exampleLanguage : string,
@@ -49,7 +50,7 @@ function CreateSource({closeHandler, exampleLanguage, exampleTitle} : Props) {
 
 
   return (
-      <div className='flex flex-col items-center p-3 w-[40vw] min-h-[300px] h-[52vh]'>
+      <div className='flex flex-col items-center p-3 w-[40vw] min-h-[300px] h-[52vh] select-none'>
         
         <div className='flex items-center justify-center w-full h-12'>
           <p className='text-2xl text-text-main'>Create Source</p>
@@ -69,13 +70,14 @@ function CreateSource({closeHandler, exampleLanguage, exampleTitle} : Props) {
 
           <div className='flex space-y-2 flex-col w-full'>
             <p className='text-lg text-text-main'>Language</p>
-            <input 
+            <DropdownSelector selectionFunction={(iso : string) => setFormData({...formData, language : iso})}/>
+            {/* <input 
                   type="text" 
                   name = "language"
                   className='w-full p-3 h-9 outline-none border-none bg-slate-lightdark text-text-secondary rounded-md'
                   value={formData.language}
                   onChange={onChange}
-                  placeholder={`Eg. ${exampleLanguage}`} />
+                  placeholder={`Eg. ${exampleLanguage}`} /> */}
           </div>
         </div>
         <div className='flex flex-row w-full justify-end space-x-3'>

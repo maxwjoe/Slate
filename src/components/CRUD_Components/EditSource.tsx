@@ -3,7 +3,9 @@ import toast from 'react-hot-toast'
 import {ISource} from '../../interfaces/DataInterfaces'
 import { useAppDispatch } from '../../redux/hooks'
 import { RDX_updateSource } from '../../redux/slices/sourceSlice'
+import { getLanguageFromISO } from '../../services/translationService'
 import { createSourceViewModel } from '../../viewModels/sourceViewModels'
+import DropdownSelector from '../Other/DropdownSelector'
 
 interface Props {
     SourceObj : ISource,
@@ -71,13 +73,14 @@ function EditSource({SourceObj, closeHandler} : Props) {
 
           <div className='flex space-y-2 flex-col w-full'>
             <p className='text-lg text-text-main'>Language</p>
-            <input 
+            <DropdownSelector selectionFunction={(language : string) => {setFormData({...formData, language : language})}} defaultSelection={getLanguageFromISO(SourceObj.language)}/>
+            {/* <input 
                   type="text" 
                   name = "language"
                   className='w-full p-3 h-9 outline-none border-none bg-slate-lightdark text-text-secondary rounded-md'
                   value={formData.language}
                   onChange={onChange}
-                   />
+                   /> */}
           </div>
         </div>
         <div className='flex flex-row w-full justify-end space-x-3'>
