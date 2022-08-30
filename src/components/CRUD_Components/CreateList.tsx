@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { useAppDispatch } from '../../redux/hooks';
 import { RDX_createList } from '../../redux/slices/listSlice';
+import { getCurrentTheme } from '../../services/themeService';
 import { createListViewModel } from '../../viewModels/createListViewModel';
 
 interface Props {
@@ -64,7 +65,8 @@ function CreateArticle({SourceId, closeHandler} : Props) {
                     className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
             <button 
                     onClick={onSubmit}
-                    className='text-text-main w-24 h-10 bg-slate-accent font-bold border-2 border-none rounded-md'>Confirm</button>
+                    style = {{background : getCurrentTheme().accent}}
+                    className='text-text-main w-24 h-10 font-bold border-2 border-none rounded-md'>Confirm</button>
         </div>
       </div>
   )

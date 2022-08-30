@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { IAuth } from '../../interfaces/IAuth'
 import { Option } from '../../interfaces/OptionInterface';
+import { ITheme } from '../../interfaces/ThemeInterface';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { RDX_updateUser } from '../../redux/slices/authSlice';
 import { generatePictureString, getProfileImageFromAPI } from '../../services/profilePictureService';
+import { getAvailableThemes, getCurrentTheme } from '../../services/themeService';
 import { editUserInterface } from '../../viewModels/editUserInterface';
 import DropdownSelector from '../Other/DropdownSelector'
 
@@ -20,8 +22,12 @@ function EditProfile({closeHandler} : Props) {
         username : curUser?.username,
         email : curUser?.email,
         profileImage : curUser?.profileImage,
+        themeAccent : curUser?.themeAccent,
     })
     const [selectedAvatarStyle, setSelectedAvatarStyle] = useState<string>(curUser?.profileImage?.split("_")?.[1]);
+
+    const themes : ITheme[] = getAvailableThemes();
+    const currTheme : ITheme = getCurrentTheme();
 
     const avatarStyles : Option[] = [
       {disp : "Robot", real : "bottts"},
@@ -70,6 +76,7 @@ function EditProfile({closeHandler} : Props) {
       username : formData.username,
       email : formData.email,
       profileImage : formData.profileImage,
+      themeAccent : formData.themeAccent,
     };
 
     dispatch(RDX_updateUser(updatedUser));
@@ -78,7 +85,7 @@ function EditProfile({closeHandler} : Props) {
 
 
   return (
-    <div className='flex flex-col items-center p-3 w-[40vw] min-h-[300px] h-[80vh] select-none'>
+    <div className='flex flex-col items-center p-3 w-[40vw] min-h-[300px] h-[95vh] select-none overflow-scroll scrollbar-thin'>
         
         <div className='flex items-center justify-center w-full h-12'>
           <p className='text-2xl text-text-main'>{"Profile Settings"}</p>
@@ -106,6 +113,17 @@ function EditProfile({closeHandler} : Props) {
                   />
           </div>
           <div className='flex space-y-2 flex-col w-full'>
+            <p className='text-lg text-text-main'>Theme</p>
+            <div className='flex flex-row items-center justify-start pl-3 pr-3 w-full space-x-3'>
+              {themes.map((theme : ITheme, index : number) => {
+                const isSelected = theme.accent === formData.themeAccent
+                return <div 
+                            onClick = {() => setFormData({...formData, themeAccent : theme.accent})}
+                            className={`${isSelected ? "w-12 h-12" : "w-10 h-10"} cursor-pointer rounded-md ${isSelected && "border-2 border-text-main"}`} style={{background : theme.accent}}></div>
+              })}
+            </div>
+          </div>
+          <div className='flex space-y-2 flex-col w-full'>
             <p className='text-lg text-text-main' >Profile Picture</p>
             <div className="flex w-full p-3 items-center justify-evenly">
               <img 
@@ -114,7 +132,8 @@ function EditProfile({closeHandler} : Props) {
                   />
               <a 
                   onClick = {() => setFormData({...formData, profileImage : generatePictureString(selectedAvatarStyle)})}
-                  className='flex items-center justify-center w-1/3 h-10 bg-slate-accent rounded-md text-text-main p-3 cursor-pointer'>
+                  style={{background : currTheme.accent}}
+                  className={`flex items-center justify-center w-1/3 h-10 rounded-md text-text-main p-3 cursor-pointer`}>
                   Regenerate
               </a>
             </div>
@@ -130,7 +149,8 @@ function EditProfile({closeHandler} : Props) {
                     className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
             <button 
                     onClick={onSubmit}
-                    className='text-text-main w-24 h-10 bg-slate-accent font-bold border-2 border-none rounded-md'>Confirm</button>
+                    style = {{background : currTheme.accent}}
+                    className='text-text-main w-24 h-10 font-bold border-2 border-none rounded-md'>Confirm</button>
         </div>
       </div>
   )

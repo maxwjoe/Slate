@@ -10,6 +10,7 @@ import GenericModal from '../Modals/GenericModal'
 import DeleteArticle from '../CRUD_Components/DeleteArticle'
 import { useAppDispatch } from '../../redux/hooks'
 import {setSelectedArticle} from '../../redux/slices/applicationSlice'
+import { getCurrentTheme, SLATE_LIGHT_DARK } from '../../services/themeService'
 
 interface Props {
   ArticleObj : IArticle;
@@ -49,9 +50,11 @@ function ArticleBranch({ArticleObj, isSelected} : Props) {
       b : applyShift(sourceLocation?.bottom, 'auto')
   }
 
+  const selectionColor : string = getCurrentTheme().accent;
+
 
   return (
-    <div id={ArticleObj.title} className={`flex items-center justify-start w-full h-9 pr-2 pl-8 rounded-md ${isSelected ? "bg-slate-accent text-text-main" : "hover:bg-slate-lightdark rounded-md text-text-secondary"}`}>
+    <div id={ArticleObj.title} style={isSelected ? {background : selectionColor} : {}} className={`flex items-center justify-start w-full h-9 pr-2 pl-8 rounded-md ${isSelected ? "text-text-main" : "hover:bg-slate-lightdark rounded-md text-text-secondary"}`}>
         <div onClick = {handleSelect} className='flex grow justify-start space-x-1 items-center cursor-pointer'>
             <RiArticleLine className=' text-md'/>
             <p className='text-md  select-none max-w-[90px] overflow-hidden whitespace-nowrap'>{ArticleObj?.title}</p>

@@ -12,6 +12,7 @@ import {setSelectedList} from '../../redux/slices/applicationSlice'
 import { useAppDispatch } from '../../redux/hooks'
 import EditList from '../CRUD_Components/EditList'
 import { FiEdit } from 'react-icons/fi'
+import { getCurrentTheme } from '../../services/themeService'
 
 interface Props {
   ListObj : IList;
@@ -25,6 +26,9 @@ function ListBranch({ListObj, isSelected} : Props) {
   const [openDeleteModal, setopenDeleteModal] = useState<boolean>(false);
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
   const [selectedModal, setSelectedModal] = useState<string>("None");
+
+  const selectionColor : string = getCurrentTheme().accent;
+
 
   const dispatch = useAppDispatch();
 
@@ -72,10 +76,10 @@ function ListBranch({ListObj, isSelected} : Props) {
 
 
   return (
-    <div id={ListObj.title} className={`flex items-center justify-start w-full h-9 pr-2 pl-8 rounded-md ${isSelected ? "bg-slate-accent text-text-main" : "hover:bg-slate-lightdark rounded-md text-text-secondary"}`}>
+    <div id={ListObj.title} style={isSelected ? {background : selectionColor} : {}} className={`flex items-center justify-start w-full h-9 pr-2 pl-8 rounded-md ${isSelected ? "text-text-main" : "hover:bg-slate-lightdark rounded-md text-text-secondary"}`}>
         <div onClick = {handleSelect} className='flex grow justify-start space-x-1 items-center cursor-pointer'>
             <RiListCheck2 className='text-md'/>
-            <p className='text-md grow select-none overflow-hidden'>{ListObj?.title}</p>
+            <p className='text-md  select-none max-w-[90px] overflow-hidden whitespace-nowrap'>{ListObj?.title}</p>
         </div>
         <BsThreeDots onClick = {() => setOpenDropDown(true)} className=' cursor-pointer text-md'/>
 

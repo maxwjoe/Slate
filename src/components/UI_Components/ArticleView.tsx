@@ -14,6 +14,8 @@ import DeleteArticle from "../CRUD_Components/DeleteArticle";
 import {getWordCount} from "../../helper/UIHelpers"
 import FloatingActionMenu from "../Modals/FloatingActionMenu";
 import { IFloatingMenuData } from "../../interfaces/IFloatingMenuData";
+import { getCurrentTheme, SLATE_TEXT_SECONDARY } from "../../services/themeService";
+import { ITheme } from "../../interfaces/ThemeInterface";
 
 function ArticleView() {
 
@@ -31,6 +33,7 @@ function ArticleView() {
   const dispatch = useAppDispatch();
   
   // --- Constants ---
+  const currentTheme : ITheme = getCurrentTheme();
   const selectedText : string = useAppSelector((state) => state.applicationState.selectedText) as string;
   const docPath : string[] = [getSourceTitleFromId(curArticle?.source), curArticle?.title];
   const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-2xl font-bold text-text-main`
@@ -114,7 +117,7 @@ function ArticleView() {
 
     const parts = text.split(new RegExp(`(${regexMatchString})`, 'gi'));
     return <span> { parts.map((part, i) => 
-        <span className="rounded-md" key={i} style={isContained(part, highlight) ? { backgroundColor: "#d94c68" } : {} }>
+        <span className="rounded-md" key={i} style={isContained(part, highlight) ? { backgroundColor: currentTheme.accent } : {} }>
             { part }
         </span>)
     } </span>;
@@ -189,7 +192,8 @@ function ArticleView() {
           <>
           <AiFillHighlight
                           onClick = {() => setShowHighlight(!showHighlight)} 
-                          className={`text-lg ${showHighlight ? "text-slate-accent" : "text-text-secondary"} cursor-pointer`}/>
+                          style = {{color : showHighlight ? getCurrentTheme().accent : SLATE_TEXT_SECONDARY}}
+                          className={`text-lg cursor-pointer`}/>
            <FiEdit onClick = {() => setEnableEdit(true)} className="text-lg text-text-secondary cursor-pointer hover:text-slate-accent"/>
             <AiFillDelete onClick = {() => setShowDeleteModal(true)} className="text-lg text-text-secondary cursor-pointer hover:text-text-danger"/>
           </>
@@ -226,7 +230,7 @@ function ArticleView() {
               ) 
               : 
               (
-              <p className="text-text-main">
+              <p className="text-text-main whitespace-pre-wrap">
                 {getHighlightedText(formData.content, associatedListItemTitles)}
               </p>
 

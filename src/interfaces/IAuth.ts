@@ -6,4 +6,7 @@ export interface IAuth {
   profileImage: string;
   password?: string;
   token: any;
+  OAuthID?: string;
+  themeAccent?: string;
+  preferredTheme?: string;
 }

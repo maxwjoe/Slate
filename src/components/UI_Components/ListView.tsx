@@ -15,6 +15,7 @@ import { MdCancel } from 'react-icons/md'
 import { FiEdit } from 'react-icons/fi'
 import { createItemViewModel } from '../../viewModels/createItemViewModel'
 import DeleteItem from '../CRUD_Components/DeleteItem'
+import { getCurrentTheme } from '../../services/themeService'
 
 function ListView() {
 
@@ -132,14 +133,14 @@ function ListView() {
                   placeholder = {`Search "${curList.title}"`}/>
           </div>
 
-          <div onClick={() => setCreateItemModal(true)} className='flex w-7 h-7 rounded-md items-center justify-center bg-slate-accent cursor-pointer'>
+          <div onClick={() => setCreateItemModal(true)} style={{background : getCurrentTheme().accent}} className='flex w-7 h-7 rounded-md items-center justify-center cursor-pointer'>
             <IoMdAdd  className='w-5 h-5'/>
           </div>
         </div>
 
 
-        <div className='flex items-center justify-start p-3 w-full h-12'>
-          <p className='text-lg text-text-secondary'>{curList.title}</p>
+        <div className='flex items-center justify-start p-3 w-2/3 h-12'>
+          <p className='text-lg text-text-secondary select-none overflow-hidden whitespace-nowrap'>{curList.title}</p>
         </div>
 
         <div className='space-y-2'>
@@ -188,7 +189,7 @@ function ListView() {
                     disabled={!enableEdit}
                     onChange = {onChange}
                     className = {titleClass}
-                    value={formData?.title || "No Data"} />
+                    value={formData?.title || ""} />
             </div>
             <div className='w-full h-12'>
               <input 
@@ -197,7 +198,7 @@ function ListView() {
                     disabled={!enableEdit}
                     onChange = {onChange}
                     className = {contentClass}
-                    value={formData?.definition || "No Data"} />
+                    value={formData?.definition || ""} />
             </div>
 
             <div className="w-full grow max-h-[75vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark">
@@ -206,7 +207,7 @@ function ListView() {
                       disabled = {!enableEdit}
                       onChange = {onChange}
                       className={contentClass}
-                      value={formData?.pronunciation || "No Data"}
+                      value={formData?.pronunciation || ""}
               />
             </div>
 

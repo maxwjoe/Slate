@@ -59,8 +59,8 @@ function Profile() {
                     src={getProfileImageFromAPI(curUser?.profileImage)} 
                     alt="" />
             </div>
-            <div id = {containerId}  className='flex flex-col w-32 overflow-hidden items-center justify-center'>
-                <p className='w-full  text-xs text-text-secondary whitespace-nowrap overflow-hidden'>
+            <div id = {containerId}  className='flex flex-col grow  h-full overflow-hidden items-center justify-center'>
+                <p className='w-full text-start text-sm text-text-main whitespace-nowrap overflow-hidden'>
                     {curUser?.username || curUser?.email?.split("@")?.[0] || "Unknown User"}
                 </p>
             </div>  

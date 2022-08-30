@@ -5,6 +5,7 @@ import { IList } from '../../interfaces/DataInterfaces';
 import { useAppDispatch } from '../../redux/hooks';
 import { setSelectedItem, setSelectedList } from '../../redux/slices/applicationSlice';
 import { RDX_createItem, RDX_getItems } from '../../redux/slices/itemSlice';
+import { getCurrentTheme } from '../../services/themeService';
 import { createItemViewModel } from '../../viewModels/createItemViewModel';
 
 interface Props {
@@ -89,9 +90,10 @@ function CreateItem({closeHandler, list} : Props) {
             <button 
                     onClick={() => closeHandler()}
                     className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
-            <button 
+           <button 
                     onClick={onSubmit}
-                    className='text-text-main w-24 h-10 bg-slate-accent font-bold border-2 border-none rounded-md'>Confirm</button>
+                    style = {{background : getCurrentTheme().accent}}
+                    className='text-text-main w-24 h-10 font-bold border-2 border-none rounded-md'>Confirm</button>
         </div>
       </div>
   )

@@ -2,6 +2,7 @@ import React from 'react'
 import {useAppSelector, useAppDispatch} from '../../redux/hooks'
 import {IItem} from '../../interfaces/DataInterfaces'
 import { RDX_deleteItem } from '../../redux/slices/itemSlice';
+import { getCurrentTheme } from '../../services/themeService';
 
 
 interface Props {
@@ -32,9 +33,10 @@ function DeleteItem({ItemObj, closeHandler} : Props) {
             <button 
                     onClick={() => closeHandler()}
                     className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
-            <button 
+           <button 
                     onClick={handleDelete}
-                    className='text-text-main w-24 h-10 bg-slate-accent font-bold border-2 border-none rounded-md'>Confirm</button>
+                    style = {{background : getCurrentTheme().accent}}
+                    className='text-text-main w-24 h-10 font-bold border-2 border-none rounded-md'>Confirm</button>
         </div>
       </div>
   )
