@@ -5,7 +5,7 @@ import store from "../redux/store";
 // getCurrentTheme : Gets the users current theme
 export const getCurrentTheme = () => {
   const currUser: IAuth = store.getState().auth.user as IAuth;
-  if (!(currUser.themeAccent && currUser?.preferredTheme))
+  if (!(currUser?.themeAccent && currUser?.preferredTheme))
     return { accent: "#d94c68", theme: "dark" } as ITheme;
   return {
     accent: currUser.themeAccent,

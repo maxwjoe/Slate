@@ -230,7 +230,7 @@ function ArticleView() {
               ) 
               : 
               (
-              <p className="text-text-main whitespace-pre-wrap">
+              <p className="text-text-main whitespace-pre-wrap pr-3">
                 {getHighlightedText(formData.content, associatedListItemTitles)}
               </p>
 
