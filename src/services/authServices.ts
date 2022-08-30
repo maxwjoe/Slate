@@ -25,6 +25,23 @@ const login = async (userData: IAuth) => {
   return response.data as IAuth;
 };
 
+// updateUser : Updates the user in the backend
+const updateUser = async (userObj: IAuth, token: any) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.put(API_URL, userObj, config);
+
+  if (res.data) {
+    localStorage.setItem("user", JSON.stringify(res.data));
+  }
+
+  return res.data;
+};
+
 // logout : Logs out the user
 const logout = async () => {
   localStorage.removeItem("user");
@@ -33,6 +50,7 @@ const logout = async () => {
 const authService = {
   register,
   logout,
+  updateUser,
   login,
 };
 

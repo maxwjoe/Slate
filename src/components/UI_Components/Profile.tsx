@@ -10,10 +10,13 @@ import { resetAll } from '../../helper/authHelper';
 import { applyShift, getComponentBounds } from '../../helper/UIHelpers';
 import { IAuth } from '../../interfaces/IAuth';
 import { getProfileImageFromAPI } from '../../services/profilePictureService';
+import EditProfile from '../CRUD_Components/EditProfile';
+import GenericModal from '../Modals/GenericModal';
 
 function Profile() {
 
     const [open, setOpen] = useState<boolean>(false);
+    const [openProfileSettings, setOpenProfileSettings] = useState<boolean>(false);
     const curUser : IAuth = useAppSelector((state) => state.auth.user) as IAuth;
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -38,7 +41,7 @@ function Profile() {
 
     const profileDropFunction = () => {
         setOpen(false);
-        console.log("Profile")
+        setOpenProfileSettings(true);
     }
 
     //Functionality to pass to drop down menu
@@ -62,11 +65,17 @@ function Profile() {
                 </p>
             </div>  
             
+        </div>
             {open && (
                 <Dropdown dropDownPackages={dropDownItems} offset = {dropDownOffset} closeHandler={() => setOpen(false)}/>
             )}
+
+            {openProfileSettings && (
+                <GenericModal handleClose={() => setOpenProfileSettings(false)}>
+                    <EditProfile closeHandler={() => setOpenProfileSettings(false)}/>
+                </GenericModal>
+            )}
             
-        </div>
     </>
   )
 }

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import authService from "../../services/authServices";
 import { generatePictureString } from "../../services/profilePictureService";
 import { IAuth } from "../../interfaces/IAuth";
@@ -39,6 +39,21 @@ export const login = createAsyncThunk(
   async (user: IAuth, thunkAPI) => {
     try {
       return await authService.login(user);
+    } catch (error: any) {
+      const message =
+        error?.response?.data || error?.messsage || error.toString();
+      return thunkAPI.rejectWithValue(message as string);
+    }
+  }
+);
+
+// updateUser
+export const RDX_updateUser = createAsyncThunk(
+  "auth/update",
+  async (userObj: IAuth, thunkAPI: any) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await authService.updateUser(userObj, token);
     } catch (error: any) {
       const message =
         error?.response?.data || error?.messsage || error.toString();
@@ -95,6 +110,22 @@ export const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload as string;
         state.user = null;
+      })
+      .addCase(RDX_updateUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(
+        RDX_updateUser.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.isLoading = false;
+          state.isSuccess = true;
+          state.user = action.payload;
+        }
+      )
+      .addCase(RDX_updateUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string;
       });
   },
 });

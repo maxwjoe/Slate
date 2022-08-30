@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 
 // generatePictureString : Generates a random profile picture string
-export const generatePictureString = () => {
+export const generatePictureString = (type?: string) => {
   const PREFIX = "isAvatar_";
-  const TYPE = "bottts_";
+  const TYPE = type ? type.concat("_") : "bottts_";
   const RAND_STRING = uuidv4().toString();
   const pictureString = PREFIX.concat(TYPE).concat(RAND_STRING);
   console.log(pictureString);
