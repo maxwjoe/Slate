@@ -9,6 +9,7 @@ import {logout, reset} from '../../redux/slices/authSlice'
 import { resetAll } from '../../helper/authHelper';
 import { applyShift, getComponentBounds } from '../../helper/UIHelpers';
 import { IAuth } from '../../interfaces/IAuth';
+import { getProfileImageFromAPI } from '../../services/profilePictureService';
 
 function Profile() {
 
@@ -52,7 +53,7 @@ function Profile() {
             <div className='flex w-8 h-full items-center'>
                 <img 
                     className='object-cover w-8 h-8 rounded-md cursor-pointer'
-                    src="https://image.shutterstock.com/mosaic_250/2780032/1854697390/stock-photo-head-shot-young-attractive-businessman-in-glasses-standing-in-modern-office-pose-for-camera-1854697390.jpg" 
+                    src={getProfileImageFromAPI(curUser?.profileImage)} 
                     alt="" />
             </div>
             <div id = {containerId}  className='flex flex-col w-32 overflow-hidden items-center justify-center'>

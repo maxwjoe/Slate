@@ -1,16 +1,16 @@
 import axios from "axios";
-import { Option } from "../interfaces/LanguageOptionInterface";
+import { Option } from "../interfaces/OptionInterface";
 
 // languageOptions : Language to ISO code pairings for supported languages
 export const languageOptions: Option[] = [
-  { disp: "English", iso: "en" },
-  { disp: "Chinese", iso: "zh" },
-  { disp: "Korean", iso: "ko" },
-  { disp: "French", iso: "fr" },
-  { disp: "German", iso: "de" },
-  { disp: "Spanish", iso: "es" },
-  { disp: "Japanese", iso: "ja" },
-  { disp: "Italian", iso: "it" },
+  { disp: "English", real: "en" },
+  { disp: "Chinese", real: "zh" },
+  { disp: "Korean", real: "ko" },
+  { disp: "French", real: "fr" },
+  { disp: "German", real: "de" },
+  { disp: "Spanish", real: "es" },
+  { disp: "Japanese", real: "ja" },
+  { disp: "Italian", real: "it" },
 ];
 
 // translateText : Translates text from a source language to a target language (inputs as ISO codes)
@@ -36,7 +36,7 @@ export const translateText = async (
 // getLanguageFromISO : Gets english language name from ISO code
 export const getLanguageFromISO = (isoCode: string) => {
   for (let i = 0; i < languageOptions.length; i++) {
-    if (languageOptions[i].iso === isoCode) return languageOptions[i].disp;
+    if (languageOptions[i].real === isoCode) return languageOptions[i].disp;
   }
   return "Select a language";
 };

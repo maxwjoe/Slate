@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "../../services/authServices";
+import { generatePictureString } from "../../services/profilePictureService";
 import { IAuth } from "../../interfaces/IAuth";
 
 // Find User in Local Storage
@@ -20,7 +21,10 @@ export const register = createAsyncThunk(
   "auth/register",
   async (user: IAuth, thunkAPI) => {
     try {
-      return await authService.register(user);
+      return await authService.register({
+        ...user,
+        profileImage: generatePictureString(),
+      });
     } catch (error: any) {
       const message =
         error?.response?.data || error?.messsage || error.toString();

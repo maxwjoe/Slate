@@ -6,6 +6,8 @@ import { RDX_updateSource } from '../../redux/slices/sourceSlice'
 import { getLanguageFromISO } from '../../services/translationService'
 import { createSourceViewModel } from '../../viewModels/sourceViewModels'
 import DropdownSelector from '../Other/DropdownSelector'
+import {languageOptions} from '../../services/translationService'
+
 
 interface Props {
     SourceObj : ISource,
@@ -73,7 +75,9 @@ function EditSource({SourceObj, closeHandler} : Props) {
 
           <div className='flex space-y-2 flex-col w-full'>
             <p className='text-lg text-text-main'>Language</p>
-            <DropdownSelector selectionFunction={(language : string) => {setFormData({...formData, language : language})}} defaultSelection={getLanguageFromISO(SourceObj.language)}/>
+            <DropdownSelector 
+                              options = {languageOptions}
+                              selectionFunction={(language : string) => {setFormData({...formData, language : language})}} defaultSelection={getLanguageFromISO(SourceObj.language)}/>
             {/* <input 
                   type="text" 
                   name = "language"

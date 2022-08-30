@@ -59,7 +59,7 @@ function Register() {
       const userData : any = {
         username : formData.username,
         email : formData.email,
-        password : formData.password
+        password : formData.password,
       }
 
       dispatch(register(userData));

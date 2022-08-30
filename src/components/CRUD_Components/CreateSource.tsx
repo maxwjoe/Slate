@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import {ISource} from '../../interfaces/DataInterfaces'
 import { useAppDispatch } from '../../redux/hooks';
 import { RDX_createSource } from '../../redux/slices/sourceSlice';
+import { languageOptions } from '../../services/translationService';
 import {createSourceViewModel} from '../../viewModels/sourceViewModels'
 import DropdownSelector from '../Other/DropdownSelector';
 
@@ -70,7 +71,9 @@ function CreateSource({closeHandler, exampleLanguage, exampleTitle} : Props) {
 
           <div className='flex space-y-2 flex-col w-full'>
             <p className='text-lg text-text-main'>Language</p>
-            <DropdownSelector selectionFunction={(iso : string) => setFormData({...formData, language : iso})}/>
+            <DropdownSelector 
+                              options = {languageOptions}
+                              selectionFunction={(iso : string) => setFormData({...formData, language : iso})}/>
             {/* <input 
                   type="text" 
                   name = "language"
