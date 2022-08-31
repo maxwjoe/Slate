@@ -1,7 +1,7 @@
 {
   "name": "slate",
   "version": "0.1.0",
-  "proxy": "https://slate-backend-server.herokuapp.com/",
+  "proxy": "https://slate-backend-server.herokuapp.com",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.4",
