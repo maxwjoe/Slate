@@ -124,7 +124,7 @@ function EditProfile({closeHandler} : Props) {
             </div>
           </div>
           <div className='flex space-y-2 flex-col w-full'>
-            <p className='text-lg text-text-main' >Profile Picture</p>
+            <p className='text-lg text-text-main' >Avatar</p>
             <div className="flex w-full p-3 items-center justify-evenly">
               <img 
                   src={getProfileImageFromAPI(formData.profileImage)}
@@ -139,7 +139,7 @@ function EditProfile({closeHandler} : Props) {
             </div>
         </div>
           <div className='flex space-y-2 flex-col w-full'>
-            <p className='text-lg text-text-main'>Image Style</p>
+            <p className='text-lg text-text-main'>Avatar Style</p>
             <DropdownSelector options = {avatarStyles} selectionFunction = {(style : string) => {setSelectedAvatarStyle(style);}} defaultSelection={profileImageToAvatarStyle(formData.profileImage)}/>
           </div>
         </div>
