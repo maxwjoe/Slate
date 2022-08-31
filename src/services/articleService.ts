@@ -1,5 +1,7 @@
 import axios from "axios";
 import { IArticle } from "../interfaces/DataInterfaces";
+import { setSelectedArticle } from "../redux/slices/applicationSlice";
+import store from "../redux/store";
 
 const API_URL: string = "api/articles/";
 
@@ -25,7 +27,14 @@ const createArticle = async (ArticleObj: any, token: any) => {
   };
 
   const response = await axios.post(API_URL, ArticleObj, config);
-  return response.data;
+  const newArticle: IArticle = response?.data;
+
+  if (!newArticle?._id) return {} as IArticle;
+
+  // Set selected article to the new article to highlight it in the UI
+  store.dispatch(setSelectedArticle(newArticle));
+
+  return newArticle;
 };
 
 // updateArticle : Updates an article in the database

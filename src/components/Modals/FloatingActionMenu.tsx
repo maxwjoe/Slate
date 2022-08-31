@@ -17,6 +17,7 @@ import { createItemViewModel } from '../../viewModels/createItemViewModel'
 import { translateText } from '../../services/translationService'
 import { BsArrowRight } from 'react-icons/bs'
 import { Ping } from '@uiball/loaders'
+import toast from 'react-hot-toast'
 
 interface Props {
     closeHandler? : any,
@@ -66,14 +67,19 @@ function FloatingActionMenu({closeHandler} : Props) {
 
             const tgtList : IList = getListFromTitle(associatedListName);
 
+            // Check a valid list was found
+            if(!tgtList?._id) {
+                toast.error("Could not create associated list");
+                return;
+            }
+
             // Assign current article to be associated with the new list
             await dispatch(RDX_updateArticle({
                 ...curArticle,
                 associatedList : tgtList._id,
             }))
 
-            dispatch(setSelectedArticle({...curArticle, associatedList : tgtList._id}))
-
+            
             // Add currently selected word to associated list
             let newItem : createItemViewModel = {
                 title : selectedText,
@@ -83,6 +89,8 @@ function FloatingActionMenu({closeHandler} : Props) {
             }
             
             await dispatch(RDX_createItem(newItem))
+            
+            dispatch(setSelectedArticle({...curArticle, associatedList : tgtList._id}))
         }
         else 
         {
@@ -100,7 +108,6 @@ function FloatingActionMenu({closeHandler} : Props) {
         }
 
         clearFloatingStateRDX();
-
     }
 
     const onTranslate = async () => 

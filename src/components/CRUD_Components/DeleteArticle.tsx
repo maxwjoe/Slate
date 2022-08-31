@@ -3,7 +3,7 @@ import {useAppSelector, useAppDispatch} from '../../redux/hooks'
 import {IArticle} from '../../interfaces/DataInterfaces'
 import { RDX_deleteArticle } from '../../redux/slices/articleSlice';
 import { getCurrentTheme } from '../../services/themeService';
-
+import { reset as resetApplicationState } from '../../redux/slices/applicationSlice'
 
 interface Props {
     ArticleObj : IArticle,
@@ -16,7 +16,8 @@ function DeleteArticle({ArticleObj, closeHandler} : Props) {
     const dispatch = useAppDispatch();
 
     const handleDelete = async () => {
-        dispatch(RDX_deleteArticle(ArticleObj?._id))
+        await dispatch(RDX_deleteArticle(ArticleObj?._id));
+        dispatch(resetApplicationState());
         closeHandler();
     }
 

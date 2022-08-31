@@ -39,7 +39,7 @@ function Dashboard() {
       return ( 
         <>
         <div className='flex items-center justify-center bg-slate-lightdark w-full h-full'>
-          <p className='text-2xl font-bold text-text-main'>No Content Selected</p>
+          <p className='text-2xl font-bold text-text-secondary'>No Content Selected</p>
         </div>
         </>
       )

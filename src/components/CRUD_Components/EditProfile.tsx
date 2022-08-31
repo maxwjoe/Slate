@@ -117,7 +117,7 @@ function EditProfile({closeHandler} : Props) {
             <div className='flex flex-row items-center justify-start pl-3 pr-3 w-full space-x-3'>
               {themes.map((theme : ITheme, index : number) => {
                 const isSelected = theme.accent === formData.themeAccent
-                return <div 
+                return <div key={index}
                             onClick = {() => setFormData({...formData, themeAccent : theme.accent})}
                             className={`${isSelected ? "w-12 h-12" : "w-10 h-10"} cursor-pointer rounded-md ${isSelected && "border-2 border-text-main"}`} style={{background : theme.accent}}></div>
               })}

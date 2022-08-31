@@ -25,6 +25,12 @@ const applicationSlice = createSlice({
     clearSelectedItem: (state) => {
       return { ...state, selectedItem: undefined };
     },
+    clearSelectedArticle: (state) => {
+      return { ...state, selectedArticle: undefined };
+    },
+    clearSelectedList: (state) => {
+      return { ...state, selectedList: undefined };
+    },
     setSelectedArticle: (state, action: PayloadAction<IArticle>) => {
       return {
         ...state,
@@ -77,6 +83,8 @@ export const {
   setSelectedList,
   setSelectedItem,
   clearSelectedItem,
+  clearSelectedArticle,
+  clearSelectedList,
   setSelectedText,
   setSelectionPosition,
   setFloatingMenuOpen,

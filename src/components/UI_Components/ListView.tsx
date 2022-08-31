@@ -8,7 +8,7 @@ import GenericModal from '../Modals/GenericModal'
 import CreateItem from '../CRUD_Components/CreateItem'
 import ListItem from './ListItem'
 import { getItemsFromListId, getSourceTitleFromId } from '../../helper/dataHelpers'
-import { clearSelectedItem, setSelectedItem } from '../../redux/slices/applicationSlice'
+import { clearSelectedArticle, clearSelectedItem, clearSelectedList, setSelectedItem } from '../../redux/slices/applicationSlice'
 import DocPath from './DocPath'
 import { AiFillDelete, AiFillSave } from 'react-icons/ai'
 import { MdCancel } from 'react-icons/md'
@@ -110,7 +110,7 @@ function ListView() {
     setEnableEdit(false);
   }
 
-  // onDelete : Handles the user pressing confirm delete
+  // onDelete : Handles the user pressing confirm delete for an ITEM
   const onDelete = () => {
     dispatch(clearSelectedItem());
     setDeleteItemModal(false);
@@ -174,7 +174,7 @@ function ListView() {
             }
           </div>
         </div>
-      <div className="flex flex-row w-full h-full bg-slate-lightdark pl-5 pr-5 pt-2 ">
+      <div className="flex flex-row relative w-full h-full bg-slate-lightdark pl-5 pr-5 pt-2 ">
         
         {/* Main Panel (Content) */}
         {!!curItem ? 
@@ -214,7 +214,9 @@ function ListView() {
           </div>
         ) : 
         (
-          <div className='text-text-main'>No Item</div>
+          <div className='flex h-full w-full font-bold text-2xl top-52 items-start absolute justify-center text-text-secondary select-none'>
+            No Selection
+          </div>
         )}
 
         </div>

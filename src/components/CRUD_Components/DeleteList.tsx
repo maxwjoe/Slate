@@ -3,6 +3,7 @@ import {useAppSelector, useAppDispatch} from '../../redux/hooks'
 import {IList} from '../../interfaces/DataInterfaces'
 import { RDX_deleteList } from '../../redux/slices/listSlice';
 import { getCurrentTheme } from '../../services/themeService';
+import { clearSelectedItem, clearSelectedList, reset as resetApplicationState } from '../../redux/slices/applicationSlice';
 
 
 interface Props {
@@ -16,7 +17,8 @@ function DeleteList({ListObj, closeHandler} : Props) {
     const dispatch = useAppDispatch();
 
     const handleDelete = async () => {
-        dispatch(RDX_deleteList(ListObj?._id))
+        await dispatch(RDX_deleteList(ListObj?._id));
+        dispatch(resetApplicationState());
         closeHandler();
     }
 

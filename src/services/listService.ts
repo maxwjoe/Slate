@@ -1,5 +1,7 @@
 import axios from "axios";
 import { IList } from "../interfaces/DataInterfaces";
+import { setSelectedList } from "../redux/slices/applicationSlice";
+import store from "../redux/store";
 
 const API_URL = "api/lists/";
 
@@ -25,7 +27,14 @@ const createList = async (ListObj: any, token: any) => {
   };
 
   const response = await axios.post(API_URL, ListObj, config);
-  return response.data;
+
+  const newList: IList = response?.data;
+  if (!newList?._id) return {} as IList;
+
+  // Set selected list to be new list to highlight in UI
+  store.dispatch(setSelectedList(newList));
+
+  return newList;
 };
 
 // updateList : Updates an List in the database

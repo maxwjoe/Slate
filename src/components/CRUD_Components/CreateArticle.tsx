@@ -29,7 +29,7 @@ function CreateArticle({SourceId, closeHandler} : Props) {
     }))
   }
     // onSubmit : Handles login form submission
-  const onSubmit = (e : any) => {
+  const onSubmit = async (e : any) => {
     e.preventDefault();
 
     if(!(formData.title && formData.content))
@@ -38,7 +38,8 @@ function CreateArticle({SourceId, closeHandler} : Props) {
       return;
     }
 
-    dispatch(RDX_createArticle(formData))
+    await dispatch(RDX_createArticle(formData));
+    
     closeHandler()
   }
   return (

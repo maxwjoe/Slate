@@ -4,6 +4,7 @@ import { RDX_deleteSource } from '../../redux/slices/sourceSlice';
 import {ISource} from '../../interfaces/DataInterfaces'
 import toast from 'react-hot-toast';
 import { getCurrentTheme } from '../../services/themeService';
+import { reset as resetApplicationState } from '../../redux/slices/applicationSlice'
 
 
 interface Props {
@@ -23,7 +24,8 @@ function DeleteSource({SourceObj, closeHandler} : Props) {
           toast.error("Titles do not match");
           return;
         }
-        dispatch(RDX_deleteSource(SourceObj?._id))
+        await dispatch(RDX_deleteSource(SourceObj?._id));
+        dispatch(resetApplicationState());
         closeHandler()
     }
 
