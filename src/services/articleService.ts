@@ -3,7 +3,7 @@ import { IArticle } from "../interfaces/DataInterfaces";
 import { setSelectedArticle } from "../redux/slices/applicationSlice";
 import store from "../redux/store";
 
-const API_URL: string = "api/articles/";
+const API_URL: string = `${process.env.API_BASE_ENDPOINT}/api/articles/`;
 
 // getArticles: Gets all user articles from the backend
 const getArticles = async (token: any) => {

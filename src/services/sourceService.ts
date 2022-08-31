@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ISource } from "../interfaces/DataInterfaces";
 
-const API_URL = "api/sources/";
+const API_URL = `${process.env.API_BASE_ENDPOINT}/api/sources/`;
 
 // getSources : Gets sources from the backend
 const getSources = async (token: any) => {
