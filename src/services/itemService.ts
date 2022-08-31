@@ -1,5 +1,7 @@
 import axios from "axios";
 import { IItem } from "../interfaces/DataInterfaces";
+import { setSelectedItem } from "../redux/slices/applicationSlice";
+import store from "../redux/store";
 
 const API_URL: string = "api/items/";
 
@@ -37,7 +39,11 @@ const updateItem = async (ItemData: IItem, token: any) => {
   };
 
   const response = await axios.put(API_URL + ItemData._id, ItemData, config);
-  return response.data;
+  const updatedItem: IItem = response?.data;
+
+  store.dispatch(setSelectedItem(updatedItem));
+
+  return updatedItem;
 };
 
 // deleteItem : Deletes an Item from the database

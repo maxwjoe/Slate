@@ -5,7 +5,7 @@ import {MdCancel} from 'react-icons/md'
 import { IArticle, IItem } from "../../interfaces/DataInterfaces";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import DocPath from "./DocPath";
-import { getSourceTitleFromId, getArticleFromId, getItemsFromListId } from "../../helper/dataHelpers";
+import { getSourceTitleFromId, getArticleFromId, getItemsFromListId, getStatsFromDataObj } from "../../helper/dataHelpers";
 import { createArticleViewModel } from "../../viewModels/createArticleViewModel";
 import { RDX_updateArticle } from "../../redux/slices/articleSlice";
 import { reset as resetApplicationState, setFloatingMenuOpen, setSelectedArticle, setSelectedText, setSelectionPosition } from "../../redux/slices/applicationSlice";
@@ -16,6 +16,8 @@ import FloatingActionMenu from "../Modals/FloatingActionMenu";
 import { IFloatingMenuData } from "../../interfaces/IFloatingMenuData";
 import { getCurrentTheme, SLATE_TEXT_SECONDARY } from "../../services/themeService";
 import { ITheme } from "../../interfaces/ThemeInterface";
+import DocStats from "./DocStats";
+import { IStats } from "../../interfaces/StatsInterface";
 
 function ArticleView() {
 
@@ -37,7 +39,7 @@ function ArticleView() {
   const selectedText : string = useAppSelector((state) => state.applicationState.selectedText) as string;
   const docPath : string[] = [getSourceTitleFromId(curArticle?.source), curArticle?.title];
   const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-2xl font-bold text-text-main`
-  const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-sm leading-loose text-text-main`
+  const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-sm leading-loose text-text-main scrollbar-thin`
   
   const associatedListItems : IItem[] = getItemsFromListId(curArticle?.associatedList as string);
   const associatedListItemTitles : string[] = [];
@@ -47,8 +49,8 @@ function ArticleView() {
     associatedListItemTitles.push(associatedListItems[i].title);
   }
 
-  const createdDate : string = new Date(curArticle?.createdAt).toLocaleDateString();
-  const updatedDate : string = new Date(curArticle?.updatedAt).toLocaleDateString();
+  // Stats to display in RHS panel
+  const documentStats : IStats = getStatsFromDataObj(curArticle);
 
   // --- Hooks and Functions ---
 
@@ -133,7 +135,7 @@ function ArticleView() {
   }
 
   // onEditSubmit : Handles submitting the form (Edit)
-  const onEditSubmit = (e : any) => {
+  const onEditSubmit = async (e : any) => {
     e.preventDefault();
 
     // Create new Source Object
@@ -144,8 +146,7 @@ function ArticleView() {
     };
 
     
-    dispatch(RDX_updateArticle(updatedArticle));
-    dispatch(setSelectedArticle(updatedArticle));
+    await dispatch(RDX_updateArticle(updatedArticle));
     setEnableEdit(false);
   }
 
@@ -238,39 +239,10 @@ function ArticleView() {
               }
           </div>
         </div>
-
-        {/* Right Panel (Stats and Mode Controls) */}
-        <div className="flex flex-col max-w-[200px] min-w-[150px] h-full">
-
-          <div className="flex w-full flex-col space-y-2">
-            <div className="flex flex-row justify-between w-full">
-              <p className="text-xs text-text-secondary select-none">Word Count</p>
-              <p className="text-xs text-text-secondary select-none">{getWordCount(formData.content)}</p>
-            </div>
-            {/* <div className="flex flex-row justify-between w-full">
-              <p className="text-xs text-text-secondary">Words Saved</p>
-              <p className="text-xs text-text-secondary">12</p>
-            </div>
-            <div className="flex flex-row justify-between w-full">
-              <p className="text-xs text-text-secondary">Comprehension</p>
-              <p className="text-xs text-text-secondary">50%</p>
-            </div> */}
-            <div className="flex flex-row justify-between w-full">
-              <p className="text-xs text-text-secondary select-none">Created At</p>
-              <p className="text-xs text-text-secondary select-none">{createdDate}</p>
-            </div>
-            <div className="flex flex-row justify-between w-full">
-              <p className="text-xs text-text-secondary select-none">Updated At</p>
-              <p className="text-xs text-text-secondary select-none">{updatedDate}</p>
-            </div>
-          </div>
-
-          <div>
-            {/* Associated Word Lists (Beyond MVP) */}
-          </div>
-
-        </div>
-
+        
+        {/* Display Statistics in RHS panel */}
+        <DocStats stats = {documentStats}/>
+        
       </div>
     </div>
     

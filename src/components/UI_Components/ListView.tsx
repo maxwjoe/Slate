@@ -7,7 +7,7 @@ import { RDX_updateItem } from '../../redux/slices/itemSlice'
 import GenericModal from '../Modals/GenericModal'
 import CreateItem from '../CRUD_Components/CreateItem'
 import ListItem from './ListItem'
-import { getItemsFromListId, getSourceTitleFromId } from '../../helper/dataHelpers'
+import { getItemsFromListId, getSourceTitleFromId, getStatsFromDataObj } from '../../helper/dataHelpers'
 import { clearSelectedArticle, clearSelectedItem, clearSelectedList, setSelectedItem } from '../../redux/slices/applicationSlice'
 import DocPath from './DocPath'
 import { AiFillDelete, AiFillSave } from 'react-icons/ai'
@@ -16,6 +16,8 @@ import { FiEdit } from 'react-icons/fi'
 import { createItemViewModel } from '../../viewModels/createItemViewModel'
 import DeleteItem from '../CRUD_Components/DeleteItem'
 import { getCurrentTheme } from '../../services/themeService'
+import DocStats from './DocStats'
+import { IStats } from '../../interfaces/StatsInterface'
 
 function ListView() {
 
@@ -51,10 +53,11 @@ function ListView() {
   })
 
   const docPath : string[] = [getSourceTitleFromId(curList.source), curList?.title, curItem?.title];
-  const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-dark " : "bg-slate-lightdark "} text-2xl font-bold text-text-main`
-  const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-dark " : "bg-slate-lightdark "} text-sm leading-loose text-text-main`
+  const titleClass : string = `${enableEdit ? "p-1" : ""} outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-dark " : "bg-slate-lightdark "} text-3xl font-bold text-text-main`
+  const contentClass : string = `${enableEdit ? "p-1" : ""} outline-none w-full h-40 resize-none border-none rounded-md ${enableEdit ? "bg-slate-dark " : "bg-slate-lightdark "} text-sm leading-loose text-text-main scrollbar-thin`
   
-
+  const documentStats : IStats = getStatsFromDataObj(curItem);
+  console.log(documentStats.updatedAt)
 
   // onAdd : Handles user confirming add item (passed to createItemModal)
   const onAdd = () => {
@@ -179,38 +182,42 @@ function ListView() {
         {/* Main Panel (Content) */}
         {!!curItem ? 
         (
+          <div className='flex flex-row grow'>
+            <div className="flex flex-col grow pr-6 pt-3 space-y-6">
 
-          <div className="flex flex-col grow pr-6">
-
-            <div className="w-full h-12">
-              <input 
-                    type="text" 
-                    name="title"
-                    disabled={!enableEdit}
-                    onChange = {onChange}
-                    className = {titleClass}
-                    value={formData?.title || ""} />
-            </div>
-            <div className='w-full h-12'>
-              <input 
-                    type="text" 
-                    name="definition"
-                    disabled={!enableEdit}
-                    onChange = {onChange}
-                    className = {contentClass}
-                    value={formData?.definition || ""} />
-            </div>
-
-            <div className="w-full grow max-h-[75vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark">
-              <textarea 
-                      name="pronunciation"
-                      disabled = {!enableEdit}
+              <div className="w-full h-12">
+                <input 
+                      type="text" 
+                      name="title"
+                      disabled={!enableEdit}
                       onChange = {onChange}
-                      className={contentClass}
-                      value={formData?.pronunciation || ""}
-              />
-            </div>
+                      className = {titleClass}
+                      value={formData?.title || ""} />
+              </div>
+              <div className='w-full flex flex-col space-y-2'>
+              <p className='text-text-main text-lg'>Definition : </p>
+                <input 
+                      type="text" 
+                      name="definition"
+                      disabled={!enableEdit}
+                      onChange = {onChange}
+                      className = {`${enableEdit ? "p-1" : ""} outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-dark " : "bg-slate-lightdark "} text-lg font-bold text-text-main`}
+                      value={formData?.definition || ""} />
+              </div>
 
+              <div className="w-full grow max-h-[50vh] overflow-y-scroll space-y-2 scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark">
+                <p className='text-text-main text-lg'>Notes : </p>
+                <textarea 
+                        name="pronunciation"
+                        disabled = {!enableEdit}
+                        onChange = {onChange}
+                        className={contentClass}
+                        value={formData?.pronunciation || ""}
+                />
+              </div>
+
+            </div>
+            <DocStats stats={documentStats}/>
           </div>
         ) : 
         (

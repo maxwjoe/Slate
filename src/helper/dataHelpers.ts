@@ -1,4 +1,5 @@
 import { IArticle, IItem, IList, ISource } from "../interfaces/DataInterfaces";
+import { IStats } from "../interfaces/StatsInterface";
 import store from "../redux/store";
 
 // getSourceTitleFromId : Returns the title of a source given its ID
@@ -72,4 +73,23 @@ export const getItemsFromListId = (listId: string) => {
 // mongoTimeToJsTime : Converts mongoDB timestamp to Javascript object
 export const mongoTimeToJsTime = (mongoTime: string) => {
   return new Date(mongoTime);
+};
+
+// getStatsFromDataObj : Returns stats such as created at and edited at from a data obj
+export const getStatsFromDataObj = (dataObj: any) => {
+  const nullStats: IStats = { createdAt: "", updatedAt: "" };
+
+  if (!dataObj) return nullStats;
+
+  const createdAt = new Date(dataObj?.createdAt);
+  const updatedAt = new Date(dataObj?.updatedAt);
+
+  if (!(createdAt && updatedAt)) return nullStats;
+
+  const dataStats: IStats = {
+    createdAt: createdAt.toLocaleDateString(),
+    updatedAt: updatedAt.toLocaleDateString(),
+  };
+
+  return dataStats;
 };

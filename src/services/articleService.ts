@@ -50,7 +50,10 @@ const updateArticle = async (ArticleData: IArticle, token: any) => {
     ArticleData,
     config
   );
-  return response.data;
+
+  const updatedArticle: IArticle = response?.data;
+  store.dispatch(setSelectedArticle(updatedArticle));
+  return updatedArticle;
 };
 
 // deleteArticle : Deletes an article from the database
