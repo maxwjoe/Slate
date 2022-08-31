@@ -13,7 +13,6 @@ interface Props {
 }
 
 
-
 function ConfirmLogout({closeHandler} : Props) {
 
   const curUser : IAuth = useAppSelector((state) => state.auth.user) as IAuth;

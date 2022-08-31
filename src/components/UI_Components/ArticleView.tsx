@@ -78,7 +78,7 @@ function ArticleView() {
     const pos: DOMRect = range.getBoundingClientRect();
     
     // Send to Redux
-    if(text !== "")
+    if(text !== "" && text!== " ")
     {
       dispatch(setSelectedText(text));
       dispatch(setFloatingMenuOpen(true));
