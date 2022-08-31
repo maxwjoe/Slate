@@ -36,10 +36,18 @@ function CreateItem({closeHandler, list} : Props) {
       const onSubmit = async (e : any) => {
         e.preventDefault();
 
-        if(!(formData.title && formData.list && formData.pronunciation))
+        if(!formData.title)
         {
-          toast.error("Please enter all fields")
+          toast.error("Word field cannot be empty")
           return;
+        }
+
+        if(!formData.definition) {
+          formData.definition = "No Definition"
+        }
+
+        if(!formData.pronunciation){
+          formData.pronunciation = "";
         }
     
         await dispatch(RDX_createItem(formData))
@@ -55,7 +63,7 @@ function CreateItem({closeHandler, list} : Props) {
         
         <div className='flex w-full p-3 flex-col space-y-5 grow items-start justify-start'>
           <div className='flex space-y-2 flex-col w-full'>
-            <p className='text-lg text-text-main'>Title</p>
+            <p className='text-lg text-text-main'>Word</p>
             <input 
                   type="text" 
                   name ="title"
@@ -76,11 +84,10 @@ function CreateItem({closeHandler, list} : Props) {
                   />
           </div>
           <div className='flex space-y-2 flex-col w-full'>
-            <p className='text-lg text-text-main'>Pronunciation</p>
-            <input 
-                  type="text" 
+            <p className='text-lg text-text-main'>Notes</p>
+            <textarea 
                   name = "pronunciation"
-                  className='w-full p-3 h-9 outline-none border-none bg-slate-lightdark text-text-secondary rounded-md'
+                  className='w-full p-3 h-24 outline-none border-none bg-slate-lightdark text-text-secondary rounded-md resize-none scrollbar-thin'
                   value={formData.pronunciation}
                   onChange={onChange}
                   />

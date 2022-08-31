@@ -58,7 +58,7 @@ function EditList({ListObj, closeHandler} : Props) {
         
         <div className='flex w-full p-3 flex-col space-y-5 grow items-start justify-start'>
           <div className='flex space-y-2 flex-col w-full'>
-            <p className='text-lg text-text-main'>Title</p>
+            <p className='text-lg text-text-main'>List Name</p>
             <input 
                   type="text" 
                   name ="title"

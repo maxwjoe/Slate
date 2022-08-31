@@ -144,8 +144,8 @@ function FloatingActionMenu({closeHandler} : Props) {
     <div
         ref = {domNode}
         style = {offsetStyle} 
-        className='flex flex-col p-3 w-[180px] max-h-[130px] bg-slate-black absolute rounded-md'>
-        <div className='flex justify-between items-center pb-3 mb-3 w-full max-h-[80px] overflow-scroll scrollbar-thin border-b-2 border-slate-lightdark'>
+        className='flex flex-col p-3 w-[180px] h-[180px] bg-slate-super-dark absolute rounded-md'>
+        <div className='flex justify-between items-center pb-3 mb-3 w-full overflow-scroll scrollbar-thin border-b-2 border-slate-lightdark'>
             <p className='text-md select-none text-text-main leading-tight'>{selectedText}</p>
             {
                 translation == null ? 
@@ -174,6 +174,7 @@ function FloatingActionMenu({closeHandler} : Props) {
             {dropdownPackages.map(({Icon, ActionTitle, ActionFunction} : IDropDownPackage, index : number) => (
                 <FloatingMenuOption key={index} DropdownPackage={{Icon, ActionTitle, ActionFunction}}/>
             ))}
+
         </div>
     
     </>,

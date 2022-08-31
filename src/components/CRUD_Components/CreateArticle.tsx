@@ -46,7 +46,7 @@ function CreateArticle({SourceId, closeHandler} : Props) {
     <div className='flex flex-col items-center p-3 w-[40vw] min-h-[300px] h-[75vh]'>
         
         <div className='flex items-center justify-center w-full h-12'>
-          <p className='text-2xl text-text-main'>Create Article</p>
+          <p className='text-2xl text-text-main'>New Document</p>
         </div>
         
         <div className='flex w-full p-3 flex-col space-y-5 grow items-start justify-start overflow-hidden'>

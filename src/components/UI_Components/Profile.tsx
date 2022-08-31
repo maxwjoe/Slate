@@ -12,14 +12,14 @@ import { IAuth } from '../../interfaces/IAuth';
 import { getProfileImageFromAPI } from '../../services/profilePictureService';
 import EditProfile from '../CRUD_Components/EditProfile';
 import GenericModal from '../Modals/GenericModal';
+import ConfirmLogout from '../Modals/ConfirmLogout';
 
 function Profile() {
 
     const [open, setOpen] = useState<boolean>(false);
     const [openProfileSettings, setOpenProfileSettings] = useState<boolean>(false);
+    const [openLogoutModal, setOpenLogoutModal] = useState<boolean>(false);
     const curUser : IAuth = useAppSelector((state) => state.auth.user) as IAuth;
-    const navigate = useNavigate();
-    const dispatch = useAppDispatch();
 
     const containerId : string = "profileContainer"
     const optionsLocation = getComponentBounds(containerId);
@@ -32,11 +32,9 @@ function Profile() {
     }
     
     // ---  Drop Down Functions ---
-    const logoutDropFunction = async () => {
-        await dispatch(logout());
-        resetAll(dispatch);
-        navigate('/login');
+    const logoutDropFunction = () => {
         setOpen(false);
+        setOpenLogoutModal(true);
     }
 
     const profileDropFunction = () => {
@@ -73,6 +71,12 @@ function Profile() {
             {openProfileSettings && (
                 <GenericModal handleClose={() => setOpenProfileSettings(false)}>
                     <EditProfile closeHandler={() => setOpenProfileSettings(false)}/>
+                </GenericModal>
+            )}
+
+            {openLogoutModal && (
+                <GenericModal handleClose={() => setOpenLogoutModal(false)}>
+                    <ConfirmLogout closeHandler = {() => setOpenLogoutModal(false)}/>
                 </GenericModal>
             )}
             

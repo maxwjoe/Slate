@@ -63,8 +63,8 @@ function SourceBranch({SourceObj} : Props) {
     const DropDownPackages : IDropDownPackage[] = [
         {Icon : FiEdit, ActionTitle : "Edit", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Edit") }},
         {Icon : AiFillDelete, ActionTitle : "Delete", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Delete")}},
-        {Icon : RiArticleLine, ActionTitle : "New Article", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Add Article")}},
-        {Icon : RiListCheck2, ActionTitle : "New Vocab List", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Add List")}},
+        {Icon : RiListCheck2, ActionTitle : "New List", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Add List")}},
+        {Icon : RiArticleLine, ActionTitle : "New Document", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Add Article")}},
     ]
 
     // renderCRUDModal : Return correct CRUD Modal (Could Make this generic and import it ? )

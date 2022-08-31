@@ -43,16 +43,17 @@ function CreateArticle({SourceId, closeHandler} : Props) {
     <div className='flex flex-col items-center p-3 w-[40vw] min-h-[250px]'>
         
         <div className='flex items-center justify-center w-full h-12'>
-          <p className='text-2xl text-text-main'>Create List</p>
+          <p className='text-2xl text-text-main'>New List</p>
         </div>
         
         <div className='flex w-full p-3 flex-col space-y-5 grow items-start justify-start'>
           <div className='flex space-y-2 flex-col w-full'>
-            <p className='text-lg text-text-main'>Title</p>
+            <p className='text-lg text-text-main'>List Name</p>
             <input 
                   type="text" 
                   name ="title"
                   className='w-full p-3 h-9 outline-none border-none bg-slate-lightdark text-text-secondary rounded-md'
+                  placeholder='Enter a name'
                   value = {formData.title}
                   onChange={onChange}
                   />
