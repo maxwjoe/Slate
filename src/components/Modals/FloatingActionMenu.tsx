@@ -108,7 +108,6 @@ function FloatingActionMenu({closeHandler} : Props) {
                 list : curArticle?.associatedList,
             }
 
-            console.log(newItem)
             
             await dispatch(RDX_createItem(newItem))
         }

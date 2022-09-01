@@ -70,6 +70,18 @@ export const getItemsFromListId = (listId: string) => {
   return listItems;
 };
 
+// getItemFromListIdAndTitle : Gets first item in a given list that matches the title
+export const getItemFromListIdAndTitle = (listId: string, title: string) => {
+  const items: IItem[] = getItemsFromListId(listId);
+
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].title === title) {
+      return items[i];
+    }
+  }
+  return null;
+};
+
 // mongoTimeToJsTime : Converts mongoDB timestamp to Javascript object
 export const mongoTimeToJsTime = (mongoTime: string) => {
   return new Date(mongoTime);
