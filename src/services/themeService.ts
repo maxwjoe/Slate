@@ -26,3 +26,4 @@ export const getAvailableThemes = () => {
 
 export const SLATE_LIGHT_DARK = "#333232";
 export const SLATE_TEXT_SECONDARY = "#999ba2";
+export const SLATE_TEXT_MAIN = "#dee0e4";

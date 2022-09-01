@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 import {ISource} from '../../interfaces/DataInterfaces'
-import { useAppDispatch } from '../../redux/hooks'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { RDX_updateSource } from '../../redux/slices/sourceSlice'
 import { getLanguageFromISO } from '../../services/translationService'
 import { createSourceViewModel } from '../../viewModels/sourceViewModels'
 import DropdownSelector from '../Other/DropdownSelector'
 import {languageOptions} from '../../services/translationService'
 import { getCurrentTheme } from '../../services/themeService'
+import AsyncButton from '../Other/AsyncButton'
 
 
 interface Props {
@@ -18,6 +19,9 @@ interface Props {
 
 // EditSource : UI to go inside the generic modal for editing a source
 function EditSource({SourceObj, closeHandler} : Props) {
+
+  // --- Redux State ---
+  const SourceLoading : boolean = useAppSelector((state) => state.sources.isLoading);
 
   // --- React State ---
   const [formData, setFormData] = useState<createSourceViewModel>({
@@ -39,7 +43,7 @@ function EditSource({SourceObj, closeHandler} : Props) {
   }
 
   // onSubmit : Handles submitting the form 
-  const onSubmit = (e : any) => {
+  const onSubmit = async (e : any) => {
     e.preventDefault();
 
     if(!(formData.title && formData.language))
@@ -55,7 +59,7 @@ function EditSource({SourceObj, closeHandler} : Props) {
       language : formData.language
     };
 
-    dispatch(RDX_updateSource(updatedSource));
+    await dispatch(RDX_updateSource(updatedSource));
     closeHandler();
   }
 
@@ -96,11 +100,8 @@ function EditSource({SourceObj, closeHandler} : Props) {
             <button 
                     onClick={() => closeHandler()}
                     className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
-           <button 
-                    onClick={onSubmit}
-                    style = {{background : getCurrentTheme().accent}}
-                    className='text-text-main w-24 h-10 font-bold border-2 border-none rounded-md'>Confirm</button>
-        </div>
+          <AsyncButton onSubmit={onSubmit} buttonText={"Confirm"} isLoading={SourceLoading}/>
+          </div>
       </div>
   )
 }

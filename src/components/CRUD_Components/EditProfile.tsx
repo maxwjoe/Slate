@@ -8,6 +8,7 @@ import { RDX_updateUser } from '../../redux/slices/authSlice';
 import { generatePictureString, getProfileImageFromAPI } from '../../services/profilePictureService';
 import { getAvailableThemes, getCurrentTheme } from '../../services/themeService';
 import { editUserInterface } from '../../viewModels/editUserInterface';
+import AsyncButton from '../Other/AsyncButton';
 import DropdownSelector from '../Other/DropdownSelector'
 
 interface Props {
@@ -17,6 +18,9 @@ interface Props {
 // EditProfile : Component to populate edit profile modal and handle logic
 
 function EditProfile({closeHandler} : Props) {
+
+  // --- Redux State ---
+  const AuthLoading : boolean = useAppSelector((state) => state.auth.isLoading);
 
   // --- Redux State ---
   const curUser : IAuth = useAppSelector((state) => state.auth.user) || {} as IAuth;
@@ -64,7 +68,7 @@ function EditProfile({closeHandler} : Props) {
   }
 
   // onSubmit : Handles submitting the form 
-  const onSubmit = (e : any) => {
+  const onSubmit = async (e : any) => {
     e.preventDefault();
 
     if(!(formData.username && formData.email))
@@ -88,7 +92,7 @@ function EditProfile({closeHandler} : Props) {
       themeAccent : formData.themeAccent,
     };
 
-    dispatch(RDX_updateUser(updatedUser));
+    await dispatch(RDX_updateUser(updatedUser));
     closeHandler();
   }
 
@@ -156,10 +160,7 @@ function EditProfile({closeHandler} : Props) {
             <button 
                     onClick={() => closeHandler()}
                     className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
-            <button 
-                    onClick={onSubmit}
-                    style = {{background : currTheme.accent}}
-                    className='text-text-main w-24 h-10 font-bold border-2 border-none rounded-md'>Confirm</button>
+            <AsyncButton onSubmit={onSubmit} buttonText = {"Confirm"} isLoading={AuthLoading}/>
         </div>
       </div>
   )

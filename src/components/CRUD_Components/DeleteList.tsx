@@ -1,9 +1,8 @@
-import React from 'react'
 import {useAppSelector, useAppDispatch} from '../../redux/hooks'
 import {IList} from '../../interfaces/DataInterfaces'
 import { RDX_deleteList } from '../../redux/slices/listSlice';
-import { getCurrentTheme } from '../../services/themeService';
-import { clearSelectedItem, clearSelectedList, reset as resetApplicationState } from '../../redux/slices/applicationSlice';
+import { reset as resetApplicationState } from '../../redux/slices/applicationSlice';
+import AsyncButton from '../Other/AsyncButton';
 
 
 interface Props {
@@ -15,8 +14,11 @@ interface Props {
 
 function DeleteList({ListObj, closeHandler} : Props) {
 
+  // --- Redux State ---
+  const ListLoading : boolean = useAppSelector((state) => state.lists.isLoading);
+
   // --- Redux Hooks ---
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   // --- Functions ---
   
@@ -40,11 +42,8 @@ function DeleteList({ListObj, closeHandler} : Props) {
             <button 
                     onClick={() => closeHandler()}
                     className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
-            <button 
-                    onClick={handleDelete}
-                    style = {{background : getCurrentTheme().accent}}
-                    className='text-text-main w-24 h-10 font-bold border-2 border-none rounded-md'>Confirm</button>
-        </div>
+            <AsyncButton onSubmit={handleDelete} buttonText={"Confirm"} isLoading={ListLoading}/>
+            </div>
       </div>
   )
 }

@@ -144,7 +144,7 @@ export const listslice = createSlice({
         state.message = action.payload as string;
       })
       .addCase(RDX_deleteList.pending, (state) => {
-        state.isLoading = false;
+        state.isLoading = true;
       })
       .addCase(RDX_deleteList.fulfilled, (state, action) => {
         state.isLoading = false;
