@@ -3,7 +3,7 @@ import { IItem } from "../interfaces/DataInterfaces";
 import { setSelectedItem } from "../redux/slices/applicationSlice";
 import store from "../redux/store";
 
-const API_URL: string = `${process.env.API_BASE_ENDPOINT}/api/items/`;
+const API_URL: string = `${process.env.REACT_APP_API_BASE_ENDPOINT}/api/items/`;
 
 // getItems: Gets all user Items from the backend
 const getItems = async (token: any) => {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IAuth } from "../interfaces/IAuth";
 
-const API_URL: string = `${process.env.API_BASE_ENDPOINT}/api/users/`;
+const API_URL: string = `${process.env.REACT_APP_API_BASE_ENDPOINT}/api/users/`;
 console.log(API_URL);
 
 // register : Registers the user in the backend

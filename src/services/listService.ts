@@ -3,7 +3,7 @@ import { IList } from "../interfaces/DataInterfaces";
 import { setSelectedList } from "../redux/slices/applicationSlice";
 import store from "../redux/store";
 
-const API_URL = `${process.env.API_BASE_ENDPOINT}/api/lists/`;
+const API_URL = `${process.env.REACT_APP_API_BASE_ENDPOINT}/api/lists/`;
 
 // getLists: Gets all user Lists from the backend
 const getLists = async (token: any) => {
