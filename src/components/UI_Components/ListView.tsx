@@ -124,7 +124,7 @@ function ListView() {
   }
 
   return (
-    <div className="flex w-full h-full">
+    <div className="flex w-full h-full max-h-[100vh]">
 
       {/* Items Panel  */}
       <div className='flex flex-col w-1/4 h-full p-2'>
@@ -150,7 +150,7 @@ function ListView() {
           <p className='text-lg text-text-secondary select-none overflow-hidden whitespace-nowrap'>{curList.title}</p>
         </div>
 
-        <div className='space-y-2'>
+        <div className='h-full w-full overflow-y-scroll scrollbar-thin space-y-2'>
           {curListItems.map((item : IItem, index : number) => {
             if(!performSearch(item)) return null;
             return (

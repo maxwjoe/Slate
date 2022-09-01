@@ -19,7 +19,7 @@ export const getAvailableThemes = () => {
     { accent: "#d94c68", theme: "dark" },
     { accent: "#8ec484", theme: "dark" },
     { accent: "#6728ff", theme: "dark" },
-    { accent: "#ffd677", theme: "dark" },
+    { accent: "#ff4828", theme: "dark" },
   ];
   return themes;
 };
