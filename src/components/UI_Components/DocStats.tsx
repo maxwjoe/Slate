@@ -5,7 +5,9 @@ interface Props {
     stats : IStats;
 }
 
+// DocStats : Component Responsible for rendering document statistics in RHS of UI
 function DocStats({stats} : Props) {
+ 
   return (
     <div className="flex flex-col max-w-[200px] min-w-[150px] h-full">
 

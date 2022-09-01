@@ -13,16 +13,26 @@ import GenericModal from "../Modals/GenericModal";
 import DeleteArticle from "../CRUD_Components/DeleteArticle";
 import {getWordCount} from "../../helper/UIHelpers"
 import FloatingActionMenu from "../Modals/FloatingActionMenu";
-import { IFloatingMenuData } from "../../interfaces/IFloatingMenuData";
+import { IFloatingMenuData } from "../../interfaces/FloatingMenuDataInterface";
 import { getCurrentTheme, SLATE_TEXT_SECONDARY } from "../../services/themeService";
 import { ITheme } from "../../interfaces/ThemeInterface";
 import DocStats from "./DocStats";
 import { IStats } from "../../interfaces/StatsInterface";
 
+// ArticleView : Component to render an article (Document) in the UI, also resonsible for CRUD operations and handling selection and highlighting text
 function ArticleView() {
-
-  // --- State ---
+  
+  // --- Redux State ---
   const curArticle : IArticle = useAppSelector((state) => state.applicationState.selectedArticle) as IArticle
+  const selectedText : string = useAppSelector((state) => state.applicationState.selectedText) as string;
+  const currentTheme : ITheme = getCurrentTheme(); //getCurrentTheme calls the Redux Store therefore is redux state
+  const docPath : string[] = [getSourceTitleFromId(curArticle?.source), curArticle?.title];
+  const associatedListItems : IItem[] = getItemsFromListId(curArticle?.associatedList as string);
+  
+  // --- Redux Hooks ---
+  const dispatch = useAppDispatch();
+
+  // --- React State ---
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showHighlight, setShowHighlight] = useState<boolean>(true);
@@ -31,66 +41,22 @@ function ArticleView() {
     content : curArticle.content,
     source : curArticle.source,
   })
-
-  const dispatch = useAppDispatch();
+  
   
   // --- Constants ---
-  const currentTheme : ITheme = getCurrentTheme();
-  const selectedText : string = useAppSelector((state) => state.applicationState.selectedText) as string;
-  const docPath : string[] = [getSourceTitleFromId(curArticle?.source), curArticle?.title];
   const titleClass : string = `p-1 outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-2xl font-bold text-text-main`
   const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-sm leading-loose text-text-main scrollbar-thin`
-  
-  const associatedListItems : IItem[] = getItemsFromListId(curArticle?.associatedList as string);
+  const documentStats : IStats = getStatsFromDataObj(curArticle);
   const associatedListItemTitles : string[] = [];
 
+  // --- Loose Code (TODO: Tidy Up?) ---
   for(let i = 0 ; i < associatedListItems.length ; i++)
   {
     associatedListItemTitles.push(associatedListItems[i].title);
   }
 
-  // Stats to display in RHS panel
-  const documentStats : IStats = getStatsFromDataObj(curArticle);
 
-  // --- Hooks and Functions ---
-
-  // useEffect Hook to update redux data layer for highlighted text and position
-  useEffect(() => {
-
-    document.addEventListener("mouseup", hightlightHandler)
-
-    return () => {
-      document.removeEventListener("mouseup", hightlightHandler)
-    }
-
-  }, [selectedText])
-
-  // highlightHandler : Handler for highlight action
-  const hightlightHandler = () => {
-    
-    // Check validity of selection
-    const sel = window.getSelection()
-    if(sel === null || isNaN(sel.rangeCount)) return;
-    
-    // Get Selection Content and Position
-    const range = sel.getRangeAt(0).cloneRange();
-    const text: string = range.toString();
-    const pos: DOMRect = range.getBoundingClientRect();
-    
-    // Send to Redux
-    if(text !== "" && text!== " ")
-    {
-      dispatch(setSelectedText(text));
-      dispatch(setFloatingMenuOpen(true));
-
-      dispatch(setSelectionPosition({
-        top : pos.top,
-        bottom : pos.bottom,
-        left : pos.left,
-        right : pos.right
-      }));
-    }
-  }
+  // --- Functions ---
   
   // highlightText : returns highlighted text
   const getHighlightedText = (text : string, highlight : string[]) => {
@@ -116,7 +82,7 @@ function ArticleView() {
       }
       return false;
     }
-
+    
     const parts = text.split(new RegExp(`(${regexMatchString})`, 'gi'));
     return <span> { parts.map((part, i) => 
         <span className="rounded-md" key={i} style={isContained(part, highlight) ? { backgroundColor: currentTheme.accent } : {} }>
@@ -125,7 +91,7 @@ function ArticleView() {
     } </span>;
 }
 
-  
+
   // onChange : Handles input change and updates formData
   const onChange = (e : any) => {
     setFormData((prevState : createArticleViewModel) => ({
@@ -149,7 +115,7 @@ function ArticleView() {
     await dispatch(RDX_updateArticle(updatedArticle));
     setEnableEdit(false);
   }
-
+  
   // onCancel : Handles the user pressing cancel when editing 
   const onCancel = () => {
     setFormData({
@@ -159,13 +125,54 @@ function ArticleView() {
     })
     setEnableEdit(false);
   }
-
+  
   // onDelete : Handles the user pressing confirm delete
   const onDelete = () => {
     setShowDeleteModal(false);
     dispatch(resetApplicationState())
   }
 
+
+  // --- React Hooks ---
+  
+  // useEffect Hook to update redux data layer for highlighted text and position
+  useEffect(() => {
+  
+    document.addEventListener("mouseup", hightlightHandler)
+  
+    return () => {
+      document.removeEventListener("mouseup", hightlightHandler)
+    }
+  
+  }, [selectedText])
+  
+  // highlightHandler : Handler for highlight action
+  const hightlightHandler = () => {
+    
+    // Check validity of selection
+    const sel = window.getSelection()
+    if(sel === null || isNaN(sel.rangeCount)) return;
+    
+    // Get Selection Content and Position
+    const range = sel.getRangeAt(0).cloneRange();
+    const text: string = range.toString();
+    const pos: DOMRect = range.getBoundingClientRect();
+    
+    // Send to Redux
+    if(text !== "" && text!== " ")
+    {
+      dispatch(setSelectedText(text));
+      dispatch(setFloatingMenuOpen(true));
+  
+      dispatch(setSelectionPosition({
+        top : pos.top,
+        bottom : pos.bottom,
+        left : pos.left,
+        right : pos.right
+      }));
+    }
+  }
+  
   // useEffect : Handles updating the rendered article when selection changes in redux
   useEffect(() => {
     setFormData({
@@ -175,7 +182,6 @@ function ArticleView() {
     })
   }, [curArticle])
 
-  // --- Render ---
 
   return (
 

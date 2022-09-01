@@ -12,24 +12,32 @@ interface Props {
     closeHandler : any,
 }
 
+// DeleteSource : Component to populate delete source modal and handle logic
 
 function DeleteSource({SourceObj, closeHandler} : Props) {
 
-    const dispatch = useAppDispatch();
-    const [formData, setFormData] = useState<string>();
+  // --- React State ---
+  const [formData, setFormData] = useState<string>();
+  
 
-    const handleDelete = async () => {
-        if(formData != SourceObj.title) 
-        {
-          toast.error("Titles do not match");
-          return;
-        }
-        await dispatch(RDX_deleteSource(SourceObj?._id));
-        dispatch(resetApplicationState());
-        closeHandler()
-    }
+  // --- Redux Hooks ---
+  const dispatch = useAppDispatch();
 
-    // onChange : Handles input change and updates formData
+  // --- Functions ---
+
+  // handleDelete : Handles a user clicking delete in UI
+  const handleDelete = async () => {
+      if(formData != SourceObj.title) 
+      {
+        toast.error("Titles do not match");
+        return;
+      }
+      await dispatch(RDX_deleteSource(SourceObj?._id));
+      dispatch(resetApplicationState());
+      closeHandler()
+  }
+
+  // onChange : Handles input change and updates formData
   const onChange = (e : any) => {
     setFormData(e.target.value)
   }

@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
-import { IDropDownPackage } from '../../interfaces/IDropDownPackage'
+import { IDropDownPackage } from '../../interfaces/DropdownPackageInterface'
 
 interface Props {
     DropdownPackage : IDropDownPackage
 }
 
+// FloatingMenuOption : Component responsible for rendering a menu option in the floating action menu
 function FloatingMenuOption({DropdownPackage} : Props) {
 
+    // --- React State ---  //TODO: Delete this?
     const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    // --- Functions ---
 
     const handleClick = () => {
       DropdownPackage.ActionFunction();

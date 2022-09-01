@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IArticle, IItem, IList } from "../../interfaces/DataInterfaces";
-import { ITextPosition } from "../../interfaces/IFloatingMenuData";
+import { ITextPosition } from "../../interfaces/FloatingMenuDataInterface";
 
 interface applicationState {
   selectedArticle?: IArticle;

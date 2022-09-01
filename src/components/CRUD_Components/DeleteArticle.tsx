@@ -10,16 +10,22 @@ interface Props {
     closeHandler : any,
 }
 
+// DeleteArticle : Component to populate delete article modal and handle logic
 
 function DeleteArticle({ArticleObj, closeHandler} : Props) {
 
-    const dispatch = useAppDispatch();
 
-    const handleDelete = async () => {
-        await dispatch(RDX_deleteArticle(ArticleObj?._id));
-        dispatch(resetApplicationState());
-        closeHandler();
-    }
+  // --- Redux Hooks ---
+  const dispatch = useAppDispatch();
+
+  // --- Functions ---
+
+  // handleDelete : Handles a user pressing delete in UI
+  const handleDelete = async () => {
+      await dispatch(RDX_deleteArticle(ArticleObj?._id));
+      dispatch(resetApplicationState());
+      closeHandler();
+  }
 
 
   return (

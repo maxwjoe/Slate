@@ -14,15 +14,20 @@ interface Props {
   closeHandler : any,
 }
 
+// CreateSource : Component to populate create source modal and handle logic
 
 function CreateSource({closeHandler, exampleLanguage, exampleTitle} : Props) {
 
+  // --- React State ---
   const [formData, setFormData] = useState<createSourceViewModel>({
     title : '',
     language : ''
   });
 
+  // --- Redux Hooks ---
   const dispatch = useAppDispatch();
+
+  // --- Functions ---
 
   // onChange : Handles input change and updates formData
   const onChange = (e : any) => {

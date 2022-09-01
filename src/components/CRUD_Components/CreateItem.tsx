@@ -13,46 +13,51 @@ interface Props {
     list : IList;
 }
 
+// CreateItem : Component to populate create item modal and handle logic
 
 function CreateItem({closeHandler, list} : Props) {
 
-    const [formData, setFormData] = useState<createItemViewModel>({
-        title : "",
-        definition : "",
-        pronunciation : "",
-        list : list._id,
-    });
+  // --- React State ---
+  const [formData, setFormData] = useState<createItemViewModel>({
+      title : "",
+      definition : "",
+      pronunciation : "",
+      list : list._id,
+  });
 
-    const dispatch = useAppDispatch();
+  // --- Redux Hooks ---
+  const dispatch = useAppDispatch();
 
-    // onChange : Handles input change and updates formData
-    const onChange = (e : any) => {
-        setFormData((prevState : createItemViewModel) => ({
-          ...prevState,
-          [e.target.name] : e.target.value
-        }))
+  // --- Functions ---
+
+  // onChange : Handles input change and updates formData
+  const onChange = (e : any) => {
+      setFormData((prevState : createItemViewModel) => ({
+        ...prevState,
+        [e.target.name] : e.target.value
+      }))
+    }
+      // onSubmit : Handles login form submission
+    const onSubmit = async (e : any) => {
+      e.preventDefault();
+
+      if(!formData.title)
+      {
+        toast.error("Word field cannot be empty")
+        return;
       }
-        // onSubmit : Handles login form submission
-      const onSubmit = async (e : any) => {
-        e.preventDefault();
 
-        if(!formData.title)
-        {
-          toast.error("Word field cannot be empty")
-          return;
-        }
-
-        if(!formData.definition) {
-          formData.definition = "No Definition"
-        }
-
-        if(!formData.pronunciation){
-          formData.pronunciation = "";
-        }
-    
-        await dispatch(RDX_createItem(formData))
-        closeHandler()
+      if(!formData.definition) {
+        formData.definition = "No Definition"
       }
+
+      if(!formData.pronunciation){
+        formData.pronunciation = "";
+      }
+  
+      await dispatch(RDX_createItem(formData))
+      closeHandler()
+    }
 
   return (
     <div className='flex flex-col items-center p-3 w-[40vw] min-h-[400px] h-[70vh]'>

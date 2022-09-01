@@ -5,7 +5,7 @@ import {AiFillDelete} from 'react-icons/ai'
 import {BsThreeDots} from 'react-icons/bs'
 import {RiArticleLine, RiListCheck2} from 'react-icons/ri'
 import Dropdown from '../Modals/Dropdown'
-import { IDropDownPackage } from '../../interfaces/IDropDownPackage'
+import { IDropDownPackage } from '../../interfaces/DropdownPackageInterface'
 import {getComponentBounds, applyShift} from '../../helper/UIHelpers'
 import GenericModal from '../Modals/GenericModal'
 import EditSource from '../CRUD_Components/EditSource'
@@ -26,18 +26,40 @@ interface Props {
 // SourceBranch : Renders Source in Left Tree, has Toggle Functionality
 function SourceBranch({SourceObj} : Props) {
 
+    // --- React State ---
     const [open, setOpen] = useState<boolean>(false);
     const [openDropDown, setOpenDropDown] = useState<boolean>(false);
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [selectedModal, setSelectedModal] = useState<string>("None");
 
+    // --- Redux State ---
     const selectedList : IList = useAppSelector((state) => state.applicationState.selectedList) as IList;
     const selectedArticle : IArticle = useAppSelector((state) => state.applicationState.selectedArticle) as IArticle;
-    const selectedSubSourceId : string = selectedList?._id || selectedArticle?._id;
-
-
     const SourceArticles = useAppSelector((state) => state.articles.articles).filter((article : IArticle) => article.source === SourceObj._id);
     const SourceLists = useAppSelector((state) => state.lists.lists).filter((list :IList) => list.source === SourceObj._id);
+
+    // --- Constants ---
+    const selectedSubSourceId : string = selectedList?._id || selectedArticle?._id;
+    const sourceLocation = getComponentBounds(SourceObj.title);
+
+    //For absolute positioning offset
+    const dropDownOffset = {
+        l : applyShift(sourceLocation?.left, 175),
+        r : applyShift(sourceLocation?.right, 'auto'),
+        t : applyShift(sourceLocation?.top, 24),
+        b : applyShift(sourceLocation?.bottom, 'auto')
+    }
+
+    // For Dropdown Menus
+    const DropDownPackages : IDropDownPackage[] = [
+        {Icon : FiEdit, ActionTitle : "Edit", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Edit") }},
+        {Icon : AiFillDelete, ActionTitle : "Delete", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Delete")}},
+        {Icon : RiListCheck2, ActionTitle : "New List", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Add List")}},
+        {Icon : RiArticleLine, ActionTitle : "New Document", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Add Article")}},
+    ]
+
+
+    // --- Functions ---
 
     // handleToggle : Handles opening and closing the source
     const handleToggle = () => {
@@ -49,23 +71,6 @@ function SourceBranch({SourceObj} : Props) {
         setOpenDropDown(false);
         setOpenModal(true);
     }
-
-    const sourceLocation = getComponentBounds(SourceObj.title);
-
-    const dropDownOffset = {
-        l : applyShift(sourceLocation?.left, 175),
-        r : applyShift(sourceLocation?.right, 'auto'),
-        t : applyShift(sourceLocation?.top, 24),
-        b : applyShift(sourceLocation?.bottom, 'auto')
-    }
-
-    // Dropdown packages for options menu
-    const DropDownPackages : IDropDownPackage[] = [
-        {Icon : FiEdit, ActionTitle : "Edit", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Edit") }},
-        {Icon : AiFillDelete, ActionTitle : "Delete", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Delete")}},
-        {Icon : RiListCheck2, ActionTitle : "New List", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Add List")}},
-        {Icon : RiArticleLine, ActionTitle : "New Document", ActionFunction : () => {handleMenuSelect(); setSelectedModal("Add Article")}},
-    ]
 
     // renderCRUDModal : Return correct CRUD Modal (Could Make this generic and import it ? )
     const renderCRUDModal = (modalName : string) => {

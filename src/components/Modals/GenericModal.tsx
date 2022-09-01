@@ -9,11 +9,18 @@ interface Props {
   handleClose : any
 }
 
-
+// GenericModal : Component Responsible for rendering a modal through react portal
 function GenericModal({children, handleClose} : Props) {
   
+  // --- Redux State ---
   const theme : ITheme = getCurrentTheme();
+  
+  // --- Custom Hooks ---
 
+  // Custom Hook to handle cliciing outside the modal
+  const domNode = useClickOutside(handleClose)
+
+  // --- Constants ---
   const modalStyles : any = {
     position : 'fixed',
     top : '50%',
@@ -22,11 +29,6 @@ function GenericModal({children, handleClose} : Props) {
     borderColor : theme.accent,
     zIndex : 1000
   }
-
-
-  // Custom Hook to handle cliciing outside the modal
-  const domNode = useClickOutside(handleClose)
-  
   
   return ReactDom.createPortal(
     <div 

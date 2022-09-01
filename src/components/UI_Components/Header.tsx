@@ -6,8 +6,10 @@ import GenericModal from '../Modals/GenericModal';
 import CreateSource from '../CRUD_Components/CreateSource';
 import {getExampleLanguage, getExampleTitle} from '../../helper/genData'
 
+// Header : Component Responsible for rendering the Slate Logo and the Add Source Button in UI
 function Header() {
 
+    // --- React State ---
     const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
 

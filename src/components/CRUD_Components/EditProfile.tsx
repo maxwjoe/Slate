@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
-import { IAuth } from '../../interfaces/IAuth'
-import { Option } from '../../interfaces/OptionInterface';
+import { IAuth } from '../../interfaces/AuthInterface'
+import { IOption } from '../../interfaces/OptionInterface';
 import { ITheme } from '../../interfaces/ThemeInterface';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { RDX_updateUser } from '../../redux/slices/authSlice';
@@ -14,39 +14,48 @@ interface Props {
     closeHandler : any;
 }
 
+// EditProfile : Component to populate edit profile modal and handle logic
+
 function EditProfile({closeHandler} : Props) {
 
-    const curUser : IAuth = useAppSelector((state) => state.auth.user) || {} as IAuth;
-    const dispatch = useAppDispatch();
-    const [formData, setFormData] = useState<editUserInterface>({
-        username : curUser?.username,
-        email : curUser?.email,
-        profileImage : curUser?.profileImage,
-        themeAccent : curUser?.themeAccent,
-    })
-    const [selectedAvatarStyle, setSelectedAvatarStyle] = useState<string>(curUser?.profileImage?.split("_")?.[1]);
+  // --- Redux State ---
+  const curUser : IAuth = useAppSelector((state) => state.auth.user) || {} as IAuth;
+  const themes : ITheme[] = getAvailableThemes();
+  const currTheme : ITheme = getCurrentTheme();
+  
+  // --- Redux Hooks ---
+  const dispatch = useAppDispatch();
 
-    const themes : ITheme[] = getAvailableThemes();
-    const currTheme : ITheme = getCurrentTheme();
+  // --- React State ---
+  const [selectedAvatarStyle, setSelectedAvatarStyle] = useState<string>(curUser?.profileImage?.split("_")?.[1]);
+  const [formData, setFormData] = useState<editUserInterface>({
+    username : curUser?.username,
+    email : curUser?.email,
+    profileImage : curUser?.profileImage,
+    themeAccent : curUser?.themeAccent,
+  })
 
-    const avatarStyles : Option[] = [
-      {disp : "Robot", real : "bottts"},
-      {disp : "Cartoon", real : "avataaars"},
-      {disp : "Pixel People", real : "pixel-art"}
-    ]
+  // --- Constants ---
+  const avatarStyles : IOption[] = [
+    {disp : "Robot", real : "bottts"},
+    {disp : "Cartoon", real : "avataaars"},
+    {disp : "Pixel People", real : "pixel-art"}
+  ]
 
-    // Helper function to extract correct display name from profile image string
-    const profileImageToAvatarStyle = (imageString : string) => {
-      const style : string = curUser?.profileImage?.split("_")?.[1];
-      if(!style) return "Select an option";
-      for(let i = 0 ; i < avatarStyles.length ; i++){
-        if(avatarStyles[i].real === style){
-          return avatarStyles[i].disp;
-        }
+  // --- Functions ---
+
+  // Helper function to extract correct display name from profile image string
+  const profileImageToAvatarStyle = (imageString : string) => {
+    const style : string = curUser?.profileImage?.split("_")?.[1];
+    if(!style) return "Select an IOption";
+    for(let i = 0 ; i < avatarStyles.length ; i++){
+      if(avatarStyles[i].real === style){
+        return avatarStyles[i].disp;
       }
     }
+  }
 
-      // onChange : Handles input change and updates formData
+  // onChange : Handles input change and updates formData
   const onChange = (e : any) => {
     setFormData((prevState : editUserInterface) => ({
       ...prevState,

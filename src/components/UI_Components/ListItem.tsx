@@ -10,8 +10,10 @@ interface Props {
     isSelected? : boolean;
 }
 
+// ListItem : Responsible for rendering a single list item in UI (A single word in the listview list section)
 function ListItem({ItemObj, isSelected} : Props) {
 
+  // --- Constants ---
   const selectionColor : string = getCurrentTheme().accent;
 
   return (

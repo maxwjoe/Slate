@@ -1,5 +1,5 @@
 import React from 'react'
-import {IDropDownPackage} from '../../interfaces/IDropDownPackage'
+import {IDropDownPackage} from '../../interfaces/DropdownPackageInterface'
 import ReactDom from 'react-dom'
 import {useClickOutside} from '../../helper/UIHelpers'
 import GenericModal from '../Modals/GenericModal';
@@ -17,9 +17,10 @@ interface Props {
     closeHandler : any,
 }
 
+// Dropdown : Responsible for rendering dropdown menus in UI (Profile Dropdown, three dots dropdowns)
 function Dropdown({dropDownPackages, offset, closeHandler} : Props) {
 
-
+  // --- Custom Hooks ---
   const domNode = useClickOutside(closeHandler)
 
   return ReactDom.createPortal(

@@ -4,7 +4,7 @@ import {BsThreeDots} from 'react-icons/bs'
 import { IArticle, IList } from '../../interfaces/DataInterfaces'
 import Dropdown from '../Modals/Dropdown'
 import {AiFillDelete} from 'react-icons/ai'
-import { IDropDownPackage } from '../../interfaces/IDropDownPackage'
+import { IDropDownPackage } from '../../interfaces/DropdownPackageInterface'
 import { applyShift, getComponentBounds } from '../../helper/UIHelpers'
 import GenericModal from '../Modals/GenericModal'
 import DeleteArticle from '../CRUD_Components/DeleteArticle'
@@ -17,14 +17,22 @@ interface Props {
   isSelected? : boolean;
 }
 
+// ArticleBranch : Component responsible for rendering the article clickable option in the option tree (RHS Panel of UI)
 
 function ArticleBranch({ArticleObj, isSelected} : Props) {
 
+  // --- React State ---
   const [openDropdown, setOpenDropDown] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [selectedModal, setSelectedModal] = useState<string>("None");
 
+  // --- Redux State ---
+  const selectionColor : string = getCurrentTheme().accent;
+
+  // --- Redux Hooks ---
   const dispatch = useAppDispatch();
+
+  // --- Functions ---
 
   // handleDropdownDelete : Passed to dropdown menu to handle modal logic
   const handleDropdownDelete = () => {
@@ -36,6 +44,9 @@ function ArticleBranch({ArticleObj, isSelected} : Props) {
   const handleSelect = () => {
     dispatch(setSelectedArticle(ArticleObj));
   }
+  
+
+  // --- Constants ---
   
   const dropDownPackage : IDropDownPackage[] = [
     {Icon : AiFillDelete, ActionTitle : `Delete "${ArticleObj.title}"`, ActionFunction : handleDropdownDelete}
@@ -50,7 +61,6 @@ function ArticleBranch({ArticleObj, isSelected} : Props) {
       b : applyShift(sourceLocation?.bottom, 'auto')
   }
 
-  const selectionColor : string = getCurrentTheme().accent;
 
 
   return (

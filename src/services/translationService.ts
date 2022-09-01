@@ -1,8 +1,8 @@
 import axios from "axios";
-import { Option } from "../interfaces/OptionInterface";
+import { IOption } from "../interfaces/OptionInterface";
 
 // languageOptions : Language to ISO code pairings for supported languages
-export const languageOptions: Option[] = [
+export const languageOptions: IOption[] = [
   { disp: "English", real: "en" },
   { disp: "Chinese", real: "zh" },
   { disp: "Korean", real: "ko" },

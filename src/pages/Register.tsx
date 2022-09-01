@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom'
 import {registerViewModel} from '../viewModels/authViewModels'
 import {useAppSelector, useAppDispatch} from '../redux/hooks'
 import {register, reset} from '../redux/slices/authSlice'
-import { IAuth } from '../interfaces/IAuth'
+import { IAuth } from '../interfaces/AuthInterface'
 import LoadingPage from '../components/Other/LoadingPage'
 
 

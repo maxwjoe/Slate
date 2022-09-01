@@ -1,23 +1,26 @@
 import React, { useState } from 'react'
 import {AiOutlineCaretDown} from 'react-icons/ai'
 import { useClickOutside } from '../../helper/UIHelpers';
-import { Option } from '../../interfaces/OptionInterface';
+import { IOption } from '../../interfaces/OptionInterface';
 
 interface Props {
     selectionFunction : any;
     defaultSelection? : string;
-    options : Option[];
+    options : IOption[];
 }
 
-
+// DropdownSelector : Component responsible for rendering drop down menus (eg. Select a language, select avatar type)
 function DropdownSelector({selectionFunction, defaultSelection, options} : Props) {
 
+    // --- React State ---
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedOption, setSelectedOption] = useState<string>(defaultSelection || "Select an Option");
     const domNode = useClickOutside(() => setIsOpen(false));
 
+    // --- Functions ---
+
     // handleSelect : Handles user selecting an option
-    const handleSelect = (op : Option) => {
+    const handleSelect = (op : IOption) => {
         setSelectedOption(op.disp);
         selectionFunction(op.real);
     }
@@ -35,7 +38,7 @@ function DropdownSelector({selectionFunction, defaultSelection, options} : Props
             isOpen && 
             <div ref = {domNode} className='z-0 flex pt-2 flex-col items-start justify-start absolute top-7 h-32 w-full rounded-b-md bg-slate-lightdark overflow-y-scroll overflow-x-hidden scrollbar-thin'>
                 
-                {options.map((option : Option, index : number) => {
+                {options.map((option : IOption, index : number) => {
                     return (
                         <div key = {index} onClick = {() => handleSelect(option)} className='flex flex-row items-center w-full h-9 space-x-2 p-3 hover:bg-slate-dark'>
                             <p key = {index} className='text-text-main'>{option.disp}</p>

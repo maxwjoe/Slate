@@ -10,16 +10,22 @@ interface Props {
     SourceId : string;
 }
 
+// CreateList : Component to populate create list modal and handle logic
+
 function CreateArticle({SourceId, closeHandler} : Props) {
 
-    const [formData, setFormData] = useState<createListViewModel>({
-        title : '',
-        source : SourceId,
-    });
+  // --- React State ---
+  const [formData, setFormData] = useState<createListViewModel>({
+      title : '',
+      source : SourceId,
+  });
 
-    const dispatch = useAppDispatch();
+  // --- Redux Hooks ---
+  const dispatch = useAppDispatch();
 
-    // onChange : Handles input change and updates formData
+  // --- Functions ---
+
+  // onChange : Handles input change and updates formData
   const onChange = (e : any) => {
     setFormData((prevState : createListViewModel) => ({
       ...prevState,
@@ -39,6 +45,8 @@ function CreateArticle({SourceId, closeHandler} : Props) {
     dispatch(RDX_createList(formData))
     closeHandler()
   }
+
+
   return (
     <div className='flex flex-col items-center p-3 w-[40vw] min-h-[250px]'>
         

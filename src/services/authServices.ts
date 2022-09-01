@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IAuth } from "../interfaces/IAuth";
+import { IAuth } from "../interfaces/AuthInterface";
 
 const API_URL: string = `${process.env.REACT_APP_API_BASE_ENDPOINT}/api/users/`;
 console.log(API_URL);

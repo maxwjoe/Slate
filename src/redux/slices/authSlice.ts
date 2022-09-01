@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import authService from "../../services/authServices";
 import { generatePictureString } from "../../services/profilePictureService";
-import { IAuth } from "../../interfaces/IAuth";
+import { IAuth } from "../../interfaces/AuthInterface";
 
 // Find User in Local Storage
 //TODO: Define a user interface

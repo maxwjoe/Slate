@@ -1,4 +1,4 @@
-import { IAuth } from "../interfaces/IAuth";
+import { IAuth } from "../interfaces/AuthInterface";
 import { ITheme } from "../interfaces/ThemeInterface";
 import store from "../redux/store";
 

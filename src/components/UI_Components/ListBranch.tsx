@@ -4,7 +4,7 @@ import {BsThreeDots} from 'react-icons/bs'
 import { IArticle, IList } from '../../interfaces/DataInterfaces'
 import Dropdown from '../Modals/Dropdown'
 import {AiFillDelete} from 'react-icons/ai'
-import { IDropDownPackage } from '../../interfaces/IDropDownPackage'
+import { IDropDownPackage } from '../../interfaces/DropdownPackageInterface'
 import { applyShift, getComponentBounds } from '../../helper/UIHelpers'
 import GenericModal from '../Modals/GenericModal'
 import DeleteList from '../CRUD_Components/DeleteList'
@@ -19,18 +19,20 @@ interface Props {
   isSelected? : boolean;
 }
 
-
+// ListBranch : Component responsible for rendering the list clickable option in the option tree (RHS Panel of UI)
 function ListBranch({ListObj, isSelected} : Props) {
 
+  // --- React State ---
   const [openDropdown, setOpenDropDown] = useState<boolean>(false);
   const [openDeleteModal, setopenDeleteModal] = useState<boolean>(false);
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
-  const [selectedModal, setSelectedModal] = useState<string>("None");
-
-  const selectionColor : string = getCurrentTheme().accent;
-
-
+  const [selectedModal, setSelectedModal] = useState<string>("None"); //TODO: Delete This?
+  
+  // --- Redux Hooks ---
   const dispatch = useAppDispatch();
+
+
+  // --- Functions ---
 
   // handleDropdownDelete : Passed to dropdown menu to handle modal logic
   const handleDropdownDelete = () => {
@@ -49,20 +51,7 @@ function ListBranch({ListObj, isSelected} : Props) {
       dispatch(setSelectedList(ListObj));
     }
   
-  const dropDownPackage : IDropDownPackage[] = [
-    {Icon : FiEdit, ActionTitle : `Edit "${ListObj.title}"`, ActionFunction : handleDropdownEdit},
-    {Icon : AiFillDelete, ActionTitle : `Delete "${ListObj.title}"`, ActionFunction : handleDropdownDelete}
-  ];
-
-  const sourceLocation = getComponentBounds(ListObj.title);
-
-  const dropDownOffset = {
-      l : applyShift(sourceLocation?.left, 175),
-      r : applyShift(sourceLocation?.right, 'auto'),
-      t : applyShift(sourceLocation?.top, 24),
-      b : applyShift(sourceLocation?.bottom, 'auto')
-  }
-
+    //TODO: Delete This?
   // renderCRUDModal : Return correct CRUD Modal (Could Make this generic and import it ? )
   const renderCRUDModal = (modalName : string) => {
     switch(modalName)
@@ -72,7 +61,22 @@ function ListBranch({ListObj, isSelected} : Props) {
         default :
             return null
     }
-}  
+  }  
+
+
+  // --- Constants ---
+  const selectionColor : string = getCurrentTheme().accent;
+  const dropDownPackage : IDropDownPackage[] = [
+    {Icon : FiEdit, ActionTitle : `Edit "${ListObj.title}"`, ActionFunction : handleDropdownEdit},
+    {Icon : AiFillDelete, ActionTitle : `Delete "${ListObj.title}"`, ActionFunction : handleDropdownDelete}
+  ];
+  const sourceLocation = getComponentBounds(ListObj.title);
+  const dropDownOffset = {
+      l : applyShift(sourceLocation?.left, 175),
+      r : applyShift(sourceLocation?.right, 'auto'),
+      t : applyShift(sourceLocation?.top, 24),
+      b : applyShift(sourceLocation?.bottom, 'auto')
+  }
 
 
   return (

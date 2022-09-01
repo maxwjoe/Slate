@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { resetAll } from '../../helper/authHelper';
-import { IAuth } from '../../interfaces/IAuth';
+import { IAuth } from '../../interfaces/AuthInterface';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/slices/authSlice';
 import { getProfileImageFromAPI } from '../../services/profilePictureService';
@@ -12,13 +12,19 @@ interface Props {
   closeHandler : any;
 }
 
-
+// ConfirmLogout : Modal content to confirm user logout
 function ConfirmLogout({closeHandler} : Props) {
 
+  // --- Redux State ---
   const curUser : IAuth = useAppSelector((state) => state.auth.user) as IAuth;
 
+  // --- Redux Hooks --
   const dispatch = useAppDispatch();
+
+  // --- React Hooks ---
   const navigate = useNavigate();
+
+  // --- Functions ---
 
   // logoutFunction : Handles user logout
   const logoutFunction = async () => {

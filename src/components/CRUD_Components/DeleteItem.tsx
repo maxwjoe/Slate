@@ -10,15 +10,20 @@ interface Props {
     closeHandler : any,
 }
 
+// DeleteItem : Component to populate delete item modal and handle logic
 
 function DeleteItem({ItemObj, closeHandler} : Props) {
 
-    const dispatch = useAppDispatch();
+  // --- Redux Hooks ---
+  const dispatch = useAppDispatch();
 
-    const handleDelete = async () => {
-        await dispatch(RDX_deleteItem(ItemObj?._id))
-        closeHandler();
-    }
+  // --- Functions --- 
+
+  // handleDelete : Handles a user pressing delete in UI
+  const handleDelete = async () => {
+      await dispatch(RDX_deleteItem(ItemObj?._id))
+      closeHandler();
+  }
 
 
   return (

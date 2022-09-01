@@ -19,13 +19,28 @@ import { getCurrentTheme } from '../../services/themeService'
 import DocStats from './DocStats'
 import { IStats } from '../../interfaces/StatsInterface'
 
+// ListView : Component responsible for rendering list content and the selected item, handles all list interactions in RHS of UI
 function ListView() {
 
+  // --- Redux State and Redux Hooks ---
   const curList : IList = useAppSelector((state) => state.applicationState.selectedList) as IList;
-  const [curListItems, setCurListItems] = useState<IItem[]>([]);
   const curItem : IItem = useAppSelector((state) => state.applicationState.selectedItem) as IItem;
   const dispatch = useAppDispatch();
 
+  // --- React State ---
+  const [curListItems, setCurListItems] = useState<IItem[]>([]);
+  const [createItemModal, setCreateItemModal] = useState<boolean>(false);
+  const [enableEdit, setEnableEdit] = useState<boolean>(false);
+  const [deleteItemModal, setDeleteItemModal] = useState<boolean>(false);
+  const [searchField, setSearchField] = useState<string>('');
+  const [formData, setFormData] = useState<createItemViewModel>({
+    title : curItem?.title as string,
+    definition : curItem?.definition as string,
+    pronunciation : curItem?.pronunciation as string,
+    list : curList._id
+  })
+
+  // --- React Hooks ---
   useEffect(() => {
     
     // Get the list items when the selected list changes
@@ -40,24 +55,14 @@ function ListView() {
     })
   }, [curList, curItem])
 
-  const [createItemModal, setCreateItemModal] = useState<boolean>(false);
-  const [enableEdit, setEnableEdit] = useState<boolean>(false);
-  const [deleteItemModal, setDeleteItemModal] = useState<boolean>(false);
-  const [searchField, setSearchField] = useState<string>('');
 
-  const [formData, setFormData] = useState<createItemViewModel>({
-    title : curItem?.title as string,
-    definition : curItem?.definition as string,
-    pronunciation : curItem?.pronunciation as string,
-    list : curList._id
-  })
-
+  // --- Constants ---
   const docPath : string[] = [getSourceTitleFromId(curList.source), curList?.title, curItem?.title];
   const titleClass : string = `${enableEdit ? "p-1" : ""} outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-dark " : "bg-slate-lightdark "} text-3xl font-bold text-text-main`
   const contentClass : string = `${enableEdit ? "p-1" : ""} outline-none w-full h-40 resize-none border-none rounded-md ${enableEdit ? "bg-slate-dark " : "bg-slate-lightdark "} text-sm leading-loose text-text-main scrollbar-thin`
-  
   const documentStats : IStats = getStatsFromDataObj(curItem);
-  console.log(documentStats.updatedAt)
+
+  // --- Functions ---
 
   // onAdd : Handles user confirming add item (passed to createItemModal)
   const onAdd = () => {

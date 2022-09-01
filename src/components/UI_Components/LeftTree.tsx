@@ -15,14 +15,20 @@ import { RDX_getItems } from '../../redux/slices/itemSlice';
 // LeftTree : Renders the left hand panel of the UI
 function LeftTree() {
 
-  const navigate = useNavigate();
+  // --- Redux Hooks ---
   const dispatch = useAppDispatch();
-
+  
+  // --- Redux State --- 
   const {user} = useAppSelector((state) => state.auth);
   const sourceState = useAppSelector((state) => state.sources)
   const articleState = useAppSelector((state) => state.articles);
   const listState = useAppSelector((state) => state.lists);
   const itemState = useAppSelector((state) => state.items);
+  
+  
+  // --- React Hooks ---
+  const navigate = useNavigate();
+
   // useEffect to handle auth access and source data pull on load
   useEffect(() => {
     

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
 import { useClickOutside } from '../../helper/UIHelpers'
-import { IDropDownPackage } from '../../interfaces/IDropDownPackage'
-import { IFloatingMenuData, ITextPosition } from '../../interfaces/IFloatingMenuData'
+import { IDropDownPackage } from '../../interfaces/DropdownPackageInterface'
+import { IFloatingMenuData, ITextPosition } from '../../interfaces/FloatingMenuDataInterface'
 import FloatingMenuOption from './FloatingMenuOption'
 import {RiTranslate} from 'react-icons/ri'
 import {IoMdAdd} from 'react-icons/io'
@@ -23,28 +23,34 @@ interface Props {
     closeHandler? : any,
 }
 
+// FloatingActionMenu : Component responsible for rendering and handling user interactions with the floating menu shown on highlighting text
 function FloatingActionMenu({closeHandler} : Props) {
 
+    // --- Redux State
     const isOpen : boolean = useAppSelector((state) => state.applicationState.floatingMenuOpen);
     const curArticle : IArticle = useAppSelector((state) => state.applicationState.selectedArticle) as IArticle;
     const selectedText : string = useAppSelector((state) => state.applicationState.selectedText) as string;
     const position : DOMRect = useAppSelector((state) => state.applicationState.selectionPosition) as DOMRect;
     const sourceLanguage : string = getSourceLanguageFromId(curArticle?.source as string);
 
+    // --- Redux Hooks ---
     const dispatch = useAppDispatch();
+
+    // --- React State ---
     const [translation, setTranslation] = useState<any>(null);
+
+    // --- Constants ---
     const offsetStyle = {top : position?.top + 30, bottom : position?.bottom , left : position?.left , right : position?.right }
 
+    // --- Functions ---
+
+    // clearFloatingStateRDX : Clears all states associated with floating action menu
     const clearFloatingStateRDX = () => {
         dispatch(setFloatingMenuOpen(false))
         dispatch(setSelectedText(""));
         dispatch(setSelectionPosition({} as ITextPosition))
         setTranslation(null);
     }
-
-    const domNode = useClickOutside(() => {
-        clearFloatingStateRDX();
-    });
 
     // onAddToList : Handles user selecting add to list
     const onAddToList = async () => {
@@ -128,6 +134,13 @@ function FloatingActionMenu({closeHandler} : Props) {
         })
     }
 
+
+    // --- Custom Hooks ---
+    const domNode = useClickOutside(() => {
+        clearFloatingStateRDX();
+    });
+
+    // --- React Hooks ---
     useEffect(() => {
         onTranslate();
     }, [selectedText])
@@ -136,7 +149,7 @@ function FloatingActionMenu({closeHandler} : Props) {
         {Icon : IoMdAdd, ActionTitle : "Add to List", ActionFunction : onAddToList},
     ]
 
-
+    // Handle menu not being open
     if(!isOpen) return null;
 
   return ReactDom.createPortal(

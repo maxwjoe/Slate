@@ -1,6 +1,6 @@
 import { useRef, useEffect, LegacyRef, useState } from "react";
 import { BsWordpress } from "react-icons/bs";
-import { IFloatingMenuData } from "../interfaces/IFloatingMenuData";
+import { IFloatingMenuData } from "../interfaces/FloatingMenuDataInterface";
 
 // useClickOutside : Handles user clicking outside of an element by calling handler() callback
 export const useClickOutside = (handler: any) => {
@@ -23,17 +23,8 @@ export const useClickOutside = (handler: any) => {
   return domNode;
 };
 
-// getWordCount : Gets word count for a string
+// getWordCount : Gets word count for a string (Limitation : Cannot count Asian + Nonasian languages at once)
 export const getWordCount = (data: string) => {
-  // //Count Korean Words
-  // let koreanCount = 0;
-  // for (let i = 0; i < data.length; i++) {
-  //   let c = data.charAt(i);
-  //   if (c.match(/[\u3131-\u314e]/)) koreanCount++;
-  //   else if (c.match(/[\u314f-\u3163]/)) koreanCount++;
-  //   else if (c.match(/[\uac00-\ud7a3]/)) koreanCount++;
-  // }
-
   //Count Chinese Characters
   let chineseCount = 0;
   for (let i = 0; i < data.length; i++) {

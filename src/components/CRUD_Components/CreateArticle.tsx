@@ -10,18 +10,24 @@ interface Props {
     SourceId : string;
 }
 
+// CreateArticle : Component to populate create article modal and handle logic
 function CreateArticle({SourceId, closeHandler} : Props) {
 
-    const [formData, setFormData] = useState<createArticleViewModel>({
-        title : '',
-        content : '',
-        source : SourceId,
-        associatedList : 'None',
-    });
+  // --- React State ---
+  const [formData, setFormData] = useState<createArticleViewModel>({
+      title : '',
+      content : '',
+      source : SourceId,
+      associatedList : 'None',
+  });
 
-    const dispatch = useAppDispatch();
+  // --- Redux Hooks ---
+  const dispatch = useAppDispatch();
 
-    // onChange : Handles input change and updates formData
+
+  // --- Function Definitions ---
+
+  // onChange : Handles input change and updates formData
   const onChange = (e : any) => {
     setFormData((prevState : createArticleViewModel) => ({
       ...prevState,
@@ -42,6 +48,7 @@ function CreateArticle({SourceId, closeHandler} : Props) {
     
     closeHandler()
   }
+
   return (
     <div className='flex flex-col items-center p-3 w-[40vw] min-h-[300px] h-[75vh]'>
         

@@ -19,12 +19,16 @@ interface Props {
 // EditSource : UI to go inside the generic modal for editing a source
 function EditSource({SourceObj, closeHandler} : Props) {
 
+  // --- React State ---
   const [formData, setFormData] = useState<createSourceViewModel>({
     title : SourceObj.title,
     language : SourceObj.language,
   })
 
+  // --- Redux Hooks ---
   const dispatch = useAppDispatch();
+
+  // --- Functions ---
 
   // onChange : Handles input change and updates formData
   const onChange = (e : any) => {
