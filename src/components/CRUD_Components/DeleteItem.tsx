@@ -4,6 +4,7 @@ import {IItem} from '../../interfaces/DataInterfaces'
 import { RDX_deleteItem } from '../../redux/slices/itemSlice';
 import { getCurrentTheme } from '../../services/themeService';
 import AsyncButton from '../Other/AsyncButton';
+import { clearSelectedItem } from '../../redux/slices/applicationSlice';
 
 
 interface Props {
@@ -26,6 +27,7 @@ function DeleteItem({ItemObj, closeHandler} : Props) {
   // handleDelete : Handles a user pressing delete in UI
   const handleDelete = async () => {
       await dispatch(RDX_deleteItem(ItemObj?._id))
+      dispatch(clearSelectedItem());
       closeHandler();
   }
 

@@ -120,7 +120,6 @@ function ListView() {
 
   // onDelete : Handles the user pressing confirm delete for an ITEM
   const onDelete = () => {
-    dispatch(clearSelectedItem());
     setDeleteItemModal(false);
   }
 

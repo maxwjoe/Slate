@@ -74,7 +74,7 @@ function LeftTree() {
               : 
               <>
               <div className='flex w-full h-full justify-center items-center'>
-                <p className='text-sm text-text-secondary'>No Sources</p>
+                <p className='text-sm text-text-secondary'>No Collections</p>
               </div>
               </>
           }
