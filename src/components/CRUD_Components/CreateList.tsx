@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { RDX_createList } from '../../redux/slices/listSlice';
 import { getCurrentTheme } from '../../services/themeService';
 import { createListViewModel } from '../../viewModels/createListViewModel';
+import AsyncButton from '../Other/AsyncButton';
 
 interface Props {
     closeHandler : any;
@@ -13,6 +14,9 @@ interface Props {
 // CreateList : Component to populate create list modal and handle logic
 
 function CreateArticle({SourceId, closeHandler} : Props) {
+
+  // --- Redux State ---
+  const ListLoading : boolean = useAppSelector((state) => state.lists.isLoading);
 
   // --- React State ---
   const [formData, setFormData] = useState<createListViewModel>({
@@ -33,7 +37,7 @@ function CreateArticle({SourceId, closeHandler} : Props) {
     }))
   }
     // onSubmit : Handles login form submission
-  const onSubmit = (e : any) => {
+  const onSubmit = async (e : any) => {
     e.preventDefault();
 
     if(!(formData.title))
@@ -42,7 +46,7 @@ function CreateArticle({SourceId, closeHandler} : Props) {
       return;
     }
 
-    dispatch(RDX_createList(formData))
+    await dispatch(RDX_createList(formData))
     closeHandler()
   }
 
@@ -72,10 +76,7 @@ function CreateArticle({SourceId, closeHandler} : Props) {
             <button 
                     onClick={() => closeHandler()}
                     className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
-            <button 
-                    onClick={onSubmit}
-                    style = {{background : getCurrentTheme().accent}}
-                    className='text-text-main w-24 h-10 font-bold border-2 border-none rounded-md'>Confirm</button>
+            <AsyncButton onSubmit={onSubmit} buttonText={"Confirm"} isLoading={ListLoading}/>
         </div>
       </div>
   )

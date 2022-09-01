@@ -5,6 +5,7 @@ import {ISource} from '../../interfaces/DataInterfaces'
 import toast from 'react-hot-toast';
 import { getCurrentTheme } from '../../services/themeService';
 import { reset as resetApplicationState } from '../../redux/slices/applicationSlice'
+import AsyncButton from '../Other/AsyncButton';
 
 
 interface Props {
@@ -16,9 +17,12 @@ interface Props {
 
 function DeleteSource({SourceObj, closeHandler} : Props) {
 
+
+  // --- Redux State ---
+  const SourceLoading : boolean = useAppSelector((state) => state.sources.isLoading);
+
   // --- React State ---
   const [formData, setFormData] = useState<string>();
-  
 
   // --- Redux Hooks ---
   const dispatch = useAppDispatch();
@@ -66,10 +70,7 @@ function DeleteSource({SourceObj, closeHandler} : Props) {
             <button 
                     onClick={() => closeHandler()}
                     className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
-            <button 
-                    onClick={handleDelete}
-                    style = {{background : getCurrentTheme().accent}}
-                    className='text-text-main w-24 h-10 font-bold border-2 border-none rounded-md'>Confirm</button>
+          <AsyncButton onSubmit={handleDelete} buttonText={"Confirm"} isLoading={SourceLoading}/>
         </div>
       </div>
   )

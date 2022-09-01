@@ -144,7 +144,7 @@ export const Itemslice = createSlice({
         state.message = action.payload as string;
       })
       .addCase(RDX_deleteItem.pending, (state) => {
-        state.isLoading = false;
+        state.isLoading = true;
       })
       .addCase(RDX_deleteItem.fulfilled, (state, action) => {
         state.isLoading = false;

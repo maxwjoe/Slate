@@ -1,9 +1,9 @@
-import React from 'react'
 import {useAppSelector, useAppDispatch} from '../../redux/hooks'
 import {IArticle} from '../../interfaces/DataInterfaces'
 import { RDX_deleteArticle } from '../../redux/slices/articleSlice';
 import { getCurrentTheme } from '../../services/themeService';
 import { reset as resetApplicationState } from '../../redux/slices/applicationSlice'
+import AsyncButton from '../Other/AsyncButton';
 
 interface Props {
     ArticleObj : IArticle,
@@ -14,6 +14,8 @@ interface Props {
 
 function DeleteArticle({ArticleObj, closeHandler} : Props) {
 
+  // --- Redux State ---
+  const ArticleLoading : boolean = useAppSelector((state) => state.articles.isLoading)
 
   // --- Redux Hooks ---
   const dispatch = useAppDispatch();
@@ -40,10 +42,7 @@ function DeleteArticle({ArticleObj, closeHandler} : Props) {
             <button 
                     onClick={() => closeHandler()}
                     className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
-            <button 
-                    onClick={handleDelete}
-                    style = {{background : getCurrentTheme().accent}}
-                    className='text-text-main w-24 h-10 font-bold border-2 border-none rounded-md'>Confirm</button>
+            <AsyncButton onSubmit={handleDelete} buttonText={"Confirm"} isLoading={ArticleLoading}/>
         </div>
       </div>
   )

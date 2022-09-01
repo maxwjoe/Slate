@@ -143,7 +143,7 @@ export const sourceSlice = createSlice({
         state.message = action.payload as string;
       })
       .addCase(RDX_deleteSource.pending, (state) => {
-        state.isLoading = false;
+        state.isLoading = true;
       })
       .addCase(RDX_deleteSource.fulfilled, (state, action) => {
         state.isLoading = false;

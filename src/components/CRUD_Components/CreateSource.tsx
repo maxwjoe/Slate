@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import toast from 'react-hot-toast';
-import {ISource} from '../../interfaces/DataInterfaces'
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { RDX_createSource } from '../../redux/slices/sourceSlice';
 import { getCurrentTheme } from '../../services/themeService';
 import { languageOptions } from '../../services/translationService';
 import {createSourceViewModel} from '../../viewModels/sourceViewModels'
+import AsyncButton from '../Other/AsyncButton';
 import DropdownSelector from '../Other/DropdownSelector';
 
 interface Props {
@@ -17,6 +17,10 @@ interface Props {
 // CreateSource : Component to populate create source modal and handle logic
 
 function CreateSource({closeHandler, exampleLanguage, exampleTitle} : Props) {
+
+  // --- Redux State ---
+  const SourceLoading : boolean = useAppSelector((state) => state.sources.isLoading);
+
 
   // --- React State ---
   const [formData, setFormData] = useState<createSourceViewModel>({
@@ -38,7 +42,7 @@ function CreateSource({closeHandler, exampleLanguage, exampleTitle} : Props) {
   }
 
   // onSubmit : Handles login form submission
-  const onSubmit = (e : any) => {
+  const onSubmit = async (e : any) => {
     e.preventDefault();
 
     if(!(formData.title && formData.language))
@@ -51,7 +55,7 @@ function CreateSource({closeHandler, exampleLanguage, exampleTitle} : Props) {
       title : formData.title,
       language : formData.language,
     }
-    dispatch(RDX_createSource(sourceData))
+    await dispatch(RDX_createSource(sourceData))
     closeHandler()
   }
 
@@ -93,10 +97,7 @@ function CreateSource({closeHandler, exampleLanguage, exampleTitle} : Props) {
             <button 
                     onClick={() => closeHandler()}
                     className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
-            <button 
-                    onClick={onSubmit}
-                    style = {{background : getCurrentTheme().accent}}
-                    className='text-text-main w-24 h-10 font-bold border-2 border-none rounded-md'>Confirm</button>
+            <AsyncButton onSubmit={onSubmit} buttonText = {"Confirm"} isLoading = {SourceLoading}/>
         </div>
       </div>
   )

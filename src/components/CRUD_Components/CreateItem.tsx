@@ -1,12 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast';
-import { getSourceTitleFromId } from '../../helper/dataHelpers';
 import { IList } from '../../interfaces/DataInterfaces';
-import { useAppDispatch } from '../../redux/hooks';
-import { setSelectedItem, setSelectedList } from '../../redux/slices/applicationSlice';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { RDX_createItem, RDX_getItems } from '../../redux/slices/itemSlice';
-import { getCurrentTheme } from '../../services/themeService';
 import { createItemViewModel } from '../../viewModels/createItemViewModel';
+import AsyncButton from '../Other/AsyncButton';
 
 interface Props {
     closeHandler : any;
@@ -16,6 +14,9 @@ interface Props {
 // CreateItem : Component to populate create item modal and handle logic
 
 function CreateItem({closeHandler, list} : Props) {
+
+  // --- Redux State ---
+  const ItemLoading : boolean = useAppSelector((state) => state.items.isLoading);
 
   // --- React State ---
   const [formData, setFormData] = useState<createItemViewModel>({
@@ -32,32 +33,33 @@ function CreateItem({closeHandler, list} : Props) {
 
   // onChange : Handles input change and updates formData
   const onChange = (e : any) => {
-      setFormData((prevState : createItemViewModel) => ({
-        ...prevState,
-        [e.target.name] : e.target.value
-      }))
+    setFormData((prevState : createItemViewModel) => ({
+      ...prevState,
+      [e.target.name] : e.target.value
+    }))
+  }
+
+  // onSubmit : Handles login form submission
+  const onSubmit = async (e : any) => {
+    e.preventDefault();
+
+    if(!formData.title)
+    {
+      toast.error("Word field cannot be empty")
+      return;
     }
-      // onSubmit : Handles login form submission
-    const onSubmit = async (e : any) => {
-      e.preventDefault();
 
-      if(!formData.title)
-      {
-        toast.error("Word field cannot be empty")
-        return;
-      }
-
-      if(!formData.definition) {
-        formData.definition = "No Definition"
-      }
-
-      if(!formData.pronunciation){
-        formData.pronunciation = "";
-      }
-  
-      await dispatch(RDX_createItem(formData))
-      closeHandler()
+    if(!formData.definition) {
+      formData.definition = "No Definition"
     }
+
+    if(!formData.pronunciation){
+      formData.pronunciation = "";
+    }
+
+    await dispatch(RDX_createItem(formData))
+    closeHandler()
+  }
 
   return (
     <div className='flex flex-col items-center p-3 w-[40vw] min-h-[400px] h-[70vh]'>
@@ -102,10 +104,7 @@ function CreateItem({closeHandler, list} : Props) {
             <button 
                     onClick={() => closeHandler()}
                     className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
-           <button 
-                    onClick={onSubmit}
-                    style = {{background : getCurrentTheme().accent}}
-                    className='text-text-main w-24 h-10 font-bold border-2 border-none rounded-md'>Confirm</button>
+            <AsyncButton onSubmit={onSubmit} buttonText={"Confirm"} isLoading = {ItemLoading}/>
         </div>
       </div>
   )
