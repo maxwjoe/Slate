@@ -191,12 +191,12 @@ function ArticleView() {
       dispatch(setFloatingMenuOpen(true));
   
       dispatch(setSelectionPosition({
-        top : pos.top,
-        bottom : pos.bottom,
-        left : pos.left,
-        right : pos.right,
-        parentHeight : parentDims.height,
-        parentWidth : parentDims.width,
+        top : pos?.top,
+        bottom : pos?.bottom,
+        left : pos?.left,
+        right : pos?.right,
+        parentHeight : parentDims?.height,
+        parentWidth : parentDims?.width,
       }));
     }
   }
@@ -298,7 +298,10 @@ function ArticleView() {
     
     {
       HighlightOptions.show && (
-        <FloatingHighlightMenu settings = {HighlightOptions} closeHandler = {handleCloseHighlightOptions}/>
+        <FloatingHighlightMenu 
+                              settings = {HighlightOptions} 
+                              closeHandler = {handleCloseHighlightOptions} 
+        />
       )
     }
 
