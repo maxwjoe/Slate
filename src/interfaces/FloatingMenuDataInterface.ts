@@ -13,3 +13,11 @@ export interface ITextPosition {
   parentHeight: number;
   parentWidth: number;
 }
+
+// IHighlightOptions : Interface for the floating menu options for highlighted word (onclick)
+export interface IHighlightOptions {
+  text: string;
+  show: boolean;
+  position?: ITextPosition;
+  spanId?: string;
+}

@@ -16,6 +16,9 @@ import { getCurrentTheme, SLATE_TEXT_SECONDARY } from "../../services/themeServi
 import { ITheme } from "../../interfaces/ThemeInterface";
 import DocStats from "./DocStats";
 import { IStats } from "../../interfaces/StatsInterface";
+import { IHighlightOptions } from "../../interfaces/FloatingMenuDataInterface";
+import FloatingHighlightMenu from "../Modals/FloatingHighlightMenu";
+import {v4 as uuidv4} from 'uuid'
 
 // ArticleView : Component to render an article (Document) in the UI, also resonsible for CRUD operations and handling selection and highlighting text
 function ArticleView() {
@@ -34,6 +37,7 @@ function ArticleView() {
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showHighlight, setShowHighlight] = useState<boolean>(true);
+  const [HighlightOptions, setHighlightOptions] = useState<IHighlightOptions>({text : "", show : false});
   const [formData, setFormData] = useState<createArticleViewModel>({
     title : curArticle.title,
     content : curArticle.content,
@@ -47,6 +51,8 @@ function ArticleView() {
   const documentStats : IStats = getStatsFromDataObj(curArticle);
   const associatedListItemTitles : string[] = [];
   const contentContainerId : string = "contentContainer";
+  const parentDims : DOMRect = document.getElementById(contentContainerId)?.getBoundingClientRect() as DOMRect;
+
 
   // --- Loose Code (TODO: Tidy Up?) ---
   for(let i = 0 ; i < associatedListItems.length ; i++)
@@ -73,6 +79,7 @@ function ArticleView() {
       }
     }
 
+    // Checks if word contained within highlighted text
     const isContained = (part : string, highlight : string[]) =>
     {
       for(let i = 0 ; i < highlight.length ; i++)
@@ -81,15 +88,48 @@ function ArticleView() {
       }
       return false;
     }
+
+    // openHighlightMenu : Opens Highlight menu with selected text
+    const openHighlightMenu = (partText : string, spanId : string) => {
+      
+      const spanPos : DOMRect = document.getElementById(spanId)?.getBoundingClientRect() as DOMRect;
+
+      setHighlightOptions({
+        text : partText,
+        show : true,
+        spanId : spanId,
+        position : {
+          top : spanPos.top,
+          bottom : spanPos.bottom,
+          left : spanPos.left,
+          right : spanPos.right,
+          parentHeight : parentDims.height,
+          parentWidth : parentDims.width,
+        },
+      })
+    }
     
     const parts = text.split(new RegExp(`(${regexMatchString})`, 'gi'));
-    return <span> { parts.map((part, i) => 
-        <span className="rounded-md" key={i} style={isContained(part, highlight) ? { backgroundColor: currentTheme.accent } : {} }>
+    return <span> { parts.map((part, i) => {
+
+      const isHighlighted : boolean = isContained(part, highlight);
+      const spanId : string = isHighlighted ? uuidv4().toString() : "";
+
+        return (
+        <span id = {spanId} onClick={isHighlighted ? () => {openHighlightMenu(part, spanId)} : () => {}} className={`rounded-md ${isHighlighted && "cursor-pointer select-none"}`} key={i} style={isHighlighted ? { backgroundColor: currentTheme.accent } : {} }>
             { part }
         </span>)
+    })
     } </span>;
 }
 
+  // handleCloseHighlightOptions : Handles closing the highlight option menu (for already highlighted words)
+  const handleCloseHighlightOptions = () => {
+    setHighlightOptions({
+      ...HighlightOptions,
+      show : false
+    })
+  }
 
   // onChange : Handles input change and updates formData
   const onChange = (e : any) => {
@@ -143,7 +183,6 @@ function ArticleView() {
     const range = sel.getRangeAt(0).cloneRange();
     const text: string = range.toString();
     const pos: DOMRect = range.getBoundingClientRect();
-    const parentDims : DOMRect = document.getElementById(contentContainerId)?.getBoundingClientRect() as DOMRect;
     
     // Send to Redux
     if(text !== "" && text!== " ")
@@ -257,6 +296,12 @@ function ArticleView() {
       </div>
     </div>
     
+    {
+      HighlightOptions.show && (
+        <FloatingHighlightMenu settings = {HighlightOptions} closeHandler = {handleCloseHighlightOptions}/>
+      )
+    }
+
     {showDeleteModal &&
       <GenericModal handleClose={() => setShowDeleteModal(false)}>
             <DeleteArticle ArticleObj={curArticle} closeHandler = {onDelete}/>
