@@ -144,7 +144,7 @@ export const articleSlice = createSlice({
         state.message = action.payload as string;
       })
       .addCase(RDX_deleteArticle.pending, (state) => {
-        state.isLoading = false;
+        state.isLoading = true;
       })
       .addCase(RDX_deleteArticle.fulfilled, (state, action) => {
         state.isLoading = false;

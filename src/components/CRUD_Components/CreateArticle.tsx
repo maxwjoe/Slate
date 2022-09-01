@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { RDX_createArticle } from '../../redux/slices/articleSlice';
-import { getCurrentTheme } from '../../services/themeService';
 import { createArticleViewModel } from '../../viewModels/createArticleViewModel';
+import AsyncButton from '../Other/AsyncButton';
 
 interface Props {
     closeHandler : any;
@@ -12,6 +12,9 @@ interface Props {
 
 // CreateArticle : Component to populate create article modal and handle logic
 function CreateArticle({SourceId, closeHandler} : Props) {
+
+  // --- Redux State ---
+  const ArticleLoading : boolean = useAppSelector((state) => state.articles.isLoading)
 
   // --- React State ---
   const [formData, setFormData] = useState<createArticleViewModel>({
@@ -82,10 +85,7 @@ function CreateArticle({SourceId, closeHandler} : Props) {
             <button 
                     onClick={() => closeHandler()}
                     className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
-            <button 
-                    onClick={onSubmit}
-                    style = {{background : getCurrentTheme().accent}}
-                    className='text-text-main w-24 h-10 font-bold border-2 border-none rounded-md'>Confirm</button>
+            <AsyncButton onSubmit = {onSubmit} isLoading = {ArticleLoading} buttonText={"Confirm"}/>
         </div>
       </div>
   )

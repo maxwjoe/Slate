@@ -3,6 +3,7 @@ import {useAppSelector, useAppDispatch} from '../../redux/hooks'
 import {IItem} from '../../interfaces/DataInterfaces'
 import { RDX_deleteItem } from '../../redux/slices/itemSlice';
 import { getCurrentTheme } from '../../services/themeService';
+import AsyncButton from '../Other/AsyncButton';
 
 
 interface Props {
@@ -13,6 +14,9 @@ interface Props {
 // DeleteItem : Component to populate delete item modal and handle logic
 
 function DeleteItem({ItemObj, closeHandler} : Props) {
+
+  // --- Redux State ---
+  const ItemLoading : boolean = useAppSelector((state) => state.items.isLoading);
 
   // --- Redux Hooks ---
   const dispatch = useAppDispatch();
@@ -38,10 +42,7 @@ function DeleteItem({ItemObj, closeHandler} : Props) {
             <button 
                     onClick={() => closeHandler()}
                     className='text-text-main w-24 h-10 border-[2px] border-text-main font-bold rounded-md'>Cancel</button>
-           <button 
-                    onClick={handleDelete}
-                    style = {{background : getCurrentTheme().accent}}
-                    className='text-text-main w-24 h-10 font-bold border-2 border-none rounded-md'>Confirm</button>
+           <AsyncButton onSubmit={handleDelete} buttonText={"Confirm"} isLoading={ItemLoading}/>
         </div>
       </div>
   )
