@@ -1,6 +1,9 @@
 import { useRef, useEffect, LegacyRef, useState } from "react";
 import { BsWordpress } from "react-icons/bs";
-import { IFloatingMenuData } from "../interfaces/FloatingMenuDataInterface";
+import {
+  IFloatingMenuData,
+  ITextPosition,
+} from "../interfaces/FloatingMenuDataInterface";
 
 // useClickOutside : Handles user clicking outside of an element by calling handler() callback
 export const useClickOutside = (handler: any) => {
@@ -55,47 +58,33 @@ export const applyShift = (value: any, shift: any) => {
   return value + shift;
 };
 
-// // useTextSelector : Handles user highlighting text
-// export const useTextSelector = () => {
-//   const [floatingMenuData, setFloatingMenuData] = useState<IFloatingMenuData>({
-//     selectedText: "",
-//     positionData: window
-//       .getSelection()
-//       ?.getRangeAt(0)
-//       ?.getBoundingClientRect() as DOMRect,
-//   });
+// getFloatingActionMenuOffset : Determines appropriate offset for floating action menu
+export const getFloatingActionMenuOffset = (position: ITextPosition) => {
+  if (!position) return position;
 
-//   // Handles text selection
-//   const handler = () => {
-//     // const sel = window?.getSelection();
-//     // if (sel === null || sel.rangeCount === null || isNaN(sel.rangeCount)) {
-//     //   console.log("Invalid Selection");
-//     //   return;
-//     // }
-//     // const range = sel.getRangeAt(0).cloneRange();
-//     // const text: string = range.toString();
-//     // const pos: DOMRect = range.getBoundingClientRect();
-//     // setFloatingMenuData({
-//     //   selectedText: text,
-//     //   positionData: pos,
-//     // });
-//   };
+  // Unpack Position Object and Handle Undefined
+  const contentContainerHeight: number = position?.parentHeight
+    ? position?.parentHeight
+    : 0;
+  const selectionOffsetTop: number = position?.top ? position?.top : 0;
 
-//   const domNode: any = useRef();
+  // Set Offset Based on position within content container
+  let offsetStyle = {};
+  if (selectionOffsetTop > contentContainerHeight / 2) {
+    offsetStyle = {
+      top: position?.top - 190,
+      bottom: "auto",
+      left: position?.left,
+      right: position?.right,
+    };
+  } else {
+    offsetStyle = {
+      top: position?.top + 30,
+      bottom: position?.bottom,
+      left: position?.left,
+      right: position?.right,
+    };
+  }
 
-//   useEffect(() => {
-//     const checkHandler = (event: any) => {
-//       if (domNode?.current?.contains(event?.target)) {
-//         handler();
-//       }
-//     };
-
-//     document.addEventListener("mouseup", checkHandler);
-
-//     return () => {
-//       document.addEventListener("mouseup", checkHandler);
-//     };
-//   }, []);
-
-//   return { domNode, floatingMenuData };
-// };
+  return offsetStyle;
+};

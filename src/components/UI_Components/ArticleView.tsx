@@ -11,9 +11,7 @@ import { RDX_updateArticle } from "../../redux/slices/articleSlice";
 import { reset as resetApplicationState, setFloatingMenuOpen, setSelectedArticle, setSelectedText, setSelectionPosition } from "../../redux/slices/applicationSlice";
 import GenericModal from "../Modals/GenericModal";
 import DeleteArticle from "../CRUD_Components/DeleteArticle";
-import {getWordCount} from "../../helper/UIHelpers"
 import FloatingActionMenu from "../Modals/FloatingActionMenu";
-import { IFloatingMenuData } from "../../interfaces/FloatingMenuDataInterface";
 import { getCurrentTheme, SLATE_TEXT_SECONDARY } from "../../services/themeService";
 import { ITheme } from "../../interfaces/ThemeInterface";
 import DocStats from "./DocStats";
@@ -48,6 +46,7 @@ function ArticleView() {
   const contentClass : string = `p-1 outline-none w-full h-full resize-none border-none rounded-md ${enableEdit ? "bg-slate-lightdark " : "bg-slate-dark "} text-sm leading-loose text-text-main scrollbar-thin`
   const documentStats : IStats = getStatsFromDataObj(curArticle);
   const associatedListItemTitles : string[] = [];
+  const contentContainerId : string = "contentContainer";
 
   // --- Loose Code (TODO: Tidy Up?) ---
   for(let i = 0 ; i < associatedListItems.length ; i++)
@@ -132,19 +131,6 @@ function ArticleView() {
     dispatch(resetApplicationState())
   }
 
-
-  // --- React Hooks ---
-  
-  // useEffect Hook to update redux data layer for highlighted text and position
-  useEffect(() => {
-  
-    document.addEventListener("mouseup", hightlightHandler)
-  
-    return () => {
-      document.removeEventListener("mouseup", hightlightHandler)
-    }
-  
-  }, [selectedText])
   
   // highlightHandler : Handler for highlight action
   const hightlightHandler = () => {
@@ -157,6 +143,7 @@ function ArticleView() {
     const range = sel.getRangeAt(0).cloneRange();
     const text: string = range.toString();
     const pos: DOMRect = range.getBoundingClientRect();
+    const parentDims : DOMRect = document.getElementById(contentContainerId)?.getBoundingClientRect() as DOMRect;
     
     // Send to Redux
     if(text !== "" && text!== " ")
@@ -168,10 +155,26 @@ function ArticleView() {
         top : pos.top,
         bottom : pos.bottom,
         left : pos.left,
-        right : pos.right
+        right : pos.right,
+        parentHeight : parentDims.height,
+        parentWidth : parentDims.width,
       }));
     }
   }
+
+  // --- React Hooks ---
+
+
+  // useEffect Hook to update redux data layer for highlighted text and position
+  useEffect(() => {
+  
+    document.addEventListener("mouseup", hightlightHandler)
+  
+    return () => {
+      document.removeEventListener("mouseup", hightlightHandler)
+    }
+  
+  }, [selectedText])
   
   // useEffect : Handles updating the rendered article when selection changes in redux
   useEffect(() => {
@@ -222,7 +225,9 @@ function ArticleView() {
                   value={formData.title} />
           </div>
 
-          <div  className="w-full grow max-h-[75vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark">
+          <div 
+              id = {contentContainerId}  
+              className="w-full grow max-h-[75vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark">
               
               {
               enableEdit ? 

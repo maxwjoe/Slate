@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
-import { useClickOutside } from '../../helper/UIHelpers'
+import { getFloatingActionMenuOffset, useClickOutside } from '../../helper/UIHelpers'
 import { IDropDownPackage } from '../../interfaces/DropdownPackageInterface'
 import { IFloatingMenuData, ITextPosition } from '../../interfaces/FloatingMenuDataInterface'
 import FloatingMenuOption from './FloatingMenuOption'
@@ -30,7 +30,7 @@ function FloatingActionMenu({closeHandler} : Props) {
     const isOpen : boolean = useAppSelector((state) => state.applicationState.floatingMenuOpen);
     const curArticle : IArticle = useAppSelector((state) => state.applicationState.selectedArticle) as IArticle;
     const selectedText : string = useAppSelector((state) => state.applicationState.selectedText) as string;
-    const position : DOMRect = useAppSelector((state) => state.applicationState.selectionPosition) as DOMRect;
+    const position : ITextPosition = useAppSelector((state) => state.applicationState.selectionPosition) as ITextPosition;
     const sourceLanguage : string = getSourceLanguageFromId(curArticle?.source as string);
 
     // --- Redux Hooks ---
@@ -40,7 +40,7 @@ function FloatingActionMenu({closeHandler} : Props) {
     const [translation, setTranslation] = useState<any>(null);
 
     // --- Constants ---
-    const offsetStyle = {top : position?.top + 30, bottom : position?.bottom , left : position?.left , right : position?.right }
+    const offsetStyle = getFloatingActionMenuOffset(position);
 
     // --- Functions ---
 

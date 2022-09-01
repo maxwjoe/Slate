@@ -10,4 +10,6 @@ export interface ITextPosition {
   bottom: number;
   left: number;
   right: number;
+  parentHeight: number;
+  parentWidth: number;
 }
