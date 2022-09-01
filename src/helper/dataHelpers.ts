@@ -20,6 +20,15 @@ export const getSourceLanguageFromId = (sourceId: string) => {
   return "No Language";
 };
 
+// getSourceFromId : Gets source object from Source Id
+export const getSourceFromId = (sourceId: string) => {
+  const sources: ISource[] = store.getState().sources.sources;
+  for (let i = 0; i < sources.length; i++) {
+    if (sources[i]._id === sourceId) return sources[i];
+  }
+  return null;
+};
+
 // getArticleFromId : Returns article given its ID
 export const getArticleFromId = (articleId: string) => {
   const articles: IArticle[] = store.getState().articles.articles;
@@ -27,6 +36,19 @@ export const getArticleFromId = (articleId: string) => {
     if (articles[i]._id === articleId) return articles[i];
   }
   return {} as IArticle;
+};
+
+// getAllListsInSource : Gets all lists in a source
+export const getAllListsInSource = (sourceId: string) => {
+  const lists: IList[] = store.getState().lists.lists;
+  const sourceLists: IList[] = [];
+  for (let i = 0; i < lists?.length; i++) {
+    if (lists?.[i].source === sourceId) {
+      sourceLists.push(lists[i]);
+    }
+  }
+
+  return sourceLists;
 };
 
 // listNameTaken : Checks if there is an existing list with a name

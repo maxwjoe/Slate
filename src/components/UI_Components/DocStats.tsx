@@ -1,5 +1,6 @@
 import React from 'react'
 import { IStats } from '../../interfaces/StatsInterface';
+import ArticleListDisplay from './ArticleListDisplay';
 
 interface Props {
     stats : IStats;
@@ -9,7 +10,7 @@ interface Props {
 function DocStats({stats} : Props) {
  
   return (
-    <div className="flex flex-col max-w-[200px] min-w-[150px] h-full">
+    <div className="flex flex-col max-w-[200px] min-w-[150px] h-full space-y-6">
 
     <div className="flex w-full flex-col space-y-2">
       
@@ -23,8 +24,8 @@ function DocStats({stats} : Props) {
       </div>
     </div>
 
-    <div>
-      {/* Associated Word Lists (Beyond MVP) */}
+    <div className='w-full'>
+      <ArticleListDisplay/>
     </div>
 
   </div>

@@ -12,6 +12,8 @@ interface Props {
 // DropdownSelector : Component responsible for rendering drop down menus (eg. Select a language, select avatar type)
 function DropdownSelector({selectionFunction, defaultSelection, options} : Props) {
 
+    console.log("default = ", defaultSelection);
+
     // --- React State ---
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedOption, setSelectedOption] = useState<string>(defaultSelection || "Select an Option");
@@ -29,9 +31,9 @@ function DropdownSelector({selectionFunction, defaultSelection, options} : Props
     <div
         onClick = {() => setIsOpen(!isOpen)} 
         className='flex flex-col relative w-full h-9 bg-slate-lightdark rounded-md text-text-main cursor-pointer'>
-        <div className='flex flex-row items-center w-full h-full space-x-2 p-3 z-10'>
+        <div className='flex flex-row items-center w-full h-full space-x-2 p-3 z-10 overflow-hidden'>
             <AiOutlineCaretDown className='text-lg'/>
-            <p>{selectedOption}</p>
+            <p className='whitespace-nowrap max-w-[50%]'>{selectedOption}</p>
         </div>
 
         {
@@ -40,7 +42,7 @@ function DropdownSelector({selectionFunction, defaultSelection, options} : Props
                 
                 {options.map((option : IOption, index : number) => {
                     return (
-                        <div key = {index} onClick = {() => handleSelect(option)} className='flex flex-row items-center w-full h-9 space-x-2 p-3 hover:bg-slate-dark'>
+                        <div key = {index} onClick = {() => handleSelect(option)} className='flex flex-row items-center w-full h-9 space-x-2 p-3 hover:bg-slate-dark whitespace-nowrap'>
                             <p key = {index} className='text-text-main'>{option.disp}</p>
                         </div>
                     )
