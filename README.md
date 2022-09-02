@@ -14,6 +14,9 @@ Slate is a tool designed to assist you in learning a foreign language. It allows
 <h4>
 2. Create your first collection and select your target language
 </h4>
+
+![create_documentcrop](https://user-images.githubusercontent.com/76637128/188056421-5b598b40-3a9d-41e1-b92f-854f27d19586.gif)
+
 <h4>
 3. Create a new document inside your collection, give it a title and some content
 </h4>
