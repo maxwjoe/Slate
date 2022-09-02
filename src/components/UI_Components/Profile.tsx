@@ -56,15 +56,15 @@ function Profile() {
   return (
     <>
         <div onClick={() => setOpen(!open)} className='flex relative items-center p-3 flex-1 space-x-3 w-full hover:bg-slate-lightdark cursor-pointer'>
-            <div className='flex w-8 h-full items-center'>
+            <div className='flex grow h-full items-center '>
                 <img 
-                    className='object-cover w-8 h-8 rounded-md cursor-pointer'
+                    className='object-cover w-10 h-10 rounded-md cursor-pointer border-[2px] border-text-secondary'
                     src={getProfileImageFromAPI(curUser?.profileImage)} 
                     alt="" />
             </div>
-            <div id = {containerId}  className='flex flex-col grow  h-full overflow-hidden items-center justify-center'>
-                <p className='w-full text-start text-sm text-text-main whitespace-nowrap overflow-hidden'>
-                    {curUser?.username || curUser?.email?.split("@")?.[0] || "Unknown User"}
+            <div id = {containerId}  className='flex grow w-4/5 h-full overflow-hidden items-end  justify-center'>
+                <p className='w-full pl-2 text-start text-md text-text-main whitespace-nowrap overflow-hidden'>
+                    {(curUser?.username || curUser?.email?.split("@")?.[0] || "Unknown User").substring(0, 16)}
                 </p>
             </div>  
             
