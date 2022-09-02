@@ -59,11 +59,21 @@ Here, you can also choose to remove the word from the connected vocabulary list
 
 <h4>1. Directly Creating a Vocabulary List</h4>
 <p>You can choose to directly create a vocabulary list without the need for a document. This can later be linked to a document of your choosing</p>
+
+<img src="https://user-images.githubusercontent.com/76637128/188061922-f8002f02-78eb-450d-9b9d-c2b30d514a77.gif"/>
+
 <h4>2. Adding a New Word</h4>
+
+<img src="https://user-images.githubusercontent.com/76637128/188062417-59c9981b-f004-412c-a643-ed851ef5bb6b.gif"/>
+
 <h4>3. Editing a Word</h4>
 <p>You can also add notes to words in addition to their definition</p>
+
+<img src="https://user-images.githubusercontent.com/76637128/188062569-d0406784-3185-4cc1-b6c3-8bea6c6aa19b.gif"/>
+
 <h4>4. Filtering/Searching a List</h4>
 <p>Lists can be filtered using the search input</p>
+<img src="https://user-images.githubusercontent.com/76637128/188063123-c0048e72-ea84-4c59-9a38-cc49969609b4.gif"/>
 
 
 
