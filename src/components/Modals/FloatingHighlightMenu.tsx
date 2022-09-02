@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDom from 'react-dom'
 import { getFloatingActionMenuOffset, useClickOutside } from '../../helper/UIHelpers';
 import { IHighlightOptions, ITextPosition } from '../../interfaces/FloatingMenuDataInterface'
@@ -54,7 +53,7 @@ function FloatingHighlightMenu({settings, closeHandler} : Props) {
     return ReactDom.createPortal(
     <div ref={domNode} style={offset} className='flex flex-col p-3 absolute w-[180px] h-[180px] bg-[#000] select-none rounded-md'>
         <div style={{color : SLATE_TEXT_MAIN}} className='flex flex-col w-full h-2/3 space-y-3 overflow-scroll scrollbar-thin border-b-2 border-text-secondary'>
-            <p  className='text-md font-bold'>{item.title}</p>
+            <p  className='text-lg font-bold'>{item.title}</p>
             <div className='flex flex-col overflow-scroll scrollbar-thin'>
                 <p className='text-xs'>Definition : </p>
                 <p className='text-sm'>{item.definition}</p>

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
 import { getFloatingActionMenuOffset, useClickOutside } from '../../helper/UIHelpers'
 import { IDropDownPackage } from '../../interfaces/DropdownPackageInterface'
-import { IFloatingMenuData, ITextPosition } from '../../interfaces/FloatingMenuDataInterface'
+import { ITextPosition } from '../../interfaces/FloatingMenuDataInterface'
 import FloatingMenuOption from './FloatingMenuOption'
-import {RiTranslate} from 'react-icons/ri'
 import {IoMdAdd} from 'react-icons/io'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { setFloatingMenuOpen, setSelectedArticle, setSelectedText, setSelectionPosition } from '../../redux/slices/applicationSlice'
@@ -15,9 +14,9 @@ import { RDX_updateArticle } from '../../redux/slices/articleSlice'
 import { RDX_createItem } from '../../redux/slices/itemSlice'
 import { createItemViewModel } from '../../viewModels/createItemViewModel'
 import { translateText } from '../../services/translationService'
-import { BsArrowRight } from 'react-icons/bs'
-import { Ping } from '@uiball/loaders'
+import { LineWobble } from '@uiball/loaders'
 import toast from 'react-hot-toast'
+import { SLATE_TEXT_MAIN } from '../../services/themeService'
 
 interface Props {
     closeHandler? : any,
@@ -153,41 +152,42 @@ function FloatingActionMenu({closeHandler} : Props) {
 
   return ReactDom.createPortal(
     <>
-    <div
-        ref = {domNode}
-        style = {offsetStyle} 
-        className='flex flex-col p-3 w-[180px] h-[180px] bg-slate-super-dark absolute rounded-md'>
-        <div className='flex justify-between items-center pb-3 mb-3 w-full overflow-scroll scrollbar-thin border-b-2 border-slate-lightdark'>
-            <p className='text-md select-none text-text-main leading-tight'>{selectedText}</p>
-            {
-                translation == null ? 
-                (
-                    <>
-                        <BsArrowRight className='text-lg select-none text-text-main'/>
-                        <Ping size={20} color={"#FFF"}/>
-                    </>
-                ) 
-                : translation?.valid == true ? 
-                (
-                    <>
-                     <BsArrowRight className='text-lg select-none text-text-main'/>
-                    <div className='flex flex-col'>
-                        <p className='text-sm select-none text-text-main leading-tight'>{translation.translatedText}</p>
-                        <p className='text-sm slect-none text-text-main leading-tight'>{`(${translation.match * 100}%)`}</p>
-                    </div>
-                    </>
-                ) 
-                :
-                (<></>) 
-
-            }
-           
+    <div ref={domNode} style={offsetStyle} className='flex flex-col p-3 absolute w-[180px] h-[180px] bg-[#000] select-none rounded-md'>
+        <div style={{color : SLATE_TEXT_MAIN}} className='flex flex-col w-full h-2/3 space-y-3 overflow-scroll scrollbar-thin border-b-2 border-text-secondary'>
+            <p  className='text-lg font-bold'>{selectedText}</p>
+            <div className='flex flex-col overflow-scroll scrollbar-thin'>
+                <div className='flex w-full justify-between items-center'>
+                  <p className='text-xs'>Definition : </p>
+                  {translation?.valid === true &&
+                    <p className='text-xs'>{`(${translation.match * 100}%)`}</p>}
+                </div>
+                <div className='flex grow'>
+                    {
+                        translation === null ? (
+                            <div className='pt-2'>
+                                <LineWobble size={40} color={"#FFF"}/>
+                            </div>
+                        ) : translation?.valid == true ? 
+                        (
+                            <div className='flex flex-col grow'>
+                                <p className='text-md'>{translation.translatedText}</p>
+                            </div>
+                        ) : 
+                        (
+                            <p className='text-md'>No Definition</p>
+                        )
+                    }
+                </div>
+            </div>
         </div>
-            {dropdownPackages.map(({Icon, ActionTitle, ActionFunction} : IDropDownPackage, index : number) => (
-                <FloatingMenuOption key={index} DropdownPackage={{Icon, ActionTitle, ActionFunction}}/>
-            ))}
-
+        <div className='flex flex-col items-center justify-end w-full h-1/3'>
+            {dropdownPackages.map((dropdownPackage : IDropDownPackage, index : number) => {
+                return (
+                    <FloatingMenuOption key={index} DropdownPackage={dropdownPackage}/>
+                )
+            })}
         </div>
+    </div>
     
     </>,
     document.getElementById("portal")!
