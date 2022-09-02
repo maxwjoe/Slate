@@ -75,10 +75,16 @@ Here, you can also choose to remove the word from the connected vocabulary list
 <p>Lists can be filtered using the search input</p>
 <img src="https://user-images.githubusercontent.com/76637128/188063123-c0048e72-ea84-4c59-9a38-cc49969609b4.gif" width="678" height="432"/>
 
+<hr/>
+
+<h3>Basic Tutorial : Application Settings</h3>
+<p>Here you can change your username, email, UI Theme and Avatar</p>
+
+<img src="https://user-images.githubusercontent.com/76637128/188064787-83454050-6910-4b73-80ca-1e3657b294e3.gif" width="678" height="432"/>
 
 
 <hr/>
-<h2>Future Expansion</h2>
+<h2>Future Features</h2>
 
 * Connect multiple lists to a single document
 
