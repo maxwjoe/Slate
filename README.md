@@ -22,14 +22,20 @@ Slate is a tool designed to assist you in learning a foreign language. It allows
 3. Create a new document inside your collection, give it a title and some content
 </h4>
 <p>Select the document, this is where you can read and edit your document</p>
-<img src="https://user-images.githubusercontent.com/76637128/188056508-638de333-2789-40a6-aeb9-b315d850146f.gif"/>
+<img src="https://user-images.githubusercontent.com/76637128/188059868-7f99e5ea-a0de-4ae6-94fc-47139ffcc3cd.gif"/>
+
+<img src="https://user-images.githubusercontent.com/76637128/188059589-d72572e9-9882-40c9-9f15-58665a9d99f3.gif"/>
+
 <h4>
 4. Highlight a word to automatically translate it
 </h4>
-<p>When you click "add to list", Slate will add the word to the vocabulary list linked to your document. If there is no vocabulary list linked, it will create one for you. You can change the linked vocabulary list in the right hand panel.</p>
+<p>When you click "add to list", Slate will add the word to the vocabulary list linked to your document. If there is no vocabulary list linked, it will create one for you.</p>
 
-<img src="https://user-images.githubusercontent.com/76637128/188056827-e68266fd-3069-40a2-ab0f-b17a98c40b76.gif"/>
-<img src="https://user-images.githubusercontent.com/76637128/188056985-a1e7e230-8620-4c3d-86f7-a67756d6e350.gif"/>
+
+<img src="https://user-images.githubusercontent.com/76637128/188060427-b6238fa5-5faf-4e38-81ca-c892c45a5663.gif"/>
+<p>You can change the connected vocabulary list in the right hand dropdown menu</p>
+<img src="https://user-images.githubusercontent.com/76637128/188060761-7332be68-45bf-4377-80c9-8e34c2768e37.gif"/>
+
 <h4>
 5. Click on a word to peek the definition
 </h4>
@@ -37,7 +43,8 @@ Slate is a tool designed to assist you in learning a foreign language. It allows
 Here, you can also choose to remove the word from the connected vocabulary list
 </p>
 
-<img src="https://user-images.githubusercontent.com/76637128/188056888-0d8827c3-1345-47e9-a128-c53a9699b105.gif"/>
+
+<img src="https://user-images.githubusercontent.com/76637128/188060883-77e081f8-f9b6-4ba3-8868-5fc2bd7440a2.gif"/>
 
 <h4>
 6. Toggle Highlighting
