@@ -57,6 +57,14 @@ Here, you can also choose to remove the word from the connected vocabulary list
 
 <h3>Basic Tutorial : Interacting with Lists Directly</h3>
 
+<h4>1. Directly Creating a Vocabulary List</h4>
+<p>You can choose to directly create a vocabulary list without the need for a document. This can later be linked to a document of your choosing</p>
+<h4>2. Adding a New Word</h4>
+<h4>3. Editing a Word</h4>
+<p>You can also add notes to words in addition to their definition</p>
+<h4>4. Filtering/Searching a List</h4>
+<p>Lists can be filtered using the search input</p>
+
 
 
 <hr/>
