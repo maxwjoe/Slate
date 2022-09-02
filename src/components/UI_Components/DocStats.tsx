@@ -1,5 +1,6 @@
-import React from 'react'
+import { IArticle } from '../../interfaces/DataInterfaces';
 import { IStats } from '../../interfaces/StatsInterface';
+import { useAppSelector } from '../../redux/hooks';
 import ArticleListDisplay from './ArticleListDisplay';
 
 interface Props {
@@ -8,9 +9,13 @@ interface Props {
 
 // DocStats : Component Responsible for rendering document statistics in RHS of UI
 function DocStats({stats} : Props) {
+
+  // --- Redux State ---
+  const curArticle : IArticle = useAppSelector((state) => state.applicationState.selectedArticle) as IArticle;
+
  
   return (
-    <div className="flex flex-col max-w-[200px] min-w-[150px] h-full space-y-6">
+    <div className="flex flex-col max-w-[200px] min-w-[150px] h-full space-y-6 select-none">
 
     <div className="flex w-full flex-col space-y-2">
       
@@ -23,10 +28,15 @@ function DocStats({stats} : Props) {
         <p className="text-xs text-text-secondary select-none">{stats.updatedAt}</p>
       </div>
     </div>
-
-    <div className='w-full'>
-      <ArticleListDisplay/>
-    </div>
+    
+    {
+      // Only display this feature when content type is the selected article
+      !!curArticle && (
+        <div className='w-full'>
+          <ArticleListDisplay/>
+        </div>
+      )
+    }
 
   </div>
   )

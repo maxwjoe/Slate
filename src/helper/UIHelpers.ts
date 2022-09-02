@@ -26,7 +26,7 @@ export const useClickOutside = (handler: any) => {
   return domNode;
 };
 
-// getWordCount : Gets word count for a string (Limitation : Cannot count Asian + Nonasian languages at once)
+// getWordCount : Gets word count for a string (FIXME: Cannot count Asian + Nonasian languages at once)
 export const getWordCount = (data: string) => {
   //Count Chinese Characters
   let chineseCount = 0;

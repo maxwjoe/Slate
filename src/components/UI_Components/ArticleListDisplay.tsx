@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { getAllListsInSource, getListFromListId, getSourceFromId } from '../../helper/dataHelpers';
-import { IArticle, IList, ISource } from '../../interfaces/DataInterfaces';
+import toast from 'react-hot-toast';
+import { getAllListsInSource, getListFromListId, } from '../../helper/dataHelpers';
+import { IArticle, IList } from '../../interfaces/DataInterfaces';
 import { IOption } from '../../interfaces/OptionInterface';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { setSelectedArticle } from '../../redux/slices/applicationSlice';
@@ -32,27 +32,41 @@ function ArticleListDisplay() {
     // changeAssociatedList : Handles changing the article's associated list
     const changeAssociatedList = async (newListId : string) => {
 
-        
+        // Check for Redundant Swap
+        if(newListId === curArticle?.associatedList) return null;
+
+        let newListTitle : string = "";
+        for(let i = 0 ; i < dropDownOptions.length ; i++)
+        {
+            if(dropDownOptions[i].real === newListId){
+                newListTitle = dropDownOptions[i]?.disp;
+                break;
+            }
+        }
+
+        if(newListTitle === "") return null;
+
         const updatedArticle : IArticle = {
             ...curArticle,
             associatedList : newListId,
         }
-        await dispatch(RDX_updateArticle(updatedArticle))
+
+        const updatePromise = dispatch(RDX_updateArticle(updatedArticle))
+        
+        await toast.promise(updatePromise, {
+            loading : `Setting : ${newListTitle}`,
+            success : `Now connected to ${newListTitle}`,
+            error : "Failed to updated connected list"
+        })
 
         dispatch(setSelectedArticle(updatedArticle))
 
     }
 
-
-    // --- React Hooks ---
-    useEffect(() => {
-    }, [curArticle, associatedList])
-    
-
   return (
     <div className='flex flex-col space-y-3 w-full h-12'>
         <p className='text-text-main text-sm'>Connected List</p>
-        <DropdownSelector options={dropDownOptions} defaultSelection = {associatedList?.title} selectionFunction = {() => {}}/>
+        <DropdownSelector options={dropDownOptions} defaultSelection = {associatedList?.title} selectionFunction = {changeAssociatedList}/>
     </div>
   )
 }

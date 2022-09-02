@@ -1,23 +1,26 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {AiOutlineCaretDown} from 'react-icons/ai'
 import { useClickOutside } from '../../helper/UIHelpers';
 import { IOption } from '../../interfaces/OptionInterface';
 
 interface Props {
     selectionFunction : any;
-    defaultSelection? : string;
+    defaultSelection? : any;
     options : IOption[];
 }
 
 // DropdownSelector : Component responsible for rendering drop down menus (eg. Select a language, select avatar type)
 function DropdownSelector({selectionFunction, defaultSelection, options} : Props) {
 
-    console.log("default = ", defaultSelection);
-
     // --- React State ---
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [selectedOption, setSelectedOption] = useState<string>(defaultSelection || "Select an Option");
+    const [selectedOption, setSelectedOption] = useState<string>();
     const domNode = useClickOutside(() => setIsOpen(false));
+
+    // --- React Hooks ---
+    useEffect(() => {
+        setSelectedOption(defaultSelection || "Select");
+    }, [defaultSelection])
 
     // --- Functions ---
 
