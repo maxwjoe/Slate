@@ -103,7 +103,7 @@ function FloatingActionMenu({closeHandler} : Props) {
             let newItem : createItemViewModel = {
                 title : selectedText,
                 definition : def,
-                pronunciation : "No Pronunciation",
+                pronunciation : "No Notes",
                 list : curArticle?.associatedList,
             }
 
