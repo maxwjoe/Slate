@@ -11,7 +11,7 @@ Slate is a tool designed to assist you in learning a foreign language. It allows
 <h2>Basic Tutorial : Interacting with Documents</h2>
 
 <h4>
-1. Go to deployment and register an account : https://slate-sigma.vercel.app
+1. Go to deployment and register an account : https://slate-sigma.vercel.app/register
 </h4>
 <h4>
 2. Create your first collection and select your target language
