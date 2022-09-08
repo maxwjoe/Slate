@@ -32,6 +32,24 @@ function LeftTree() {
   // useEffect to handle auth access and source data pull on load
   useEffect(() => {
     
+    // pullData : Pulls all data from server to redux
+    const pullData = async () => {
+      await dispatch(RDX_getSources());
+      await dispatch(RDX_getArticles());
+      await dispatch(RDX_getLists());
+      await dispatch(RDX_getItems());
+    }
+
+    // executePull : Calls pullData and creates an asynchronous UI Prompt
+    const executePull = async () => {
+      const pull = pullData();
+      await toast.promise(pull, {
+        loading : `Loading your data`,
+        success : `Loading complete`,
+        error : "Failed to load data"
+      })
+    }
+
     if(!user)
     {
       navigate('/login')
@@ -43,11 +61,9 @@ function LeftTree() {
       console.log(sourceState?.sources || articleState?.articles || listState?.lists || itemState?.items);
       toast.error(sourceState?.message || articleState?.message || listState?.message || itemState?.message);
     }
-    console.log("Use Effect Fired Off")
-    dispatch(RDX_getSources());
-    dispatch(RDX_getArticles());
-    dispatch(RDX_getLists());
-    dispatch(RDX_getItems());
+
+    executePull();
+    
 
   }, [user,
      navigate, 
