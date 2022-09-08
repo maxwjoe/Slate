@@ -66,8 +66,6 @@ function ArticleView() {
   // highlightText : returns highlighted text
   const getHighlightedText = (text : string, highlight : string[]) => {
     
-    if(!showHighlight) return text;
-    
     let regexMatchString : string = "";
     
     for(let i = 0 ; i < highlight.length ; i++)
@@ -112,12 +110,12 @@ function ArticleView() {
     const parts = text.split(new RegExp(`(${regexMatchString})`, 'gi'));
     return <span> { parts.map((part, i) => {
 
-      const isHighlighted : boolean = isContained(part, highlight);
+      const isHighlighted : boolean = isContained(part, highlight) && showHighlight;
       const spanId : string = isHighlighted ? uuidv4().toString() : "";
 
         return (
         <span id = {spanId} onClick={isHighlighted ? () => {openHighlightMenu(part, spanId)} : () => {}} className={`rounded-md ${isHighlighted && "cursor-pointer select-none"}`} key={i} style={isHighlighted ? { backgroundColor: currentTheme.accent } : {} }>
-            { part }
+        { part }
         </span>)
     })
     } </span>;
