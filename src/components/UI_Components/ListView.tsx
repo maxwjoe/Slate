@@ -168,7 +168,8 @@ function ListView() {
 
       <div className='flex grow'>
         <div className="flex flex-col w-full h-full">
-        <div className="flex w-full h-12 bg-slate-lightdark">
+        
+       { !!curItem && <div className="flex w-full h-12 bg-slate-lightdark">
           <DocPath Path={docPath}/>
           <div className="flex items-center justify-end space-x-3 pr-6 h-full w-1/2">
             {enableEdit ? 
@@ -190,9 +191,8 @@ function ListView() {
             </>
             }
           </div>
-        </div>
+        </div>}
       <div className="flex flex-row relative w-full h-full bg-slate-lightdark pl-5 pr-5 pt-2 ">
-        
         {/* Main Panel (Content) */}
         {!!curItem ? 
         (

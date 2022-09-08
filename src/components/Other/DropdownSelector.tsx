@@ -33,14 +33,14 @@ function DropdownSelector({selectionFunction, defaultSelection, options} : Props
   return (
     <div
         onClick = {() => setIsOpen(!isOpen)} 
-        className='flex flex-col relative w-full h-9 bg-slate-lightdark rounded-md text-text-main cursor-pointer'>
-        <div className='flex flex-row items-center w-full h-full space-x-2 p-3 z-10 overflow-hidden'>
-            <AiOutlineCaretDown className='text-lg'/>
-            <p className='whitespace-nowrap max-w-[50%]'>{selectedOption}</p>
+        className={`flex flex-col relative w-full h-9 bg-slate-lightdark rounded-md text-text-main ${options.length > 0 && "cursor-pointer"}`}>
+        <div className={'flex flex-row items-center w-full h-full space-x-2 p-3 z-10 overflow-hidden'}>
+            {(options.length > 0) && <AiOutlineCaretDown className='text-lg'/>}
+            <p className='whitespace-nowrap max-w-[50%]'>{options.length > 0 ? selectedOption : ""}</p>
         </div>
 
         {
-            isOpen && 
+            isOpen &&
             <div ref = {domNode} className='z-0 flex pt-2 flex-col items-start justify-start absolute top-7 max-h-48 w-full rounded-b-md bg-slate-lightdark overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-text-tertiary'>
                 
                 {options.map((option : IOption, index : number) => {
