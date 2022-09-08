@@ -62,7 +62,12 @@ function LeftTree() {
       toast.error(sourceState?.message || articleState?.message || listState?.message || itemState?.message);
     }
 
-    executePull();
+    if(!sourceState?.sources || sourceState?.sources?.length == 0)
+    {
+      executePull();
+    } else {
+      pullData();
+    }
     
 
   }, [user,
