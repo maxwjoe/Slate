@@ -41,11 +41,11 @@ function DropdownSelector({selectionFunction, defaultSelection, options} : Props
 
         {
             isOpen && 
-            <div ref = {domNode} className='z-0 flex pt-2 flex-col items-start justify-start absolute top-7 h-32 w-full rounded-b-md bg-slate-lightdark overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-slate-black'>
+            <div ref = {domNode} className='z-0 flex pt-2 flex-col items-start justify-start absolute top-7 max-h-48 w-full rounded-b-md bg-slate-lightdark overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-text-tertiary'>
                 
                 {options.map((option : IOption, index : number) => {
                     return (
-                        <div key = {index} onClick = {() => handleSelect(option)} className='flex flex-row items-center w-full h-9 space-x-2 p-3 hover:bg-slate-dark whitespace-nowrap'>
+                        <div key = {index} onClick = {() => handleSelect(option)} className='flex flex-row items-center w-full h-9 space-x-2 p-3 hover:bg-slate-dark hover:border-b-[2px] hover:border-text-tertiary transition-all duration-200 whitespace-nowrap'>
                             <p key = {index} className='text-text-main'>{option.disp}</p>
                         </div>
                     )

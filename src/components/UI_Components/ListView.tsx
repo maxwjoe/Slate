@@ -59,7 +59,7 @@ function ListView() {
   // --- Constants ---
   const docPath : string[] = [getSourceTitleFromId(curList.source), curList?.title, curItem?.title];
   const titleClass : string = `${enableEdit ? "p-1" : ""} outline-none border-none rounded-md w-full ${enableEdit ? "bg-slate-dark " : "bg-slate-lightdark "} text-3xl font-bold text-text-main`
-  const contentClass : string = `${enableEdit ? "p-1" : ""} outline-none w-full h-40 resize-none border-none rounded-md ${enableEdit ? "bg-slate-dark " : "bg-slate-lightdark "} text-sm leading-loose text-text-main scrollbar-thin`
+  const contentClass : string = `${enableEdit ? "p-1" : ""} outline-none w-full h-40 resize-none border-none rounded-md ${enableEdit ? "bg-slate-dark " : "bg-slate-lightdark "} text-sm leading-loose text-text-main scrollbar-thin scrollbar-thumb-text-tertiary`
   const documentStats : IStats = getStatsFromDataObj(curItem);
 
   // --- Functions ---
@@ -150,7 +150,7 @@ function ListView() {
           <p className='text-lg text-text-secondary select-none overflow-hidden whitespace-nowrap'>{curList.title}</p>
         </div>
 
-        <div className='h-full w-full overflow-y-scroll scrollbar-thin space-y-2'>
+        <div className='h-full w-full overflow-y-scroll scrollbar-thin scrollbar-thumb-text-tertiary space-y-2'>
           {curListItems.map((item : IItem, index : number) => {
             if(!performSearch(item)) return null;
             return (
@@ -209,7 +209,7 @@ function ListView() {
                       value={formData?.definition || ""} />
               </div>
 
-              <div className="w-full grow max-h-[50vh] overflow-y-scroll space-y-2 scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark">
+              <div className="w-full grow max-h-[50vh] overflow-y-scroll space-y-2 scrollbar-thin scrollbar-thumb-text-tertiary scrollbar-track-slate-super-dark">
                 <p className='text-text-main text-lg'>Notes : </p>
                 <textarea 
                         name="pronunciation"

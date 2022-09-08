@@ -15,7 +15,7 @@ function DocStats({stats} : Props) {
 
  
   return (
-    <div className="flex flex-col max-w-[200px] min-w-[150px] h-full space-y-6 select-none">
+    <div className="flex flex-col p-3 max-w-[200px] min-w-[180px] h-full space-y-6 select-none">
 
     <div className="flex w-full flex-col space-y-2">
       

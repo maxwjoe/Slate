@@ -266,7 +266,7 @@ function ArticleView() {
 
           <div 
               id = {contentContainerId}  
-              className="w-full grow max-h-[75vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-lightdark scrollbar-track-slate-super-dark">
+              className="w-full grow max-h-[75vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-text-tertiary ">
               
               {
               enableEdit ? 

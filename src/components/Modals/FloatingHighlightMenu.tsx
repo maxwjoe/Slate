@@ -51,12 +51,12 @@ function FloatingHighlightMenu({settings, closeHandler} : Props) {
     if(!item?._id) return null
     
     return ReactDom.createPortal(
-    <div ref={domNode} style={offset} className='flex flex-col p-3 absolute w-[180px] h-[180px] bg-[#000] select-none rounded-md'>
-        <div style={{color : SLATE_TEXT_MAIN}} className='flex flex-col w-full h-2/3 space-y-3 overflow-scroll scrollbar-thin border-b-2 border-text-secondary'>
-            <p  className='text-lg font-bold'>{item.title}</p>
-            <div className='flex flex-col overflow-scroll scrollbar-thin'>
+    <div ref={domNode} style={offset} className='flex flex-col p-3 absolute w-[180px] h-[180px] select-none rounded-md bg-slate-super-dark'>
+        <div style={{color : SLATE_TEXT_MAIN}} className='flex flex-col w-full h-2/3 space-y-3 overflow-scroll scrollbar-thin scrollbar-thumb-text-secondary border-b-2 border-text-secondary'>
+            <p  className='text-lg font-bold break-words'>{item.title}</p>
+            <div className='flex flex-col'>
                 <p className='text-xs'>Definition : </p>
-                <p className='text-sm'>{item.definition}</p>
+                <p className='text-sm break-words'>{item.definition}</p>
             </div>
         </div>
         <div className='flex flex-col items-center justify-end w-full h-1/3'>

@@ -152,10 +152,10 @@ function FloatingActionMenu({closeHandler} : Props) {
 
   return ReactDom.createPortal(
     <>
-    <div ref={domNode} style={offsetStyle} className='flex flex-col p-3 absolute w-[180px] h-[180px] bg-[#000] select-none rounded-md'>
-        <div style={{color : SLATE_TEXT_MAIN}} className='flex flex-col w-full h-2/3 space-y-3 overflow-scroll scrollbar-thin border-b-2 border-text-secondary'>
-            <p  className='text-lg font-bold'>{selectedText}</p>
-            <div className='flex flex-col overflow-scroll scrollbar-thin'>
+    <div ref={domNode} style={offsetStyle} className='flex flex-col p-3 absolute w-[180px] h-[180px] bg-slate-super-dark select-none rounded-md'>
+        <div style={{color : SLATE_TEXT_MAIN}} className='flex flex-col w-full h-2/3 space-y-3 overflow-scroll scrollbar-thin scrollbar-thumb-text-secondary border-b-2 border-text-secondary'>
+            <p  className='text-lg font-bold w-full break-words'>{selectedText}</p>
+            <div className='flex flex-col'>
                 <div className='flex w-full justify-between items-center'>
                   <p className='text-xs'>Definition : </p>
                   {translation?.valid === true &&
@@ -170,7 +170,7 @@ function FloatingActionMenu({closeHandler} : Props) {
                         ) : translation?.valid == true ? 
                         (
                             <div className='flex flex-col grow'>
-                                <p className='text-md'>{translation.translatedText}</p>
+                                <p className='text-md break-words'>{translation.translatedText}</p>
                             </div>
                         ) : 
                         (
