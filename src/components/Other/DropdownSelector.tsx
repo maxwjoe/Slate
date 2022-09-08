@@ -41,7 +41,7 @@ function DropdownSelector({selectionFunction, defaultSelection, options} : Props
 
         {
             isOpen && 
-            <div ref = {domNode} className='z-0 flex pt-2 flex-col items-start justify-start absolute top-7 h-32 w-full rounded-b-md bg-slate-lightdark overflow-y-scroll overflow-x-hidden scrollbar-thin'>
+            <div ref = {domNode} className='z-0 flex pt-2 flex-col items-start justify-start absolute top-7 h-32 w-full rounded-b-md bg-slate-lightdark overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-slate-black'>
                 
                 {options.map((option : IOption, index : number) => {
                     return (
