@@ -15,9 +15,10 @@ import { MdCancel } from 'react-icons/md'
 import { FiEdit } from 'react-icons/fi'
 import { createItemViewModel } from '../../viewModels/createItemViewModel'
 import DeleteItem from '../CRUD_Components/DeleteItem'
-import { getCurrentTheme } from '../../services/themeService'
+import { getCurrentTheme, SLATE_TEXT_SECONDARY } from '../../services/themeService'
 import DocStats from './DocStats'
 import { IStats } from '../../interfaces/StatsInterface'
+import { Ring } from '@uiball/loaders'
 
 // ListView : Component responsible for rendering list content and the selected item, handles all list interactions in RHS of UI
 function ListView() {
@@ -29,6 +30,7 @@ function ListView() {
 
   // --- React State ---
   const [curListItems, setCurListItems] = useState<IItem[]>([]);
+  const [editLoading, setEditLoading] = useState<boolean>(false);
   const [createItemModal, setCreateItemModal] = useState<boolean>(false);
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
   const [deleteItemModal, setDeleteItemModal] = useState<boolean>(false);
@@ -100,8 +102,9 @@ function ListView() {
       definition : formData.definition,
       pronunciation : formData.pronunciation
     };
-
+    setEditLoading(true);
     await dispatch(RDX_updateItem(updatedItem));
+    setEditLoading(false);
     dispatch(setSelectedItem(updatedItem));
     setCurListItems(getItemsFromListId(curList._id));
     setEnableEdit(false);
@@ -170,7 +173,14 @@ function ListView() {
           <div className="flex items-center justify-end space-x-3 pr-6 h-full w-1/2">
             {enableEdit ? 
             <>
-            <AiFillSave onClick = {onEditSubmit} className="text-lg text-text-secondary cursor-pointer hover:text-[#9fb0e7]"/>
+            {editLoading ? (
+            <Ring size = {20} color = {SLATE_TEXT_SECONDARY}/>
+           )
+          :
+          (
+            <AiFillSave onClick = {onEditSubmit} className="text-lg text-text-secondary cursor-pointer hover:text-slate-accent"/>
+          )
+          }
             <MdCancel onClick = {onCancel} className="text-lg text-text-secondary cursor-pointer hover:text-text-danger"/>
             </>
             : 

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {FiEdit} from 'react-icons/fi'
+import { Ring } from "@uiball/loaders";
 import {AiFillDelete, AiFillSave, AiFillHighlight} from 'react-icons/ai'
 import {MdCancel} from 'react-icons/md'
 import { IArticle, IItem } from "../../interfaces/DataInterfaces";
@@ -35,6 +36,7 @@ function ArticleView() {
 
   // --- React State ---
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
+  const [editLoading, setEditLoading] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showHighlight, setShowHighlight] = useState<boolean>(true);
   const [HighlightOptions, setHighlightOptions] = useState<IHighlightOptions>({text : "", show : false});
@@ -148,8 +150,9 @@ function ArticleView() {
       content : formData.content
     };
 
-    
+    setEditLoading(true);
     await dispatch(RDX_updateArticle(updatedArticle));
+    setEditLoading(false);
     setEnableEdit(false);
   }
   
@@ -232,7 +235,14 @@ function ArticleView() {
         <div className="flex items-center justify-end space-x-3 pr-6 h-full w-1/2">
           {enableEdit ? 
           <>
-           <AiFillSave onClick = {onEditSubmit} className="text-lg text-text-secondary cursor-pointer hover:text-slate-accent"/>
+           {editLoading ? (
+            <Ring size = {20} color = {SLATE_TEXT_SECONDARY}/>
+           )
+          :
+          (
+            <AiFillSave onClick = {onEditSubmit} className="text-lg text-text-secondary cursor-pointer hover:text-slate-accent"/>
+          )
+          }
            <MdCancel onClick = {onCancel} className="text-lg text-text-secondary cursor-pointer hover:text-text-danger"/>
           </>
           : 
