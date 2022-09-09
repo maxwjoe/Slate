@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast'
 import {useNavigate} from 'react-router-dom'
 import {registerViewModel} from '../viewModels/authViewModels'
 import {useAppSelector, useAppDispatch} from '../redux/hooks'
-import {register, reset} from '../redux/slices/authSlice'
+import {register, registerDemo, reset} from '../redux/slices/authSlice'
 import { IAuth } from '../interfaces/AuthInterface'
 import LoadingPage from '../components/Other/LoadingPage'
 
@@ -67,6 +67,14 @@ function Register() {
     }
   }
 
+  // generateDemo : Handles user selecting a demo account
+  const generateDemo = (e : any) => {
+    e.preventDefault();
+
+    dispatch(registerDemo());
+  }
+
+
   if(isLoading)
   {
     return (<>
@@ -115,7 +123,7 @@ function Register() {
           <button type="submit" className='w-full h-12 rounded-md bg-text-main text-slate-dark text-xl font-medium hover:bg-text-secondary hover:text-text-main'>
             Register
           </button>
-          <a onClick={() => console.log("Demo Account")} className='flex items-center justify-center cursor-pointer w-full h-12 rounded-md bg-text-main text-slate-dark text-xl font-medium hover:bg-text-secondary hover:text-text-main'>
+          <a onClick={generateDemo} className='flex items-center justify-center cursor-pointer w-full h-12 rounded-md bg-text-main text-slate-dark text-xl font-medium hover:bg-text-secondary hover:text-text-main'>
             Try a demo account
           </a>
         </form>

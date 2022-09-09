@@ -33,6 +33,16 @@ export const register = createAsyncThunk(
   }
 );
 
+// registerDemo : registers a demo User
+export const registerDemo = createAsyncThunk("auth/registerDemo", async () => {
+  try {
+    return (await authService.registerDemo()) as IAuth;
+  } catch (error: any) {
+    console.log("failed to create a demo user");
+    return {} as IAuth;
+  }
+});
+
 // Login the User
 export const login = createAsyncThunk(
   "auth/login",
@@ -89,6 +99,20 @@ export const authSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(register.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string;
+        state.user = null;
+      })
+      .addCase(registerDemo.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(registerDemo.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+      })
+      .addCase(registerDemo.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string;

@@ -9,4 +9,5 @@ export interface IAuth {
   OAuthID?: string;
   themeAccent?: string;
   preferredTheme?: string;
+  isDemo?: boolean;
 }
