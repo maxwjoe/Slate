@@ -6,6 +6,8 @@ import {useAppSelector, useAppDispatch} from '../redux/hooks'
 import {register, registerDemo, reset} from '../redux/slices/authSlice'
 import { IAuth } from '../interfaces/AuthInterface'
 import LoadingPage from '../components/Other/LoadingPage'
+import GenericModal from '../components/Modals/GenericModal'
+import DemoConfirm from '../components/CRUD_Components/DemoConfirm'
 
 
 function Register() {
@@ -16,6 +18,7 @@ function Register() {
   // get redux data
   const {user, isLoading, isError, isSuccess, message} = useAppSelector<any>((state) => state.auth)
 
+  const [demoModal, setDemoModal] = useState<boolean>(false);
   const [formData, setFormData] = useState<registerViewModel>({
     username : '',
     email : '',
@@ -67,13 +70,6 @@ function Register() {
     }
   }
 
-  // generateDemo : Handles user selecting a demo account
-  const generateDemo = (e : any) => {
-    e.preventDefault();
-
-    dispatch(registerDemo());
-  }
-
 
   if(isLoading)
   {
@@ -123,7 +119,7 @@ function Register() {
           <button type="submit" className='w-full h-12 rounded-md bg-text-main text-slate-dark text-xl font-medium hover:bg-text-secondary hover:text-text-main'>
             Register
           </button>
-          <a onClick={generateDemo} className='flex items-center justify-center cursor-pointer w-full h-12 rounded-md bg-text-main text-slate-dark text-xl font-medium hover:bg-text-secondary hover:text-text-main'>
+          <a onClick={() => setDemoModal(true)} className='flex items-center justify-center cursor-pointer w-full h-12 rounded-md bg-text-main text-slate-dark text-xl font-medium hover:bg-text-secondary hover:text-text-main'>
             Try a demo account
           </a>
         </form>
@@ -136,6 +132,12 @@ function Register() {
           </span>
           </p>
       </div>
+      {
+      demoModal &&
+      <GenericModal handleClose={() => setDemoModal(false)}>
+        <DemoConfirm closeHandler={() => setDemoModal(false)}/>
+      </GenericModal>
+      }
     </div> 
   )
 }
