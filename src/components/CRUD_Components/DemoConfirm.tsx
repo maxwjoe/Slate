@@ -34,8 +34,8 @@ function DemoConfirm({closeHandler} : Props) {
         
         <div className='flex flex-col space-y-3 p-3 items-center justify-center grow'>
           <p className='text-2xl text-text-main'>{`Create a demo account?`}</p>
-          <p className='text-md text-text-main'>You will only be able to login one time</p>
-          <p className='text-md text-text-main'>A Slate tutorial can be found in the <a href="https://github.com/maxwjoe/Slate/blob/release/README.md" className='underline text-text-danger'>here</a></p>
+          <p className='text-md text-text-main'>You will only be able to login once</p>
+          <p className='text-md text-text-main'>A Slate tutorial can be found in the <a href="https://github.com/maxwjoe/Slate/blob/release/README.md" target="_blank" className='underline text-text-danger'>here</a></p>
         </div>
   
         <div className='flex flex-row w-full justify-end space-x-3'>
