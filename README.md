@@ -1,15 +1,43 @@
-<h1>Slate : Language Workspace</h1>
+<h1>Slate : Documentation</h1>
 
 <p>
 Slate is a tool designed to assist you in learning a foreign language. It allows you to save content in your target language, automatically translate content and generate vocabulary lists for review. It also features highlighting, definition peeking and more.
 </p>
 
 <h4>Note : Slate is still under development</h4>
-<p>The backend repo can be found here : https://github.com/maxwjoe/Slate-Backend</p>
+<hr/>
+
+<h2>Documentation Chapters</h2>
+
+<ol>
+<li>UI Screenshots</li>
+<li>Current Features</li>
+<li>Basic Tutorial : Interacting with documents</li>
+<li>Basic Tutorial : Interacting with lists directly</li>
+<li>Basic Tutorial : Application Settings</li>
+<li>Development Information</li>
+</ol>
+
+<hr/>
+<h2>1. UI Screenshots</h2>
+<img src="https://user-images.githubusercontent.com/76637128/192171378-7c30b61b-c61d-4c29-b776-bcdb61084e8b.png" />
+<img src="https://user-images.githubusercontent.com/76637128/192171383-20c50a25-e596-4123-8150-8ccd96216c9d.png" />
+
+<hr/>
+<h2>2. Current Features</h2>
+<ul>
+
+<li>Store and edit passages in your target language</li>
+<li>Create your own vocabulary lists</li>
+<li>Automatic translation on word highlight</li>
+<li>Inline word highlighting</li>
+<li>Automated vocabulary list generation</li>
+</ul>
 
 <hr/>
 
-<h2>Basic Tutorial : Interacting with Documents</h2>
+
+<h2>3. Basic Tutorial : Interacting with Documents</h2>
 
 <h4>
 1. Go to deployment and register an account : https://slate-sigma.vercel.app/register
@@ -56,7 +84,7 @@ Here, you can also choose to remove the word from the connected vocabulary list
 
 <hr/>
 
-<h3>Basic Tutorial : Interacting with Lists Directly</h3>
+<h3>4. Basic Tutorial : Interacting with Lists Directly</h3>
 
 <h4>1. Directly Creating a Vocabulary List</h4>
 <p>You can choose to directly create a vocabulary list without the need for a document. This can later be linked to a document of your choosing</p>
@@ -78,14 +106,22 @@ Here, you can also choose to remove the word from the connected vocabulary list
 
 <hr/>
 
-<h3>Basic Tutorial : Application Settings</h3>
+<h3>5. Basic Tutorial : Application Settings</h3>
 <p>Here you can change your username, email, UI Theme and Avatar</p>
 
 <img src="https://user-images.githubusercontent.com/76637128/188064787-83454050-6910-4b73-80ca-1e3657b294e3.gif" width="678" height="432"/>
 
 
 <hr/>
-<h2>Future Features</h2>
-
-* Connect multiple lists to a single document
+<h2>6. Development Information</h2>
+<p>Technology Stack : React, Express, Node, MongoDB (MERN)</p>
+<p>The backend repo can be found here : https://github.com/maxwjoe/Slate-Backend</p>
+<h3>Future Features and Improvements</h3>
+<ul>
+<li>Improved experience for mobile devices</li>
+<li>Passage comprehension statistics</li>
+<li>Performance improvements : State management</li>
+<li>Connect multiple vocabulary lists to a single document</li>
+</ul>
+<hr/>
 
