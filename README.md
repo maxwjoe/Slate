@@ -4,7 +4,6 @@
 Slate is a tool designed to assist you in learning a foreign language. It allows you to save content in your target language, automatically translate content and generate vocabulary lists for review. It also features highlighting, definition peeking and more.
 </p>
 
-<h4>Note : Slate is still under development</h4>
 <hr/>
 
 <h2>Documentation Chapters</h2>
